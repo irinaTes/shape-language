@@ -24,7 +24,7 @@ const Layout = ({ pageTitle, children }) => {
 
     return (
         <div className="m-auto max-w-[100vw] relative">
-            <div className="flex flex-row justify-between items-center w-full fixed p-3 top-0 z-1" id='shape-lang-header'>
+            <div className="flex flex-row justify-between items-center w-full fixed p-3 top-0 z-10" id='shape-lang-header'>
                 <Link to="/">
                     <video
                         ref={ref}

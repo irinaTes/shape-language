@@ -7,6 +7,9 @@
   line-height: 1.5;
   font-weight: 400;
   margin: 0 auto;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
 }
 * {
   font-family: "Raleway", sans-serif;
