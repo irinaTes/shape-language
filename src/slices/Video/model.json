@@ -1,0 +1,26 @@
+{
+  "id": "video",
+  "type": "SharedSlice",
+  "name": "Video",
+  "description": "Video",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "video_src": {
+          "type": "Embed",
+          "config": {
+            "label": "video src",
+            "placeholder": "video source from vimeo"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
