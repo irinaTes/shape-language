@@ -9,8 +9,7 @@ import sm from "../slicemachine.config.json";
 /**
  * The project's Prismic repository name.
  */
-export const repositoryName =
-  process.env.NEXT_PUBLIC_PRISMIC_ENVIRONMENT || sm.repositoryName;
+export const repositoryName =  sm.repositoryName;
 
 /**
  * The project's Prismic route resolvers. This list determines a Prismic document's URL.
@@ -31,7 +30,7 @@ export function createClient(config: ClientConfig = {}) {
     routes,
     fetchOptions:
       process.env.NODE_ENV === "production"
-        ? { next: { tags: ["prismic"] }, cache: "force-cache" }
+        ? { next: { tags: ["prismic"], revalidate: 60 } }
         : { next: { revalidate: 5 } },
     ...config,
   });
