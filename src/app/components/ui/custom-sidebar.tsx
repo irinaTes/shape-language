@@ -8,11 +8,9 @@ interface CustomSidebarProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
-  logo?: React.ReactNode;
-  headerContent?: React.ReactNode;
 }
 
-export function CustomSidebar({ isOpen, onOpenChange, children, logo, headerContent }: CustomSidebarProps) {
+export function CustomSidebar({ isOpen, onOpenChange, children }: CustomSidebarProps) {
   // Close on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

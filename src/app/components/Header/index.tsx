@@ -19,12 +19,12 @@ export default function Header({ data }: { data: HeaderDocument }) {
         }
     };
 
-    const handleVideoLeave = () => {
-        if (videoRef.current) {
-            videoRef.current.pause();
-            videoRef.current.currentTime = 0;
-        }
-    };
+    // const handleVideoLeave = () => {
+    //     if (videoRef.current) {
+    //         videoRef.current.pause();
+    //         videoRef.current.currentTime = 0;
+    //     }
+    // };
 
     const logoElement = isFilled.linkToMedia(logo_animation) ? (
         <video
@@ -122,7 +122,6 @@ export default function Header({ data }: { data: HeaderDocument }) {
                         <CustomSidebar
                             isOpen={mobileMenuOpen}
                             onOpenChange={setMobileMenuOpen}
-                            logo={mobileLogo}
                         >
                             {navigation_items.map((item, index) => (
                                 <PrismicLink

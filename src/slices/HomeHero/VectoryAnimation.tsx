@@ -169,7 +169,6 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
     hueRef.current = colorConfig.baseHue;
 
     // Get the actual container size instead of window size
-    const rect = canvas.getBoundingClientRect();
     const containerWidth = canvas.offsetWidth || window.innerWidth;
     const containerHeight = Math.min(window.innerHeight * 0.6, 600); // Max height of 600px
 
