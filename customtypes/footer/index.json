@@ -1,10 +1,82 @@
 {
   "format": "custom",
   "id": "footer",
-  "json": {
-    "Main": {}
-  },
   "label": "Footer",
   "repeatable": false,
-  "status": true
+  "status": true,
+  "json": {
+    "Main": {
+      "header_link": {
+        "type": "Link",
+        "config": {
+          "label": "header link",
+          "placeholder": "",
+          "select": null,
+          "allowTargetBlank": true,
+          "allowText": true,
+          "repeat": false
+        }
+      },
+      "social_links": {
+        "type": "Group",
+        "config": {
+          "label": "social links",
+          "repeat": true,
+          "fields": {
+            "social_image": {
+              "type": "Image",
+              "config": {
+                "label": "social image",
+                "constraint": {},
+                "thumbnails": []
+              }
+            },
+            "social_link": {
+              "type": "Link",
+              "config": {
+                "label": "social link",
+                "placeholder": "",
+                "select": null,
+                "allowTargetBlank": true,
+                "allowText": true,
+                "repeat": false
+              }
+            }
+          }
+        }
+      },
+      "phone_number": {
+        "type": "Text",
+        "config": {
+          "label": "phone number",
+          "placeholder": ""
+        }
+      },
+      "email": {
+        "type": "Link",
+        "config": {
+          "label": "email",
+          "placeholder": "",
+          "select": null,
+          "allowTargetBlank": true,
+          "allowText": true,
+          "repeat": false
+        }
+      },
+      "address": {
+        "type": "Text",
+        "config": {
+          "label": "address",
+          "placeholder": ""
+        }
+      },
+      "copyright_text": {
+        "type": "Text",
+        "config": {
+          "label": "copyright text",
+          "placeholder": ""
+        }
+      }
+    }
+  }
 }
