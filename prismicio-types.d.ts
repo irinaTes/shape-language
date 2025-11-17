@@ -426,7 +426,15 @@ export type HeaderDocument<Lang extends string = string> =
     Lang
   >;
 
-type PageDocumentDataSlicesSlice = HomeHeroSlice | RichTextSlice;
+type PageDocumentDataSlicesSlice =
+  | ZigZagContentSlice
+  | LayoutImageWithTextSlice
+  | GalerySlice
+  | VideoSlice
+  | WorkListingSlice
+  | WorkHeroSlice
+  | HomeHeroSlice
+  | RichTextSlice;
 
 /**
  * Content for Page documents
@@ -498,7 +506,12 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-type WorkContentDocumentDataSlicesSlice = never;
+type WorkContentDocumentDataSlicesSlice =
+  | GalerySlice
+  | VideoSlice
+  | ZigZagContentSlice
+  | LayoutImageWithTextSlice
+  | WorkHeroSlice;
 
 /**
  * Content for work content documents
@@ -638,6 +651,128 @@ export type AllDocumentTypes =
   | WorkListingDocument;
 
 /**
+ * Primary content in *Galery → Default → Primary*
+ */
+export interface GalerySliceDefaultPrimary {
+  /**
+   * Image1 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image1
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image1: prismic.ImageField<never>;
+
+  /**
+   * Image2 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image2
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image2: prismic.ImageField<never>;
+
+  /**
+   * Image3 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image3
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image3: prismic.ImageField<never>;
+
+  /**
+   * Image4 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image4
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image4: prismic.ImageField<never>;
+
+  /**
+   * Image5 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image5
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image5: prismic.ImageField<never>;
+
+  /**
+   * Image6 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image6
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image6: prismic.ImageField<never>;
+
+  /**
+   * Image7 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image7
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image7: prismic.ImageField<never>;
+
+  /**
+   * Image8 field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.image8
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image8: prismic.ImageField<never>;
+
+  /**
+   * background color field in *Galery → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: galery.default.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  background_color: prismic.ColorField;
+}
+
+/**
+ * Default variation for Galery Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type GalerySliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<GalerySliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Galery*
+ */
+type GalerySliceVariation = GalerySliceDefault;
+
+/**
+ * Galery Shared Slice
+ *
+ * - **API ID**: `galery`
+ * - **Description**: Galery
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type GalerySlice = prismic.SharedSlice<"galery", GalerySliceVariation>;
+
+/**
  * Primary content in *HomeHero → Default → Primary*
  */
 export interface HomeHeroSliceDefaultPrimary {
@@ -680,6 +815,112 @@ type HomeHeroSliceVariation = HomeHeroSliceDefault;
 export type HomeHeroSlice = prismic.SharedSlice<
   "home_hero",
   HomeHeroSliceVariation
+>;
+
+/**
+ * Primary content in *LayoutImageWithText → Default → Primary*
+ */
+export interface LayoutImageWithTextSliceDefaultPrimary {
+  /**
+   * Background color field in *LayoutImageWithText → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: layout_image_with_text.default.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  background_color: prismic.ColorField;
+
+  /**
+   * Text color field in *LayoutImageWithText → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: layout_image_with_text.default.primary.text_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  text_color: prismic.ColorField;
+
+  /**
+   * Big image field in *LayoutImageWithText → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: layout_image_with_text.default.primary.big_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  big_image: prismic.ImageField<never>;
+
+  /**
+   * Small image field in *LayoutImageWithText → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: layout_image_with_text.default.primary.small_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  small_image: prismic.ImageField<never>;
+
+  /**
+   * Image text field in *LayoutImageWithText → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: layout_image_with_text.default.primary.image_text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  image_text: prismic.KeyTextField;
+
+  /**
+   * Description field in *LayoutImageWithText → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: layout_image_with_text.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Reverse layout field in *LayoutImageWithText → Default → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: layout_image_with_text.default.primary.reverse_layout
+   * - **Documentation**: https://prismic.io/docs/fields/boolean
+   */
+  reverse_layout: prismic.BooleanField;
+}
+
+/**
+ * Default variation for LayoutImageWithText Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type LayoutImageWithTextSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<LayoutImageWithTextSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *LayoutImageWithText*
+ */
+type LayoutImageWithTextSliceVariation = LayoutImageWithTextSliceDefault;
+
+/**
+ * LayoutImageWithText Shared Slice
+ *
+ * - **API ID**: `layout_image_with_text`
+ * - **Description**: LayoutImageWithText
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type LayoutImageWithTextSlice = prismic.SharedSlice<
+  "layout_image_with_text",
+  LayoutImageWithTextSliceVariation
 >;
 
 /**
@@ -732,14 +973,24 @@ export type RichTextSlice = prismic.SharedSlice<
  */
 export interface VideoSliceDefaultPrimary {
   /**
-   * video src field in *Video → Default → Primary*
+   * Background color field in *Video → Default → Primary*
    *
-   * - **Field Type**: Embed
-   * - **Placeholder**: video source from vimeo
-   * - **API ID Path**: video.default.primary.video_src
-   * - **Documentation**: https://prismic.io/docs/fields/embed
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: video.default.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
    */
-  video_src: prismic.EmbedField;
+  background_color: prismic.ColorField;
+
+  /**
+   * Video url field in *Video → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: video.default.primary.video_url
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  video_url: prismic.KeyTextField;
 }
 
 /**
@@ -768,6 +1019,375 @@ type VideoSliceVariation = VideoSliceDefault;
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type VideoSlice = prismic.SharedSlice<"video", VideoSliceVariation>;
+
+/**
+ * Primary content in *WorkHero → Default → Primary*
+ */
+export interface WorkHeroSliceDefaultPrimary {
+  /**
+   * Title field in *WorkHero → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_hero.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Description field in *WorkHero → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_hero.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Background image field in *WorkHero → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_hero.default.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  background_image: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for WorkHero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type WorkHeroSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<WorkHeroSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *WorkHero*
+ */
+type WorkHeroSliceVariation = WorkHeroSliceDefault;
+
+/**
+ * WorkHero Shared Slice
+ *
+ * - **API ID**: `work_hero`
+ * - **Description**: WorkHero
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type WorkHeroSlice = prismic.SharedSlice<
+  "work_hero",
+  WorkHeroSliceVariation
+>;
+
+/**
+ * Primary content in *WorkListing → Default → Primary*
+ */
+export interface WorkListingSliceDefaultPrimary {
+  /**
+   * Focus image field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.focus_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  focus_image: prismic.ImageField<never>;
+
+  /**
+   * Second focus image field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.second_focus_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  second_focus_image: prismic.ImageField<never>;
+
+  /**
+   * Title field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * color 1 field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.color_1
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_1: prismic.ColorField;
+
+  /**
+   * color 2 field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.color_2
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_2: prismic.ColorField;
+
+  /**
+   * color 3 field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.color_3
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_3: prismic.ColorField;
+
+  /**
+   * color 4 field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.color_4
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  color_4: prismic.ColorField;
+
+  /**
+   * year label field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.year_label
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  year_label: prismic.KeyTextField;
+
+  /**
+   * description field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * isLeft field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: work_listing.default.primary.isleft
+   * - **Documentation**: https://prismic.io/docs/fields/boolean
+   */
+  isleft: prismic.BooleanField;
+
+  /**
+   * video url field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.video_url
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  video_url: prismic.KeyTextField;
+
+  /**
+   * Link to project page field in *WorkListing → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_listing.default.primary.link_to_project_page
+   * - **Documentation**: https://prismic.io/docs/fields/link
+   */
+  link_to_project_page: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+}
+
+/**
+ * Default variation for WorkListing Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type WorkListingSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<WorkListingSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *WorkListing*
+ */
+type WorkListingSliceVariation = WorkListingSliceDefault;
+
+/**
+ * WorkListing Shared Slice
+ *
+ * - **API ID**: `work_listing`
+ * - **Description**: WorkListing
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type WorkListingSlice = prismic.SharedSlice<
+  "work_listing",
+  WorkListingSliceVariation
+>;
+
+/**
+ * Item in *ZigZagContent → Default → Primary → Content*
+ */
+export interface ZigZagContentSliceDefaultPrimaryContentItem {
+  /**
+   * Big image field in *ZigZagContent → Default → Primary → Content*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.content[].big_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  big_image: prismic.ImageField<never>;
+
+  /**
+   * Small image field in *ZigZagContent → Default → Primary → Content*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.content[].small_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  small_image: prismic.ImageField<never>;
+
+  /**
+   * Text field in *ZigZagContent → Default → Primary → Content*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.content[].text
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  text: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *ZigZagContent → Default → Primary*
+ */
+export interface ZigZagContentSliceDefaultPrimary {
+  /**
+   * Background color primary field in *ZigZagContent → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.background_color_primary
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  background_color_primary: prismic.ColorField;
+
+  /**
+   * Text color primary field in *ZigZagContent → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.text_color_primary
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  text_color_primary: prismic.ColorField;
+
+  /**
+   * Background color secondary field in *ZigZagContent → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.background_color_secondary
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  background_color_secondary: prismic.ColorField;
+
+  /**
+   * Text color secondary field in *ZigZagContent → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.text_color_secondary
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  text_color_secondary: prismic.ColorField;
+
+  /**
+   * Section title field in *ZigZagContent → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.section_title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  section_title: prismic.KeyTextField;
+
+  /**
+   * Section description field in *ZigZagContent → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.section_description
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  section_description: prismic.RichTextField;
+
+  /**
+   * Content field in *ZigZagContent → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: zig_zag_content.default.primary.content[]
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  content: prismic.GroupField<
+    Simplify<ZigZagContentSliceDefaultPrimaryContentItem>
+  >;
+}
+
+/**
+ * Default variation for ZigZagContent Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ZigZagContentSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ZigZagContentSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ZigZagContent*
+ */
+type ZigZagContentSliceVariation = ZigZagContentSliceDefault;
+
+/**
+ * ZigZagContent Shared Slice
+ *
+ * - **API ID**: `zig_zag_content`
+ * - **Description**: ZigZagContent
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ZigZagContentSlice = prismic.SharedSlice<
+  "zig_zag_content",
+  ZigZagContentSliceVariation
+>;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -812,10 +1432,18 @@ declare module "@prismicio/client" {
       WorkListingDocumentData,
       WorkListingDocumentDataSlicesSlice,
       AllDocumentTypes,
+      GalerySlice,
+      GalerySliceDefaultPrimary,
+      GalerySliceVariation,
+      GalerySliceDefault,
       HomeHeroSlice,
       HomeHeroSliceDefaultPrimary,
       HomeHeroSliceVariation,
       HomeHeroSliceDefault,
+      LayoutImageWithTextSlice,
+      LayoutImageWithTextSliceDefaultPrimary,
+      LayoutImageWithTextSliceVariation,
+      LayoutImageWithTextSliceDefault,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,
@@ -824,6 +1452,19 @@ declare module "@prismicio/client" {
       VideoSliceDefaultPrimary,
       VideoSliceVariation,
       VideoSliceDefault,
+      WorkHeroSlice,
+      WorkHeroSliceDefaultPrimary,
+      WorkHeroSliceVariation,
+      WorkHeroSliceDefault,
+      WorkListingSlice,
+      WorkListingSliceDefaultPrimary,
+      WorkListingSliceVariation,
+      WorkListingSliceDefault,
+      ZigZagContentSlice,
+      ZigZagContentSliceDefaultPrimaryContentItem,
+      ZigZagContentSliceDefaultPrimary,
+      ZigZagContentSliceVariation,
+      ZigZagContentSliceDefault,
     };
   }
 }

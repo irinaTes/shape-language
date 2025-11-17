@@ -3,7 +3,12 @@
 import dynamic from "next/dynamic";
 
 export const components = {
+  galery: dynamic(() => import("./Galery")),
   home_hero: dynamic(() => import("./HomeHero")),
+  layout_image_with_text: dynamic(() => import("./LayoutImageWithText")),
   rich_text: dynamic(() => import("./RichText")),
   video: dynamic(() => import("./Video")),
+  work_hero: dynamic(() => import("./WorkHero")),
+  work_listing: dynamic(() => import("./WorkListing")),
+  zig_zag_content: dynamic(() => import("./ZigZagContent")),
 };

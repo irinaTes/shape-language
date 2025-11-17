@@ -1,0 +1,111 @@
+{
+  "id": "work_listing",
+  "type": "SharedSlice",
+  "name": "WorkListing",
+  "description": "WorkListing",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "focus_image": {
+          "type": "Image",
+          "config": {
+            "label": "Focus image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "second_focus_image": {
+          "type": "Image",
+          "config": {
+            "label": "Second focus image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          }
+        },
+        "color_1": {
+          "type": "Color",
+          "config": {
+            "label": "color 1",
+            "placeholder": ""
+          }
+        },
+        "color_2": {
+          "type": "Color",
+          "config": {
+            "label": "color 2",
+            "placeholder": ""
+          }
+        },
+        "color_3": {
+          "type": "Color",
+          "config": {
+            "label": "color 3",
+            "placeholder": ""
+          }
+        },
+        "color_4": {
+          "type": "Color",
+          "config": {
+            "label": "color 4",
+            "placeholder": ""
+          }
+        },
+        "year_label": {
+          "type": "Text",
+          "config": {
+            "label": "year label",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "description",
+            "placeholder": ""
+          }
+        },
+        "isleft": {
+          "type": "Boolean",
+          "config": {
+            "label": "isLeft",
+            "placeholder_false": "Contentul este aliniat la dreapta",
+            "placeholder_true": "Contentul este aliniat la stanga",
+            "default_value": false
+          }
+        },
+        "video_url": {
+          "type": "Text",
+          "config": {
+            "label": "video url",
+            "placeholder": ""
+          }
+        },
+        "link_to_project_page": {
+          "type": "Link",
+          "config": {
+            "label": "Link to project page",
+            "placeholder": "",
+            "select": null,
+            "allowTargetBlank": false,
+            "allowText": true,
+            "repeat": false
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

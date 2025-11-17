@@ -5,6 +5,7 @@ import { HeaderDocument } from "../../prismicio-types";
 import Header from "./components/Header";
 import localFont from "next/font/local";
 import { cn } from "./utils/utils";
+import PageWithLoading from "@/components/PageWithLoading";
 
 const AROneSans = localFont({
   src: './assets/font/AROneSans.ttf',
@@ -43,13 +44,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cn(AROneSans.className, Sardin.variable, TuskerGrotesk.variable, "bg-primary text-white text-2xl tracking-wide")}>
-        {/* <Header data={header as HeaderDocument} /> */}
+        {/* <PageWithLoading> */}
+          <Header data={header as HeaderDocument} />
 
-        <div className="flex flex-1 flex-col pt-20">
-          {/* <h1 className="font-extralight ml-10 mt-20 ">Ia sa vedem ce zice</h1> */}
-          {children}
-          <PrismicPreview repositoryName={repositoryName} />
-        </div>
+          <div className="flex flex-1 flex-col">
+            {children}
+            <PrismicPreview repositoryName={repositoryName} />
+          </div>
+        {/* </PageWithLoading> */}
       </body>
     </html>
   );

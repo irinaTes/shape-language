@@ -27,6 +27,24 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "zig_zag_content": {
+              "type": "SharedSlice"
+            },
+            "layout_image_with_text": {
+              "type": "SharedSlice"
+            },
+            "galery": {
+              "type": "SharedSlice"
+            },
+            "video": {
+              "type": "SharedSlice"
+            },
+            "work_listing": {
+              "type": "SharedSlice"
+            },
+            "work_hero": {
+              "type": "SharedSlice"
+            },
             "home_hero": {
               "type": "SharedSlice"
             },

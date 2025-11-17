@@ -1,6 +1,9 @@
 {
   "format": "page",
   "id": "work_content",
+  "label": "work content",
+  "repeatable": true,
+  "status": true,
   "json": {
     "Main": {
       "uid": {
@@ -10,11 +13,27 @@
         }
       },
       "slices": {
-        "config": {
-          "choices": {}
-        },
+        "type": "Slices",
         "fieldset": "Slice Zone",
-        "type": "Slices"
+        "config": {
+          "choices": {
+            "galery": {
+              "type": "SharedSlice"
+            },
+            "video": {
+              "type": "SharedSlice"
+            },
+            "zig_zag_content": {
+              "type": "SharedSlice"
+            },
+            "layout_image_with_text": {
+              "type": "SharedSlice"
+            },
+            "work_hero": {
+              "type": "SharedSlice"
+            }
+          }
+        }
       }
     },
     "SEO & Metadata": {
@@ -44,8 +63,5 @@
         "type": "Image"
       }
     }
-  },
-  "label": "work content",
-  "repeatable": true,
-  "status": true
+  }
 }

@@ -12,11 +12,18 @@
       "description": "Default",
       "imageUrl": "",
       "primary": {
-        "video_src": {
-          "type": "Embed",
+        "background_color": {
+          "type": "Color",
           "config": {
-            "label": "video src",
-            "placeholder": "video source from vimeo"
+            "label": "Background color",
+            "placeholder": ""
+          }
+        },
+        "video_url": {
+          "type": "Text",
+          "config": {
+            "label": "Video url",
+            "placeholder": ""
           }
         }
       },
