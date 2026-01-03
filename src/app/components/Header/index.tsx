@@ -31,8 +31,20 @@ const getContrastColor = (bgColor: string): 'light' | 'dark' => {
 export default function Header({ data }: { data: HeaderDocument }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [textColor, setTextColor] = useState<'light' | 'dark'>('light');
+    const [isScrolled, setIsScrolled] = useState(false);
     const { navigation_items, logo_animation, logo_white, logo_filled } = data.data;
     const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         const detectBackgroundColor = () => {
@@ -119,35 +131,40 @@ export default function Header({ data }: { data: HeaderDocument }) {
     )
 
     return (
-        <header className="sticky inset-x-0 top-0 z-50 shadow-sm slide-in-top ">
+        <header className={cn(
+            "sticky inset-x-0 top-0 z-50 slide-in-top transition-all duration-300",
+            isScrolled
+                ? "bg-white/.5 dark:bg-black/.5 backdrop-blur-md shadow-lg"
+                : "bg-transparent"
+        )}>
             <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex items-center justify-between ">
                     {/* Logo */}
 
                     <Link href="/" className="relative inline-block z-[60]">
                         {/* match the logo height (was h-8) */}
-                        <span className="relative block h-20 w-36">
+                        <div className="relative block h-20 w-36">
                             {/* Mobile logo */}
-                            <span
+                            <div
                                 className={cn(
                                     "absolute inset-0 grid place-items-center transition-opacity duration-300 ease-in-out [will-change:opacity]",
                                     mobileMenuOpen ? "opacity-100" : " delay-300 opacity-0 pointer-events-none"
                                 )}
                             >
                                 {/* keep inner content within the box */}
-                                <span className="flex items-center justify-center h-full w-auto ">{mobileLogo}</span>
-                            </span>
+                                <div className="flex items-center justify-center h-full w-auto ">{mobileLogo}</div>
+                            </div>
 
                             {/* Default logo */}
-                            <span
+                            <div
                                 className={cn(
                                     "absolute inset-0 grid place-items-center transition-opacity duration-300 ease-in-out [will-change:opacity]",
                                     mobileMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100 delay-300"
                                 )}
                             >
-                                <span className="block h-full w-auto">{logoElement}</span>
-                            </span>
-                        </span>
+                                <div className="flex justify-center items-center h-full w-auto ">{logoElement}</div>
+                            </div>
+                        </div>
                     </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex space-x-8">
@@ -166,7 +183,7 @@ export default function Header({ data }: { data: HeaderDocument }) {
                     </nav>
 
                     {/* Mobile menu */}
-                    <div className="md:hidden">
+                    <div className="md:hidden flex justify-center items-center">
                         <button
                             type="button"
                             className="inline-flex border-0 items-center justify-center p-2 rounded-md focus:outline-none cursor-pointer active:border-0 relative z-100"

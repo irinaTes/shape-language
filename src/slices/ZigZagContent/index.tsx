@@ -2,8 +2,8 @@
 import { FC } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps, PrismicRichText } from "@prismicio/react";
-import { PrismicNextImage } from "@prismicio/next";
 import { motion } from "framer-motion";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 
 /**
  * Props for `ZigZagContent`.
@@ -108,8 +108,8 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
             }}
           >
             <div
-              className={`py-12 md:py-20 lg:py-28 px-8 md:px-16 lg:px-24 ${
-                isEven ? "rounded-l-full" : "rounded-r-full"
+              className={`py-20 lg:py-28 px-8 md:px-16 lg:px-24 ${
+                isEven ? "rounded-none lg:rounded-l-full" : "rounded-r-full"
               }`}
               style={{
                 backgroundColor: backgroundColor || "#000",
@@ -117,63 +117,33 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
               }}
             >
               <div className="w-full">
-                <div className={`flex flex-col w-full items-center gap-16 md:gap-24 lg:gap-40 ${
+                <div className={`flex flex-col w-full items-center gap-16 md:gap-10 lg:gap-20 xl:gap-40 ${
                   isEven ? "lg:flex-row-reverse  justify-between" : "lg:flex-row  justify-between"
                 }`}>
-                  {/* Images with creative overlap */}
-                  <motion.div
-                    className="relative flex-shrink-0 w-full lg:w-auto"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{
-                      duration: 0.8,
-                      delay: 0.3,
-                      ease: [0.6, 0.05, 0.01, 0.9],
-                    }}
-                  >
-                    {item.big_image?.url && item.small_image?.url ? (
-                      <div className="relative">
-                        {/* Big image */}
-                        <div className="relative w-full h-80 md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
-                          <PrismicNextImage
-                            field={item.big_image}
-                            className="object-cover"
-                            fill
-                          />
-                        </div>
-                        {/* Small image - overlapping bottom right */}
-                        <div className="absolute -bottom-8 -right-8 md:-bottom-12 md:-right-12 lg:-bottom-16 lg:-right-16 w-48 h-48 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-2xl overflow-hidden shadow-2xl border-4 md:border-8 border-white">
-                          <PrismicNextImage
-                            field={item.small_image}
-                            className="object-cover"
-                            fill
-                          />
-                        </div>
-                      </div>
-                    ) : item.big_image?.url ? (
-                      <div className="relative w-full h-80 md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
-                        <PrismicNextImage
-                          field={item.big_image}
-                          className="object-cover"
-                          fill
-                        />
-                      </div>
-                    ) : item.small_image?.url ? (
-                      <div className="relative w-full h-64 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-2xl overflow-hidden shadow-2xl">
-                        <PrismicNextImage
-                          field={item.small_image}
-                          className="object-cover"
-                          fill
-                        />
-                      </div>
-                    ) : null}
-                  </motion.div>
+                  {/* Before/After Image Slider */}
+                  {item.before_image?.url && item.after_image?.url && (
+                    <motion.div
+                      className="relative flex-shrink-0 w-full lg:w-[55%]"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 0.3,
+                        ease: [0.6, 0.05, 0.01, 0.9],
+                      }}
+                    >
+                      <BeforeAfterSlider
+                        beforeImage={item.before_image}
+                        afterImage={item.after_image}
+                      />
+                    </motion.div>
+                  )}
 
                   {/* Text content */}
                   {item.text && (
                     <motion.div
-                      className="flex-1 max-w-4xl text-xl md:text-2xl lg:text-3xl leading-relaxed"
+                      className="flex-1 max-w-4xl text-2xl  lg:text-2xl xl:text-3xl leading-relaxed"
                       initial={{ opacity: 0, y: 30 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-100px" }}

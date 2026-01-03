@@ -1235,24 +1235,24 @@ export type WorkListingSlice = prismic.SharedSlice<
  */
 export interface ZigZagContentSliceDefaultPrimaryContentItem {
   /**
-   * Big image field in *ZigZagContent → Default → Primary → Content*
+   * before image field in *ZigZagContent → Default → Primary → Content*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
-   * - **API ID Path**: zig_zag_content.default.primary.content[].big_image
+   * - **API ID Path**: zig_zag_content.default.primary.content[].before_image
    * - **Documentation**: https://prismic.io/docs/fields/image
    */
-  big_image: prismic.ImageField<never>;
+  before_image: prismic.ImageField<never>;
 
   /**
-   * Small image field in *ZigZagContent → Default → Primary → Content*
+   * after image field in *ZigZagContent → Default → Primary → Content*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
-   * - **API ID Path**: zig_zag_content.default.primary.content[].small_image
+   * - **API ID Path**: zig_zag_content.default.primary.content[].after_image
    * - **Documentation**: https://prismic.io/docs/fields/image
    */
-  small_image: prismic.ImageField<never>;
+  after_image: prismic.ImageField<never>;
 
   /**
    * Text field in *ZigZagContent → Default → Primary → Content*

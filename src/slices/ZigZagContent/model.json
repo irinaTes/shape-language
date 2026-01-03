@@ -62,18 +62,18 @@
             "label": "Content",
             "repeat": true,
             "fields": {
-              "big_image": {
+              "before_image": {
                 "type": "Image",
                 "config": {
-                  "label": "Big image",
+                  "label": "before image",
                   "constraint": {},
                   "thumbnails": []
                 }
               },
-              "small_image": {
+              "after_image": {
                 "type": "Image",
                 "config": {
-                  "label": "Small image",
+                  "label": "after image",
                   "constraint": {},
                   "thumbnails": []
                 }
