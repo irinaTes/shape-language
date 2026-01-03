@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import localFont from "next/font/local";
 import { cn } from "./utils/utils";
 import Footer from "./components/Footer";
+import GenerativeTypographyBackground from "@/components/GenerativeTypographyBackground";
 
 const AROneSans = localFont({
   src: './assets/font/AROneSans.ttf',
@@ -51,11 +52,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cn(DarkerGrotesque.className, "bg-primary text-white text-2xl tracking-wide")}>
+        <GenerativeTypographyBackground wordCount={65} />
 
         {/* <PageWithLoading> */}
         <Header data={header as HeaderDocument} />
 
-        <div className="flex flex-1 flex-col relative z-20 bg-primary ">
+        <div className="flex flex-1 flex-col relative z-10">
           {children}
           <PrismicPreview repositoryName={repositoryName} />
         </div>

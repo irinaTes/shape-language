@@ -168,9 +168,10 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
 
     hueRef.current = colorConfig.baseHue;
 
-    // Get the actual container size instead of window size
-    const containerWidth = canvas.offsetWidth || window.innerWidth;
-    const containerHeight = Math.min(window.innerHeight * 0.6, 600); // Max height of 600px
+    // Get the actual container size from parent element
+    const parent = canvas.parentElement;
+    const containerWidth = parent?.clientWidth || canvas.offsetWidth || window.innerWidth;
+    const containerHeight = parent?.clientHeight || canvas.offsetHeight || window.innerHeight * 0.6;
 
     const w = canvas.width = containerWidth;
     const h = canvas.height = containerHeight;
@@ -202,9 +203,22 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
     const isSmallScreen = w < 640; // Mobile breakpoint (more specifically mobile)
     const textsToUse = isSmallScreen ? config.smallScreenTexts : config.texts;
 
-    // Responsive font size calculation
-    const baseFontSize = Math.min(w * (isSmallScreen ? 0.7 : 0.135), w / 3);
-    let defaultFontSize = Math.max(baseFontSize, isSmallScreen ? 128 : 24);
+    // Responsive font size calculation based on BOTH width and height
+    const linesCount = textsToUse.length;
+    const lineHeightMultiplier = isSmallScreen ? 1.1 : 1.15;
+
+    // Calculate max font size that fits height (leave 15% padding)
+    const availableHeight = h * 0.85;
+    const maxFontSizeByHeight = availableHeight / (linesCount * lineHeightMultiplier);
+
+    // Calculate font size by width
+    const fontSizeByWidth = w * (isSmallScreen ? 0.18 : 0.135);
+
+    // Use the smaller of the two to ensure text fits both dimensions
+    let defaultFontSize = Math.min(fontSizeByWidth, maxFontSizeByHeight);
+    // Set reasonable min/max bounds
+    defaultFontSize = Math.max(defaultFontSize, 16);
+    defaultFontSize = Math.min(defaultFontSize, isSmallScreen ? 120 : 200);
 
     ctx.textAlign = "left";
     ctx.textBaseline = "middle"
@@ -212,10 +226,10 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
     ctx.strokeStyle = "white";
 
     // Calculate layout with default font size
-    const lineHeight = defaultFontSize * (isSmallScreen ? 0.8 : 1.1);
-    const totalHeight = lineHeight * (textsToUse.length - 1);
-    const topPadding = h * 0.02; // Add 10% of height as top padding
-    const startY = (h/2 - totalHeight/2) + topPadding;
+    const lineHeight = defaultFontSize * lineHeightMultiplier;
+    const totalHeight = lineHeight * (linesCount - 1);
+    // Center vertically with slight upward offset for visual balance
+    const startY = (h - totalHeight) / 2;
     const leftMargin = Math.max(20, w * 0.05);
 
     textsToUse.forEach((text, index) => {
@@ -229,7 +243,7 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
       if (isSmallScreen) {
         // On mobile: center text with letter spacing
         const letters = text.split('');
-        const letterSpacing = fontSize * (isShapeWord ? 0.15 : 0.1); // Increased letter spacing only for SHAPE
+        const letterSpacing = fontSize * (isShapeWord ? 0.35 : 0.25); // Generous letter spacing on mobile
         const totalTextWidth = letters.reduce((width, letter) => width + ctx.measureText(letter).width, 0) + (letterSpacing * (letters.length - 1));
 
         let currentX = (w - totalTextWidth) / 2;
@@ -333,10 +347,15 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
   };
 
   const handleMouseMove = (event: MouseEvent) => {
+    const canvas = canvasRef.current;
     const planets = planetsRef.current;
-    if (planets.length > 0) {
-      planets[0].pos.x = event.clientX;
-      planets[0].pos.y = event.clientY;
+    if (planets.length > 0 && canvas) {
+      const rect = canvas.getBoundingClientRect();
+      // Convert viewport coordinates to canvas coordinates
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      planets[0].pos.x = (event.clientX - rect.left) * scaleX;
+      planets[0].pos.y = (event.clientY - rect.top) * scaleY;
     }
   };
 
@@ -371,7 +390,8 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
       style={{
         display: 'block',
         cursor: 'crosshair',
-        width: '100%'
+        width: '100%',
+        height: '100%'
       }}
     />
   );

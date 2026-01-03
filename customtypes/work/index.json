@@ -1,6 +1,6 @@
 {
   "format": "page",
-  "id": "work_listing",
+  "id": "work",
   "json": {
     "Main": {
       "slices": {
@@ -39,7 +39,7 @@
       }
     }
   },
-  "label": "work listing",
+  "label": "work",
   "repeatable": false,
   "status": true
 }

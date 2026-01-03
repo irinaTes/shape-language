@@ -489,6 +489,67 @@ interface PageDocumentData {
 export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
+type WorkDocumentDataSlicesSlice = never;
+
+/**
+ * Content for work documents
+ */
+interface WorkDocumentData {
+  /**
+   * Slice Zone field in *work*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/slices
+   */
+  slices: prismic.SliceZone<WorkDocumentDataSlicesSlice> /**
+   * Meta Title field in *work*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: work.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *work*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: work.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *work*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * work document from Prismic
+ *
+ * - **API ID**: `work`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type WorkDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<Simplify<WorkDocumentData>, "work", Lang>;
+
 type WorkContentDocumentDataSlicesSlice =
   | GalerySlice
   | VideoSlice
@@ -559,79 +620,14 @@ export type WorkContentDocument<Lang extends string = string> =
     Lang
   >;
 
-type WorkListingDocumentDataSlicesSlice = never;
-
-/**
- * Content for work listing documents
- */
-interface WorkListingDocumentData {
-  /**
-   * Slice Zone field in *work listing*
-   *
-   * - **Field Type**: Slice Zone
-   * - **Placeholder**: *None*
-   * - **API ID Path**: work_listing.slices[]
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/slices
-   */
-  slices: prismic.SliceZone<WorkListingDocumentDataSlicesSlice> /**
-   * Meta Title field in *work listing*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A title of the page used for social media and search engines
-   * - **API ID Path**: work_listing.meta_title
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/fields/text
-   */;
-  meta_title: prismic.KeyTextField;
-
-  /**
-   * Meta Description field in *work listing*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A brief summary of the page
-   * - **API ID Path**: work_listing.meta_description
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/fields/text
-   */
-  meta_description: prismic.KeyTextField;
-
-  /**
-   * Meta Image field in *work listing*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: work_listing.meta_image
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/fields/image
-   */
-  meta_image: prismic.ImageField<never>;
-}
-
-/**
- * work listing document from Prismic
- *
- * - **API ID**: `work_listing`
- * - **Repeatable**: `false`
- * - **Documentation**: https://prismic.io/docs/content-modeling
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type WorkListingDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithoutUID<
-    Simplify<WorkListingDocumentData>,
-    "work_listing",
-    Lang
-  >;
-
 export type AllDocumentTypes =
   | BlogDocument
   | BlogContentDocument
   | FooterDocument
   | HeaderDocument
   | PageDocument
-  | WorkContentDocument
-  | WorkListingDocument;
+  | WorkDocument
+  | WorkContentDocument;
 
 /**
  * Primary content in *Galery → Default → Primary*
@@ -1408,12 +1404,12 @@ declare module "@prismicio/client" {
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
+      WorkDocument,
+      WorkDocumentData,
+      WorkDocumentDataSlicesSlice,
       WorkContentDocument,
       WorkContentDocumentData,
       WorkContentDocumentDataSlicesSlice,
-      WorkListingDocument,
-      WorkListingDocumentData,
-      WorkListingDocumentDataSlicesSlice,
       AllDocumentTypes,
       GalerySlice,
       GalerySliceDefaultPrimary,
