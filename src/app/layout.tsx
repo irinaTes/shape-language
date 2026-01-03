@@ -1,15 +1,22 @@
 import { PrismicPreview } from "@prismicio/next";
 import { createClient, repositoryName } from "@/prismicio";
 import "./globals.css";
-import { HeaderDocument } from "../../prismicio-types";
+import { FooterDocument, HeaderDocument } from "../../prismicio-types";
 import Header from "./components/Header";
 import localFont from "next/font/local";
 import { cn } from "./utils/utils";
-import PageWithLoading from "@/components/PageWithLoading";
+import Footer from "./components/Footer";
 
 const AROneSans = localFont({
   src: './assets/font/AROneSans.ttf',
   variable: '--font-ar-one-sans',
+  display: "swap",
+  fallback: ["system-ui", "-apple-system", "sans-serif"],
+});
+
+const DarkerGrotesque = localFont({
+  src: './assets/font/DarkerGrotesque.ttf',
+  variable: '--font-grotesque',
   display: "swap",
   fallback: ["system-ui", "-apple-system", "sans-serif"],
 });
@@ -43,15 +50,18 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(AROneSans.className, Sardin.variable, TuskerGrotesk.variable, "bg-primary text-white text-2xl tracking-wide")}>
-        {/* <PageWithLoading> */}
-          <Header data={header as HeaderDocument} />
+      <body className={cn(DarkerGrotesque.className, "bg-primary text-white text-2xl tracking-wide")}>
 
-          <div className="flex flex-1 flex-col">
-            {children}
-            <PrismicPreview repositoryName={repositoryName} />
-          </div>
+        {/* <PageWithLoading> */}
+        <Header data={header as HeaderDocument} />
+
+        <div className="flex flex-1 flex-col relative z-20 bg-primary ">
+          {children}
+          <PrismicPreview repositoryName={repositoryName} />
+        </div>
         {/* </PageWithLoading> */}
+        <Footer data={footer as FooterDocument} headerData={header as HeaderDocument}/>
+
       </body>
     </html>
   );

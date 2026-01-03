@@ -231,23 +231,6 @@ export interface FooterDocumentDataSocialLinksItem {
  */
 interface FooterDocumentData {
   /**
-   * header link field in *Footer*
-   *
-   * - **Field Type**: Link
-   * - **Placeholder**: *None*
-   * - **API ID Path**: footer.header_link
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/fields/link
-   */
-  header_link: prismic.LinkField<
-    string,
-    string,
-    unknown,
-    prismic.FieldState,
-    never
-  >;
-
-  /**
    * social links field in *Footer*
    *
    * - **Field Type**: Group

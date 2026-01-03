@@ -6,17 +6,6 @@
   "status": true,
   "json": {
     "Main": {
-      "header_link": {
-        "type": "Link",
-        "config": {
-          "label": "header link",
-          "placeholder": "",
-          "select": null,
-          "allowTargetBlank": true,
-          "allowText": true,
-          "repeat": false
-        }
-      },
       "social_links": {
         "type": "Group",
         "config": {

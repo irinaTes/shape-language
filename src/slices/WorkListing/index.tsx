@@ -1,6 +1,6 @@
 'use client';
 import { FC } from "react";
-import { Content } from "@prismicio/client";
+import { Content, isFilled } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { cn } from "@/app/utils/utils";
@@ -19,35 +19,51 @@ export type WorkListingProps = SliceComponentProps<Content.WorkListingSlice>;
 const WorkListing: FC<WorkListingProps> = ({ slice }) => {
   const { color_1, color_2, color_3, color_4, focus_image, year_label, isleft, video_url, second_focus_image, title, description, link_to_project_page } = slice.primary
 
+  // Filter only filled colors
+  const filledColors = [color_1, color_2, color_3, color_4].filter(color => isFilled.keyText(color));
+
+  // Calculate width class based on number of filled colors
+  const getWidthClass = (count: number) => {
+    switch (count) {
+      case 1: return 'w-full';
+      case 2: return 'w-1/2';
+      case 3: return 'w-1/3';
+      case 4: return 'w-1/4';
+      default: return 'w-1/4';
+    }
+  };
+
   return (
     <>
       <section
         data-slice-type={slice.slice_type}
         data-slice-variation={slice.variation}
         className="w-full flex flex-col gap-10 md:gap-16 py-24 md:py-56"
-      // style={{ cursor: 'url(/assets/icons/redirect.svg) 128 128, pointer' }}
       >
-        <motion.div
-          className="relative cursor-pointer"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        // onClick={handleClick}
-        >
+        {isFilled.image(focus_image) &&
           <motion.div
-            className={cn("absolute text-4xl md:text-7xl -mt-6 md:-mt-10 left-4 md:left-10")}
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            className="relative cursor-pointer"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          // onClick={handleClick}
           >
-            {year_label} {title}
+
+            <motion.div
+              className={cn("absolute text-4xl md:text-7xl -mt-6 md:-mt-10 left-4 md:left-10")}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              {year_label} {title}
+            </motion.div>
+            <PrismicNextLink field={link_to_project_page} className="w-full h-full">
+              <PrismicNextImage field={focus_image} className="w-full h-[40rem] object-cover" />
+            </PrismicNextLink>
           </motion.div>
-          <PrismicNextLink field={link_to_project_page} className="w-full h-full">
-            <PrismicNextImage field={focus_image} className="w-full h-96 object-cover" />
-          </PrismicNextLink>
-        </motion.div>
+        }
 
         <div className={cn("w-full flex justify-end px-4 md:px-10", isleft && "justify-start")}>
           <motion.div
@@ -65,13 +81,14 @@ const WorkListing: FC<WorkListingProps> = ({ slice }) => {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <PrismicNextLink field={link_to_project_page} className="w-full h-full">
+              {isFilled.keyText(video_url) && <PrismicNextLink field={link_to_project_page} className="w-full h-full">
 
                 <VideoPlayer
                   vimeoUrl={video_url as VimeoUrl}
                   className="w-full h-full"
+                  controls={false}
                 />
-              </PrismicNextLink>
+              </PrismicNextLink>}
 
             </motion.div>
             <div className="w-full md:w-1/3 flex flex-col gap-4 cursor-pointer" >
@@ -82,25 +99,27 @@ const WorkListing: FC<WorkListingProps> = ({ slice }) => {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
 
-                <PrismicNextLink field={link_to_project_page} className="w-full h-full">
+                {isFilled.image(second_focus_image) && <PrismicNextLink field={link_to_project_page} className="w-full h-full">
                   <PrismicNextImage field={second_focus_image} />
-                </PrismicNextLink>
+                </PrismicNextLink>}
 
               </motion.div>
 
-              <div className="flex flex-row w-full gap-4 justify-between">
-                {[color_1, color_2, color_3, color_4].map((color, index) => (
-                  <motion.div
-                    key={index}
-                    className="h-10 w-1/4 opacity-25 rounded-full"
-                    style={{ backgroundColor: color || undefined }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 0.25, scale: 1 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
-                  />
-                ))}
-              </div>
+              {filledColors.length > 0 && (
+                <div className="flex flex-row w-full gap-4">
+                  {filledColors.map((color, index) => (
+                    <motion.div
+                      key={index}
+                      className={cn("h-10 opacity-25 rounded-full", getWidthClass(filledColors.length))}
+                      style={{ backgroundColor: color || undefined }}
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 0.25, scale: 1 }}
+                      viewport={{ once: true, amount: 0.5 }}
+                      transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+                    />
+                  ))}
+                </div>
+              )}
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
