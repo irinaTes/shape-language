@@ -29,11 +29,11 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full py-20 md:py-32 lg:py-48"
+      className="w-full py-20 md:py-32 "
       style={{ backgroundColor: background_color_primary || undefined }}
     >
       {/* First item: Title and Description with primary colors */}
-      {(section_title || section_description) && (
+      {/* {(section_title || section_description) && (
         <motion.div
           className="relative mb-32 md:mb-36 lg:mb-48"
           initial={{ opacity: 0, x: -50 }}
@@ -82,7 +82,7 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
             </div>
           </div>
         </motion.div>
-      )}
+      )} */}
 
       {/* Content items - alternating sides, starting with secondary colors */}
       {content.map((item, index) => {
@@ -143,7 +143,7 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
                   {/* Text content */}
                   {item.text && (
                     <motion.div
-                      className="flex-1 max-w-4xl text-2xl  lg:text-2xl xl:text-3xl leading-relaxed"
+                      className="flex-1 max-w-4xl text-xl  lg:text-xl xl:text-2xl leading-relaxed"
                       initial={{ opacity: 0, y: 30 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-100px" }}

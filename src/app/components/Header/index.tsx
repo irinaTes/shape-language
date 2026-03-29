@@ -32,15 +32,36 @@ export default function Header({ data }: { data: HeaderDocument }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [textColor, setTextColor] = useState<'light' | 'dark'>('light');
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
     const { navigation_items, logo_animation, logo_white, logo_filled } = data.data;
     const videoRef = useRef<HTMLVideoElement>(null);
+    const lastScrollY = useRef(0);
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            const currentScrollY = window.scrollY;
+
+            setIsScrolled(currentScrollY > 20);
+
+            // Only hide/show after scrolling past a threshold
+            if (currentScrollY > 100) {
+                // Scrolling down - hide header
+                if (currentScrollY > lastScrollY.current) {
+                    setIsHidden(true);
+                }
+                // Scrolling up - show header
+                else {
+                    setIsHidden(false);
+                }
+            } else {
+                // Always show header near the top
+                setIsHidden(false);
+            }
+
+            lastScrollY.current = currentScrollY;
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
 
         return () => window.removeEventListener('scroll', handleScroll);
@@ -135,7 +156,10 @@ export default function Header({ data }: { data: HeaderDocument }) {
             "sticky inset-x-0 top-0 z-50 slide-in-top transition-all duration-300",
             isScrolled
                 ? "bg-white/.5 dark:bg-black/.5 backdrop-blur-md shadow-lg"
-                : "bg-transparent"
+                : "bg-transparent",
+            isHidden && !mobileMenuOpen
+                ? "-translate-y-full"
+                : "translate-y-0"
         )}>
             <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div className="flex items-center justify-between ">

@@ -12,6 +12,44 @@
           "label": "UID"
         }
       },
+      "main_image": {
+        "type": "Image",
+        "config": {
+          "label": "Main image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "main_title": {
+        "type": "Text",
+        "config": {
+          "label": "Main Title",
+          "placeholder": ""
+        }
+      },
+      "main_video_url": {
+        "type": "Text",
+        "config": {
+          "label": "Main video URL",
+          "placeholder": ""
+        }
+      },
+      "main_description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Main description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "year": {
+        "type": "Text",
+        "config": {
+          "label": "Year",
+          "placeholder": ""
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",

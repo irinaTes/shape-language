@@ -27,6 +27,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "bold_text_hero": {
+              "type": "SharedSlice"
+            },
             "zig_zag_content": {
               "type": "SharedSlice"
             },

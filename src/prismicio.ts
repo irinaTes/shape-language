@@ -17,6 +17,7 @@ export const repositoryName =  sm.repositoryName;
 const routes: Route[] = [
   { type: "page", uid: "home", path: "/" },
   { type: "page", path: "/:uid" },
+  { type: "work_content", path: "/work/:uid" },
 ];
 
 /**

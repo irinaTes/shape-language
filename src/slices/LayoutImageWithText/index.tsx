@@ -37,7 +37,7 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
           >
 
             <motion.div
-              className="w-full md:w-2/3 h-auto cursor-pointer"
+              className="w-full md:w-11/12 h-auto cursor-pointer"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -54,7 +54,7 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="md:w-1/3 "
+                className="md:w-2/4 "
               >
 
                 <PrismicNextImage field={small_image} />

@@ -410,6 +410,7 @@ export type HeaderDocument<Lang extends string = string> =
   >;
 
 type PageDocumentDataSlicesSlice =
+  | BoldTextHeroSlice
   | ZigZagContentSlice
   | LayoutImageWithTextSlice
   | GalerySlice
@@ -562,6 +563,61 @@ type WorkContentDocumentDataSlicesSlice =
  */
 interface WorkContentDocumentData {
   /**
+   * Main image field in *work content*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_content.main_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  main_image: prismic.ImageField<never>;
+
+  /**
+   * Main Title field in *work content*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_content.main_title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  main_title: prismic.KeyTextField;
+
+  /**
+   * Main video URL field in *work content*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_content.main_video_url
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  main_video_url: prismic.KeyTextField;
+
+  /**
+   * Main description field in *work content*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_content.main_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  main_description: prismic.RichTextField;
+
+  /**
+   * Year field in *work content*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: work_content.year
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  year: prismic.KeyTextField;
+
+  /**
    * Slice Zone field in *work content*
    *
    * - **Field Type**: Slice Zone
@@ -628,6 +684,61 @@ export type AllDocumentTypes =
   | PageDocument
   | WorkDocument
   | WorkContentDocument;
+
+/**
+ * Primary content in *BoldTextHero → Default → Primary*
+ */
+export interface BoldTextHeroSliceDefaultPrimary {
+  /**
+   * Primary text field in *BoldTextHero → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bold_text_hero.default.primary.text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  text: prismic.KeyTextField;
+
+  /**
+   * Secondary text field in *BoldTextHero → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: bold_text_hero.default.primary.secondary_text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  secondary_text: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for BoldTextHero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type BoldTextHeroSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<BoldTextHeroSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *BoldTextHero*
+ */
+type BoldTextHeroSliceVariation = BoldTextHeroSliceDefault;
+
+/**
+ * BoldTextHero Shared Slice
+ *
+ * - **API ID**: `bold_text_hero`
+ * - **Description**: BoldTextHero
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type BoldTextHeroSlice = prismic.SharedSlice<
+  "bold_text_hero",
+  BoldTextHeroSliceVariation
+>;
 
 /**
  * Primary content in *Galery → Default → Primary*
@@ -1411,6 +1522,10 @@ declare module "@prismicio/client" {
       WorkContentDocumentData,
       WorkContentDocumentDataSlicesSlice,
       AllDocumentTypes,
+      BoldTextHeroSlice,
+      BoldTextHeroSliceDefaultPrimary,
+      BoldTextHeroSliceVariation,
+      BoldTextHeroSliceDefault,
       GalerySlice,
       GalerySliceDefaultPrimary,
       GalerySliceVariation,

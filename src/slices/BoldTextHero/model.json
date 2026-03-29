@@ -1,0 +1,33 @@
+{
+  "id": "bold_text_hero",
+  "type": "SharedSlice",
+  "name": "BoldTextHero",
+  "description": "BoldTextHero",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "text": {
+          "type": "Text",
+          "config": {
+            "label": "Primary text",
+            "placeholder": ""
+          }
+        },
+        "secondary_text": {
+          "type": "Text",
+          "config": {
+            "label": "Secondary text",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

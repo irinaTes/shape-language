@@ -1,144 +1,103 @@
-'use client';
 import { FC } from "react";
-import { Content, isFilled } from "@prismicio/client";
-import { SliceComponentProps } from "@prismicio/react";
+import { Content } from "@prismicio/client";
+import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
-import { cn } from "@/app/utils/utils";
-import { motion } from "framer-motion";
-import VideoPlayer from "@/components/VideoPlayer";
-import "@/app/assets/css/video-controls.css";
-import { VimeoUrl } from "@vimeo/player";
+import { createClient } from "@/prismicio";
+import { AnimatedText, AnimatedImage } from "./AnimatedCard";
+
 /**
  * Props for `WorkListing`.
  */
 export type WorkListingProps = SliceComponentProps<Content.WorkListingSlice>;
 
+// Predefined card configurations for scattered positioning
+// Mobile: full width, centered | Desktop: varied widths and positions
+const cardConfigs = [
+  { width: "w-full md:w-[70%]", marginLeft: "ml-0 md:ml-[0%]" },
+  { width: "w-full md:w-[55%]", marginLeft: "ml-0 md:ml-[45%]" },
+  { width: "w-full md:w-[65%]", marginLeft: "ml-0 md:ml-[18%]" },
+  { width: "w-full md:w-[60%]", marginLeft: "ml-0 md:ml-[5%]" },
+  { width: "w-full md:w-[75%]", marginLeft: "ml-0 md:ml-[25%]" },
+  { width: "w-full md:w-[50%]", marginLeft: "ml-0 md:ml-[35%]" },
+  { width: "w-full md:w-[68%]", marginLeft: "ml-0 md:ml-[10%]" },
+  { width: "w-full md:w-[58%]", marginLeft: "ml-0 md:ml-[42%]" },
+];
+
+// Simple hash function to get consistent "random" index based on item id
+function getConfigIndex(id: string): number {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = (hash << 5) - hash + id.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash) % cardConfigs.length;
+}
+
 /**
  * Component for "WorkListing" Slices.
  */
-const WorkListing: FC<WorkListingProps> = ({ slice }) => {
-  const { color_1, color_2, color_3, color_4, focus_image, year_label, isleft, video_url, second_focus_image, title, description, link_to_project_page } = slice.primary
+const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
+  const client = createClient();
 
-  // Filter only filled colors
-  const filledColors = [color_1, color_2, color_3, color_4].filter(color => isFilled.keyText(color));
-
-  // Calculate width class based on number of filled colors
-  const getWidthClass = (count: number) => {
-    switch (count) {
-      case 1: return 'w-full';
-      case 2: return 'w-1/2';
-      case 3: return 'w-1/3';
-      case 4: return 'w-1/4';
-      default: return 'w-1/4';
-    }
-  };
+  const workItems = await client.getAllByType("work_content", {
+    fetch: [
+      "work_content.main_title",
+      "work_content.main_image",
+      "work_content.main_description",
+      "work_content.main_video_url",
+      "work_content.year",
+    ],
+  });
 
   return (
-    <>
-      <section
-        data-slice-type={slice.slice_type}
-        data-slice-variation={slice.variation}
-        className="w-full flex flex-col gap-10 md:gap-16 py-24 md:py-56"
-      >
-        {isFilled.image(focus_image) &&
-          <motion.div
-            className="relative cursor-pointer"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          // onClick={handleClick}
+    <section
+      data-slice-type={slice.slice_type}
+      data-slice-variation={slice.variation}
+      className="w-full flex flex-col gap-16 md:gap-40 py-24 md:py-40"
+    >
+      {workItems.map((item, index) => {
+        const config = cardConfigs[getConfigIndex(item.id)];
+        return (
+          <div
+            key={index}
+            className="w-full px-4 md:px-12"
           >
-
-            <motion.div
-              className={cn("absolute text-4xl md:text-7xl -mt-6 md:-mt-10 left-4 md:left-10")}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              {year_label} {title}
-            </motion.div>
-            <PrismicNextLink field={link_to_project_page} className="w-full h-full">
-              <PrismicNextImage field={focus_image} className="w-full h-[40rem] object-cover" />
-            </PrismicNextLink>
-          </motion.div>
-        }
-
-        <div className={cn("w-full flex justify-end px-4 md:px-10", isleft && "justify-start")}>
-          <motion.div
-            className={cn("w-full lg:w-3/4 flex gap-10 md:gap-16", isleft ? "flex-col md:flex-row" : "flex-col-reverse md:flex-row-reverse")}
-            initial={{ opacity: 0, x: isleft ? -60 : 60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-
-            <motion.div
-              className="w-full md:w-2/3 h-auto cursor-pointer"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              {isFilled.keyText(video_url) && <PrismicNextLink field={link_to_project_page} className="w-full h-full">
-
-                <VideoPlayer
-                  vimeoUrl={video_url as VimeoUrl}
-                  className="w-full h-full"
-                  controls={false}
-                />
-              </PrismicNextLink>}
-
-            </motion.div>
-            <div className="w-full md:w-1/3 flex flex-col gap-4 cursor-pointer" >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+            <div className={`${config.width} ${config.marginLeft} md:min-w-[300px] max-w-[1200px]`}>
+              <PrismicNextLink
+                document={item}
+                className="block group"
               >
-
-                {isFilled.image(second_focus_image) && <PrismicNextLink field={link_to_project_page} className="w-full h-full">
-                  <PrismicNextImage field={second_focus_image} />
-                </PrismicNextLink>}
-
-              </motion.div>
-
-              {filledColors.length > 0 && (
-                <div className="flex flex-row w-full gap-4">
-                  {filledColors.map((color, index) => (
-                    <motion.div
-                      key={index}
-                      className={cn("h-10 opacity-25 rounded-full", getWidthClass(filledColors.length))}
-                      style={{ backgroundColor: color || undefined }}
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 0.25, scale: 1 }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+                <div className="flex flex-col overflow-hidden p-10">
+                  <AnimatedImage index={index}>
+                    <PrismicNextImage
+                      field={item.data.main_image}
+                      className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     />
-                  ))}
+                  </AnimatedImage>
+                  <div className="flex justify-between items-start mt-4 px-1 font-medium z-10">
+                    <AnimatedText delay={0.2}>
+                      <h2 className="text-lg md:text-xl ">
+                        {item.data.main_title}
+                      </h2>
+                    </AnimatedText>
+                    {item.data.year && (
+                      <AnimatedText delay={0.3}>
+                        <span className="text-lg md:text-xl">
+                          {item.data.year}
+                        </span>
+                      </AnimatedText>
+                    )}
+                  </div>
+                  <AnimatedText className="font-normal text-[14px] mt-4 px-1 z-10" delay={0.4}>
+                    <PrismicRichText field={item.data.main_description} />
+                  </AnimatedText>
                 </div>
-              )}
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-              >
-
-                <PrismicNextLink field={link_to_project_page} className="w-full h-full">
-                  <h2 className="text-3xl">{title}</h2>
-                  <p>{description}</p>
-                </PrismicNextLink>
-              </motion.div>
+              </PrismicNextLink>
             </div>
-          </motion.div>
-        </div>
-
-      </section>
-    </>
+          </div>
+        );
+      })}
+    </section>
   );
 };
 
