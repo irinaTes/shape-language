@@ -18,6 +18,9 @@
     "@prismicio/next": "^2.0.1",
     "@prismicio/react": "^3.2.1",
     "@radix-ui/react-dialog": "^1.1.15",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@react-three/postprocessing": "^3.0.4",
     "@splinetool/react-spline": "^4.1.0",
     "@vimeo/player": "^2.30.0",
     "clsx": "^2.1.1",
@@ -27,6 +30,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.1",
+    "three": "^0.183.2",
     "vectory-lib": "^0.0.7"
   },
   "devDependencies": {
@@ -36,6 +40,7 @@
     "@types/node": "^22.13.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "@types/three": "^0.183.1",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
     "eslint": "^9.19.0",
