@@ -36,15 +36,15 @@ export default function Scene3D() {
       >
         <Suspense fallback={null}>
           {/* <HdriEnvironment /> */}
-          <color attach="background" args={['#080808']} />  ← add this
-
           <Environment preset="city" />
-          <directionalLight position={[5, 5, 5]} intensity={1.5} />
-          <directionalLight position={[-3, 2, -5]} color="#a8d8ff" intensity={2.0} />
-          <directionalLight position={[-5, 3, 2]} color="#c8e8ff" intensity={1.0} />
+          <ambientLight intensity={0.8} />
+          <directionalLight position={[5, 5, 5]} intensity={2.5} color="#ffffff" />
+          <directionalLight position={[-3, 2, -5]} color="#a8d8ff" intensity={3.0} />
+          <directionalLight position={[-5, 3, 2]} color="#c8e8ff" intensity={2.0} />
+          <directionalLight position={[0, -5, 3]} color="#ddeeff" intensity={1.5} />
           <Logo3D rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
         </Suspense>
-        <ParticleField />
+        {/* <ParticleField /> */}
       </Canvas>
       <OrbitWidget rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
     </div>
