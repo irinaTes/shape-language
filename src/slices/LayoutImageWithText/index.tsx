@@ -16,7 +16,7 @@ export type LayoutImageWithTextProps =
  * Component for "LayoutImageWithText" Slices.
  */
 const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
-  const { description, image_text, big_image, small_image, background_color, text_color, reverse_layout } = slice.primary
+  const { description, big_image, small_image, background_color, text_color, reverse_layout } = slice.primary
 
   return (
     <>

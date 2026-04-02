@@ -76,7 +76,3 @@ export function AnimatedText({ children, className, delay = 0 }: AnimatedTextPro
   );
 }
 
-interface AnimatedImageProps {
-  children: ReactNode;
-  className?: string;
-}

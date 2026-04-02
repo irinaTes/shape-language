@@ -126,7 +126,7 @@ class Particle {
   draw(ctx: CanvasRenderingContext2D) {
     ctx.beginPath();
     ctx.moveTo(this.pos.x, this.pos.y);
-    let p2 = this.pos.add(this.vel);
+    const p2 = this.pos.add(this.vel);
     ctx.lineTo(p2.x, p2.y);
     ctx.stroke();
   }
@@ -155,7 +155,7 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
 
     const len = Math.round(Math.random() * 3 + 3);
     for(let i = 0; i < len; i++) {
-      let p = new Planet(50 + i * 100, 340, i ? 1000 : 4000);
+      const p = new Planet(50 + i * 100, 340, i ? 1000 : 4000);
       planetsRef.current.push(p);
     }
 
@@ -270,18 +270,18 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
 
     ctx.restore();
 
-    let imageData = ctx.getImageData(0, 0, w, h);
+    const imageData = ctx.getImageData(0, 0, w, h);
     particlesRef.current = [];
 
     for(let x = 0; x < w; x++) {
       for(let y = 0; y < h; y++) {
-        let i = (x + w*y)*4;
-        let average = (imageData.data[i] +
+        const i = (x + w*y)*4;
+        const average = (imageData.data[i] +
                        imageData.data[i + 1] +
                        imageData.data[i + 2] +
                        imageData.data[i + 3]) / 4;
         if(average > 200) {
-          let particle = new Particle(x, y, spikeLengthRef.current);
+          const particle = new Particle(x, y, spikeLengthRef.current);
           particlesRef.current.push(particle);
         }
       }
@@ -305,7 +305,7 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
     const { w, h } = dimensionsRef.current;
 
     for(let i = 1; i < planets.length; i++) {
-      let p = planets[i];
+      const p = planets[i];
       p.update(w, h);
       p.draw(ctx);
     }
@@ -313,13 +313,13 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
 
   const updateParticles = (ctx: CanvasRenderingContext2D) => {
     hueRef.current += colorConfig.hueSpeed;
-    let h = Math.sin(hueRef.current) * colorConfig.hueRange + colorConfig.baseHue;
+    const h = Math.sin(hueRef.current) * colorConfig.hueRange + colorConfig.baseHue;
     ctx.strokeStyle = `hsla(${h}, ${colorConfig.colorSaturation}%, 50%, ${colorConfig.particleOpacity})`;
 
     particlesRef.current.forEach(p => {
       planetsRef.current.forEach(planet => {
-        let d = p.pos.sub(planet.pos);
-        let length = d.getLength();
+        const d = p.pos.sub(planet.pos);
+        const length = d.getLength();
         let g = planet.g / length;
         if(g > 40) {
           g = 40;

@@ -16,8 +16,6 @@ export type ZigZagContentProps =
  */
 const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
   const {
-    section_title,
-    section_description,
     background_color_primary,
     text_color_primary,
     background_color_secondary,

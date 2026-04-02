@@ -1,17 +1,11 @@
 'use client';
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Environment, useEnvironment } from '@react-three/drei';
+import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import Logo3D from './Logo3D';
-import ParticleField from './ParticleField';
 import OrbitWidget from './OrbitWidget';
 import { useRef } from 'react';
-
-function HdriEnvironment() {
-  const envMap = useEnvironment({ files: '/env.hdr' });
-  return <primitive object={envMap} attach="environment" />;
-}
 
 export default function Scene3D() {
   const rotationRef = useRef<[number, number, number]>([0, 0, 0]);

@@ -6,33 +6,11 @@ import Header from "./components/Header";
 import localFont from "next/font/local";
 import { cn } from "./utils/utils";
 import Footer from "./components/Footer";
-import GenerativeTypographyBackground from "@/components/GenerativeTypographyBackground";
 import ParticleBackground from "@/components/ParticleBackground";
-
-const AROneSans = localFont({
-  src: './assets/font/AROneSans.ttf',
-  variable: '--font-ar-one-sans',
-  display: "swap",
-  fallback: ["system-ui", "-apple-system", "sans-serif"],
-});
 
 const DarkerGrotesque = localFont({
   src: './assets/font/DarkerGrotesque.ttf',
   variable: '--font-grotesque',
-  display: "swap",
-  fallback: ["system-ui", "-apple-system", "sans-serif"],
-});
-
-const Sardin = localFont({
-  src: './assets/font/sardin.otf',
-  variable: '--font-sardin',
-  display: "swap",
-  fallback: ["system-ui", "-apple-system", "sans-serif"],
-});
-
-const TuskerGrotesk = localFont({
-  src: './assets/font/TuskerGrotesk.otf',
-  variable: '--font-tusker-grotesk',
   display: "swap",
   fallback: ["system-ui", "-apple-system", "sans-serif"],
 });
