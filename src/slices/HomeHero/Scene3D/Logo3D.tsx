@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useMemo } from 'react';
-import { useLoader, useFrame, useThree } from '@react-three/fiber';
+import { useLoader, useFrame } from '@react-three/fiber';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import * as THREE from 'three';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -8,13 +8,14 @@ import { useTexture } from '@react-three/drei';
 
 interface Logo3DProps {
   rotationRef: React.MutableRefObject<[number, number, number]>;
+  displayRotationRef: React.MutableRefObject<[number, number, number]>;
   isDraggingRef: React.MutableRefObject<boolean>;
 }
 
-export default function Logo3D({ rotationRef, isDraggingRef }: Logo3DProps) {
+export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef }: Logo3DProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const isHoveringRef = useRef(false);
   const data = useLoader(SVGLoader, '/assets/logo.svg');
-  const { pointer } = useThree();
 
   const geometry = useMemo(() => {
     const geometries: THREE.BufferGeometry[] = [];
@@ -98,23 +99,31 @@ export default function Logo3D({ rotationRef, isDraggingRef }: Logo3DProps) {
     return merged;
   }, [data]);
 
-  useFrame(() => {
+  useFrame(({ pointer }) => {
     if (!groupRef.current) return;
 
-    let targetX: number, targetY: number;
+    let targetX: number;
+    let targetY: number;
 
     if (isDraggingRef.current) {
-      // Orbit widget is active — use its rotation
       targetX = rotationRef.current[0];
       targetY = rotationRef.current[1];
+    } else if (isHoveringRef.current) {
+      targetX = -pointer.y * 0.3;
+      targetY = pointer.x * 0.3;
     } else {
-      // Default: follow mouse cursor
-      targetX = pointer.y * 0.4;
-      targetY = pointer.x * 0.4;
+      targetX = rotationRef.current[0];
+      targetY = rotationRef.current[1];
     }
 
     groupRef.current.rotation.x += (targetX - groupRef.current.rotation.x) * 0.05;
     groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.05;
+
+    displayRotationRef.current = [
+      groupRef.current.rotation.x,
+      groupRef.current.rotation.y,
+      groupRef.current.rotation.z,
+    ];
   });
 
   const textures = useTexture({
@@ -135,7 +144,11 @@ export default function Logo3D({ rotationRef, isDraggingRef }: Logo3DProps) {
 
   return (
     <group ref={groupRef} scale={[1, -1, 1]}>
-      <mesh geometry={geometry}>
+      <mesh
+        geometry={geometry}
+        onPointerEnter={() => { isHoveringRef.current = true; }}
+        onPointerLeave={() => { isHoveringRef.current = false; }}
+      >
         <meshPhysicalMaterial
           color="#c0ddf0"
           metalness={0}

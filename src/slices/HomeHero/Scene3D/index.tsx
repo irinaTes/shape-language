@@ -15,18 +15,22 @@ function HdriEnvironment() {
 
 export default function Scene3D() {
   const rotationRef = useRef<[number, number, number]>([0, 0, 0]);
+  const displayRotationRef = useRef<[number, number, number]>([0, 0, 0]);
   const isDraggingRef = useRef(false);
 
   return (
     <div className="relative w-full h-full">
       <Canvas
         camera={{ position: [0, 0, 12], fov: 50 }}
+        dpr={[1, 1.5]}
+        performance={{ min: 0.5 }}
         gl={{
           antialias: true,
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.2,
           outputColorSpace: THREE.SRGBColorSpace,
           alpha: true,
+          powerPreference: 'high-performance',
         }}
         style={{ background: 'transparent' }}
       >
@@ -38,11 +42,11 @@ export default function Scene3D() {
           <directionalLight position={[5, 5, 5]} intensity={1.5} />
           <directionalLight position={[-3, 2, -5]} color="#a8d8ff" intensity={2.0} />
           <directionalLight position={[-5, 3, 2]} color="#c8e8ff" intensity={1.0} />
-          <Logo3D rotationRef={rotationRef} isDraggingRef={isDraggingRef} />
+          <Logo3D rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
         </Suspense>
         <ParticleField />
       </Canvas>
-      <OrbitWidget rotationRef={rotationRef} isDraggingRef={isDraggingRef} />
+      <OrbitWidget rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
     </div>
   );
 }

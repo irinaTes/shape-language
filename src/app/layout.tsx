@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import { cn } from "./utils/utils";
 import Footer from "./components/Footer";
 import GenerativeTypographyBackground from "@/components/GenerativeTypographyBackground";
+import ParticleBackground from "@/components/ParticleBackground";
 
 const AROneSans = localFont({
   src: './assets/font/AROneSans.ttf',
@@ -52,7 +53,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cn(DarkerGrotesque.className, "bg-primary text-white text-2xl tracking-wide")}>
-        <GenerativeTypographyBackground wordCount={65} />
+        {/* <GenerativeTypographyBackground wordCount={65} /> */}
+        <ParticleBackground />
 
         {/* <PageWithLoading> */}
         <Header data={header as HeaderDocument} />
