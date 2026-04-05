@@ -4,6 +4,16 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, useTexture, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
+// Delay before the intro starts (seconds)
+const INTRO_DELAY = 0.6;
+// Duration of the intro animation (seconds)
+const INTRO_DURATION = 2.0;
+
+// Ease out cubic
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
 interface Logo3DProps {
   rotationRef: React.MutableRefObject<[number, number, number]>;
   displayRotationRef: React.MutableRefObject<[number, number, number]>;
@@ -15,6 +25,7 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
   const isHoveringRef = useRef(false);
   const { scene } = useGLTF('/assets/shape_language.glb');
   const { size } = useThree();
+  const startTimeRef = useRef<number | null>(null);
 
   const scale = useMemo(() => {
     if (size.width < 640) return 22;
@@ -30,9 +41,31 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
     chromaticAberration: 0.05,
     backside: true,
   };
-  useFrame(({ pointer }) => {
+  useFrame(({ pointer, clock }) => {
     if (!groupRef.current) return;
 
+    const elapsed = clock.getElapsedTime();
+
+    // Record when animation starts (after delay)
+    if (startTimeRef.current === null && elapsed >= INTRO_DELAY) {
+      startTimeRef.current = elapsed;
+    }
+
+    // Intro animation
+    const introProgress = startTimeRef.current === null
+      ? 0
+      : Math.min((elapsed - startTimeRef.current) / INTRO_DURATION, 1);
+    const eased = easeOutCubic(introProgress);
+
+    // Scale from 0.01 to target
+    const currentScale = scale * (0.01 + eased * 0.99);
+    groupRef.current.scale.setScalar(currentScale);
+
+    // Spin on X and Z during intro, settling to 0
+    const introRotX = (1 - eased) * Math.PI * 1.5;
+    const introRotZ = (1 - eased) * Math.PI * 0.8;
+
+    // Normal pointer/drag rotation after intro
     let targetX: number;
     let targetY: number;
 
@@ -47,8 +80,9 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
       targetY = rotationRef.current[1];
     }
 
-    groupRef.current.rotation.x += (targetX - groupRef.current.rotation.x) * 0.05;
+    groupRef.current.rotation.x += (targetX + introRotX - groupRef.current.rotation.x) * 0.05;
     groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.05;
+    groupRef.current.rotation.z += (introRotZ - groupRef.current.rotation.z) * 0.05;
 
     displayRotationRef.current = [
       groupRef.current.rotation.x,
@@ -81,7 +115,6 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
   return (
     <group
       ref={groupRef}
-      scale={scale}
       onPointerEnter={() => { isHoveringRef.current = true; }}
       onPointerLeave={() => { isHoveringRef.current = false; }}
     >

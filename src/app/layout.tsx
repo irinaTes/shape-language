@@ -32,7 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(DarkerGrotesque.className, "relative bg-primary text-white text-2xl tracking-wide")}>
+      <body className={cn(DarkerGrotesque.className, "relative bg-primary text-white text-2xl tracking-wide overflow-x-hidden")}>
         {/* <GenerativeTypographyBackground wordCount={65} /> */}
         <ParticleBackground />
         <TextBackground />
