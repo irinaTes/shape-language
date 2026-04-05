@@ -1,10 +1,10 @@
 'use client';
 
-const REPEAT = 20;
+const REPEAT = 50;
 
 export default function TextBackground() {
   return (
-    <div className="absolute top-0 left-0 right-0 z-[1] pointer-events-none px-4 lg:px-20 overflow-x-hidden">
+    <div className="absolute inset-0 z-[1] pointer-events-none px-4 lg:px-20 overflow-hidden">
       {Array.from({ length: REPEAT }).map((_, i) => (
         <div key={i} className="flex flex-col gap-0" style={{ opacity: 0.1 }}>
           <span

@@ -35,17 +35,18 @@ export default async function RootLayout({
       <body className={cn(DarkerGrotesque.className, "relative bg-primary text-white text-2xl tracking-wide overflow-x-hidden")}>
         {/* <GenerativeTypographyBackground wordCount={65} /> */}
         <ParticleBackground />
-        <TextBackground />
+        <div className="relative">
+          <TextBackground />
+          <PageWithLoading>
+            <Header data={header as HeaderDocument} />
 
-        <PageWithLoading>
-          <Header data={header as HeaderDocument} />
-
-          <div className="flex flex-1 flex-col relative z-10">
-            {children}
-            <PrismicPreview repositoryName={repositoryName} />
-          </div>
-          <Footer data={footer as FooterDocument} headerData={header as HeaderDocument}/>
-        </PageWithLoading>
+            <div className="flex flex-1 flex-col relative z-10">
+              {children}
+              <PrismicPreview repositoryName={repositoryName} />
+            </div>
+            <Footer data={footer as FooterDocument} headerData={header as HeaderDocument}/>
+          </PageWithLoading>
+        </div>
 
       </body>
     </html>
