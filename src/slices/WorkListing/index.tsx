@@ -13,14 +13,14 @@ export type WorkListingProps = SliceComponentProps<Content.WorkListingSlice>;
 // Predefined card configurations for scattered positioning
 // Mobile: full width, centered | Desktop: varied widths and positions
 const cardConfigs = [
-  { width: "w-full md:w-[70%]", marginLeft: "ml-0 md:ml-[0%]" },
-  { width: "w-full md:w-[55%]", marginLeft: "ml-0 md:ml-[45%]" },
-  { width: "w-full md:w-[65%]", marginLeft: "ml-0 md:ml-[18%]" },
-  { width: "w-full md:w-[60%]", marginLeft: "ml-0 md:ml-[5%]" },
-  { width: "w-full md:w-[75%]", marginLeft: "ml-0 md:ml-[25%]" },
-  { width: "w-full md:w-[50%]", marginLeft: "ml-0 md:ml-[35%]" },
-  { width: "w-full md:w-[68%]", marginLeft: "ml-0 md:ml-[10%]" },
-  { width: "w-full md:w-[58%]", marginLeft: "ml-0 md:ml-[42%]" },
+  { width: "w-full md:w-[85%]", marginLeft: "ml-0 md:ml-[0%]" },
+  { width: "w-full md:w-[80%]", marginLeft: "ml-0 md:ml-[20%]" },
+  { width: "w-full md:w-[88%]", marginLeft: "ml-0 md:ml-[6%]" },
+  { width: "w-full md:w-[82%]", marginLeft: "ml-0 md:ml-[0%]" },
+  { width: "w-full md:w-[90%]", marginLeft: "ml-0 md:ml-[10%]" },
+  { width: "w-full md:w-[78%]", marginLeft: "ml-0 md:ml-[22%]" },
+  { width: "w-full md:w-[86%]", marginLeft: "ml-0 md:ml-[4%]" },
+  { width: "w-full md:w-[83%]", marginLeft: "ml-0 md:ml-[17%]" },
 ];
 
 // Simple hash function to get consistent "random" index based on item id
@@ -53,44 +53,46 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full flex flex-col gap-16 md:gap-40 py-24 md:py-40"
+      className="w-full flex flex-col gap-6 md:gap-8 py-16 md:py-24 px-6 md:px-20"
     >
       {workItems.map((item, index) => {
         const config = cardConfigs[getConfigIndex(item.id)];
         return (
           <div
             key={index}
-            className="w-full px-4 md:px-12"
+            className="w-full"
           >
             <div className={`${config.width} ${config.marginLeft} md:min-w-[300px] max-w-[1200px]`}>
               <PrismicNextLink
                 document={item}
                 className="block group"
               >
-                <div className="flex flex-col overflow-hidden p-10">
+                <div className="flex flex-col p-4 mb-10 overflow-hidden border border-white/10 rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_12px_60px_rgba(0,0,0,0.8)] hover:border-white/20 transition-all duration-500 bg-white/[0.03]">
                   <AnimatedImage index={index}>
                     <PrismicNextImage
                       field={item.data.main_image}
-                      className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      className="w-full h-auto object-cover"
                     />
                   </AnimatedImage>
-                  <div className="flex justify-between items-start mt-4 px-1 font-medium z-10">
-                    <AnimatedText delay={0.2}>
-                      <h2 className="text-lg md:text-xl ">
-                        {item.data.main_title}
-                      </h2>
-                    </AnimatedText>
-                    {item.data.year && (
-                      <AnimatedText delay={0.3}>
-                        <span className="text-lg md:text-xl">
-                          {item.data.year}
-                        </span>
+                  <div className="border-t border-white/10 px-6 py-4 mt-4">
+                    <div className="flex justify-between items-start font-medium">
+                      <AnimatedText delay={0.2}>
+                        <h2 className="text-lg md:text-xl">
+                          {item.data.main_title}
+                        </h2>
                       </AnimatedText>
-                    )}
+                      {item.data.year && (
+                        <AnimatedText delay={0.3}>
+                          <span className="text-lg md:text-xl text-white/50">
+                            {item.data.year}
+                          </span>
+                        </AnimatedText>
+                      )}
+                    </div>
+                    <AnimatedText className="font-normal text-[14px] mt-2 text-white/60" delay={0.4}>
+                      <PrismicRichText field={item.data.main_description} />
+                    </AnimatedText>
                   </div>
-                  <AnimatedText className="font-normal text-[14px] mt-4 px-1 z-10" delay={0.4}>
-                    <PrismicRichText field={item.data.main_description} />
-                  </AnimatedText>
                 </div>
               </PrismicNextLink>
             </div>

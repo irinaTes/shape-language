@@ -2,17 +2,19 @@
 import { FC, useState, useEffect, createContext, useContext, useCallback } from "react";
 import LoadingScreen from "./LoadingScreen";
 
-interface VideoLoadingContextType {
+interface LoadingContextType {
   registerVideo: () => void;
   videoReady: () => void;
+  register3DScene: () => void;
+  scene3DReady: () => void;
 }
 
-const VideoLoadingContext = createContext<VideoLoadingContextType | null>(null);
+const LoadingContext = createContext<LoadingContextType | null>(null);
 
-export const useVideoLoading = () => {
-  const context = useContext(VideoLoadingContext);
-  return context;
-};
+export const useLoadingContext = () => useContext(LoadingContext);
+
+// Keep the old name for backwards compatibility with VideoPlayer
+export const useVideoLoading = () => useContext(LoadingContext);
 
 interface PageWithLoadingProps {
   children: React.ReactNode;
@@ -21,66 +23,55 @@ interface PageWithLoadingProps {
 const PageWithLoading: FC<PageWithLoadingProps> = ({ children }) => {
   const [totalVideos, setTotalVideos] = useState(0);
   const [loadedVideos, setLoadedVideos] = useState(0);
+  const [total3DScenes, setTotal3DScenes] = useState(0);
+  const [loaded3DScenes, setLoaded3DScenes] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Register a video (memoized to prevent infinite loops)
   const registerVideo = useCallback(() => {
-    setTotalVideos((prev) => {
-      console.log('Registering video, total will be:', prev + 1);
-      return prev + 1;
-    });
+    setTotalVideos((prev) => prev + 1);
   }, []);
 
-  // Mark a video as ready (memoized to prevent infinite loops)
   const videoReady = useCallback(() => {
-    setLoadedVideos((prev) => {
-      console.log('Video ready, loaded will be:', prev + 1);
-      return prev + 1;
-    });
+    setLoadedVideos((prev) => prev + 1);
   }, []);
 
-  // Give components time to register
+  const register3DScene = useCallback(() => {
+    setTotal3DScenes((prev) => prev + 1);
+  }, []);
+
+  const scene3DReady = useCallback(() => {
+    setLoaded3DScenes((prev) => prev + 1);
+  }, []);
+
+  // Give components time to register themselves
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialized(true);
-    }, 1000); // Give videos time to register
+    }, 1000);
     return () => clearTimeout(timer);
-  }, []); // Run only once
+  }, []);
 
-  // Log when initialization completes
+  // Check if everything is loaded
   useEffect(() => {
-    if (isInitialized) {
-      console.log('Initialized - Total videos:', totalVideos);
+    if (!isInitialized) return;
+
+    const videosReady = totalVideos === 0 || loadedVideos >= totalVideos;
+    const scenesReady = total3DScenes === 0 || loaded3DScenes >= total3DScenes;
+
+    if (videosReady && scenesReady) {
+      setTimeout(() => setIsLoading(false), 300);
     }
-  }, [isInitialized, totalVideos]);
-
-  // Check if all videos are loaded
-  useEffect(() => {
-    console.log('Check:', { isInitialized, totalVideos, loadedVideos });
-
-    if (isInitialized) {
-      if (totalVideos === 0) {
-        // No videos on the page, hide loading immediately
-        console.log('No videos found, hiding loading screen');
-        setIsLoading(false);
-      } else if (loadedVideos >= totalVideos) {
-        // All videos loaded
-        console.log('All videos loaded!');
-        setTimeout(() => setIsLoading(false), 300);
-      }
-    }
-  }, [isInitialized, totalVideos, loadedVideos]);
-
-  const progress = totalVideos > 0 ? (loadedVideos / totalVideos) * 100 : 0;
+  }, [isInitialized, totalVideos, loadedVideos, total3DScenes, loaded3DScenes]);
 
   return (
-    <VideoLoadingContext.Provider value={{ registerVideo, videoReady }}>
-      <LoadingScreen isLoading={isLoading} progress={progress} />
+    <LoadingContext.Provider value={{ registerVideo, videoReady, register3DScene, scene3DReady }}>
+      <LoadingScreen isLoading={isLoading} />
+      {/* <LoadingScreen isLoading={true} /> */}
       <div style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s' }}>
         {children}
       </div>
-    </VideoLoadingContext.Provider>
+    </LoadingContext.Provider>
   );
 };
 

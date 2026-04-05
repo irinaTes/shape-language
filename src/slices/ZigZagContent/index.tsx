@@ -106,18 +106,15 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
             }}
           >
             <div
-              className={`py-20 lg:py-28 px-8 md:px-16 lg:px-24 ${
-                isEven ? "rounded-none lg:rounded-l-full" : "rounded-r-full"
-              }`}
+              className={`py-20 lg:py-28 px-8 md:px-16 lg:px-24`}
               style={{
                 backgroundColor: backgroundColor || "#000",
                 color: textColor || "#fff",
               }}
             >
               <div className="w-full">
-                <div className={`flex flex-col w-full items-center gap-16 md:gap-10 lg:gap-20 xl:gap-40 ${
-                  isEven ? "lg:flex-row-reverse  justify-between" : "lg:flex-row  justify-between"
-                }`}>
+                <div className={`flex flex-col w-full items-center gap-16 md:gap-10 lg:gap-20 xl:gap-40 ${isEven ? "lg:flex-row-reverse  justify-between" : "lg:flex-row  justify-between"
+                  }`}>
                   {/* Before/After Image Slider */}
                   {item.before_image?.url && item.after_image?.url && (
                     <motion.div

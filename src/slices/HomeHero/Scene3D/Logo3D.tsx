@@ -1,8 +1,7 @@
 'use client';
 import { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, useTexture, MeshTransmissionMaterial } from '@react-three/drei';
-import { useControls } from 'leva';
 import * as THREE from 'three';
 
 interface Logo3DProps {
@@ -15,15 +14,22 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
   const groupRef = useRef<THREE.Group>(null);
   const isHoveringRef = useRef(false);
   const { scene } = useGLTF('/assets/shape_language.glb');
+  const { size } = useThree();
 
-  const materialProps = useControls({
-    thickness: { value: 0, min: 0, max: 3, step: 0.05 },
-    roughness: { value: 0.45, min: 0, max: 1, step: 0.01 },
-    transmission: { value: 1, min: 0, max: 1, step: 0.1 },
-    ior: { value: 1.33, min: 0, max: 3, step: 0.1 },
-    chromaticAberration: { value: 0.05, min: 0, max: 1 },
-    backside: { value: true },
-  });
+  const scale = useMemo(() => {
+    if (size.width < 640) return 22;
+    if (size.width < 1024) return 35;
+    return 50;
+  }, [size.width]);
+
+  const materialProps = {
+    thickness: 0,
+    roughness: 0.45,
+    transmission: 1,
+    ior: 1.33,
+    chromaticAberration: 0.05,
+    backside: true,
+  };
   useFrame(({ pointer }) => {
     if (!groupRef.current) return;
 
@@ -75,7 +81,7 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
   return (
     <group
       ref={groupRef}
-      scale={50}
+      scale={scale}
       onPointerEnter={() => { isHoveringRef.current = true; }}
       onPointerLeave={() => { isHoveringRef.current = false; }}
     >

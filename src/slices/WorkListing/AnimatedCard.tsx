@@ -18,7 +18,7 @@ export function AnimatedImage({ children, index, className }: AnimatedCardProps)
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{
-        duration: 0.6,
+        duration: 0.3,
         delay: index * 0.1,
         ease: [0.6, 0.05, 0.01, 0.9]
       }}
@@ -26,13 +26,13 @@ export function AnimatedImage({ children, index, className }: AnimatedCardProps)
       <motion.div
         className="relative w-full h-full overflow-hidden rounded-lg"
         initial={{ scale: 1 }}
-        whileHover={{ scale: 1.15 }}
+        whileHover={{ scale: 1.1 }}
         transition={{
           duration: 1,
           ease: "easeOut",
           scale: {
             type: "tween",
-            duration: 4,
+            duration: 2,
             ease: "linear"
           }
         }}

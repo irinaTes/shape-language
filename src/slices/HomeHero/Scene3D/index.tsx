@@ -1,16 +1,43 @@
 'use client';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
+import { Environment, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 import Logo3D from './Logo3D';
 import OrbitWidget from './OrbitWidget';
-import { useRef } from 'react';
+import { useLoadingContext } from '@/components/PageWithLoading';
+
+function SceneReadyReporter({ onReady }: { onReady: () => void }) {
+  const { progress } = useProgress();
+  const reported = useRef(false);
+
+  useEffect(() => {
+    if (progress === 100 && !reported.current) {
+      reported.current = true;
+      onReady();
+    }
+  }, [progress, onReady]);
+
+  return null;
+}
 
 export default function Scene3D() {
   const rotationRef = useRef<[number, number, number]>([0, 0, 0]);
   const displayRotationRef = useRef<[number, number, number]>([0, 0, 0]);
   const isDraggingRef = useRef(false);
+  const loadingContext = useLoadingContext();
+  const hasRegistered = useRef(false);
+
+  useEffect(() => {
+    if (!hasRegistered.current && loadingContext) {
+      loadingContext.register3DScene();
+      hasRegistered.current = true;
+    }
+  }, [loadingContext]);
+
+  const handleReady = () => {
+    loadingContext?.scene3DReady();
+  };
 
   return (
     <div className="relative w-full h-full">
@@ -29,7 +56,7 @@ export default function Scene3D() {
         style={{ background: 'transparent' }}
       >
         <Suspense fallback={null}>
-          {/* <HdriEnvironment /> */}
+          <SceneReadyReporter onReady={handleReady} />
           <Environment preset="city" />
           <ambientLight intensity={0.8} />
           <directionalLight position={[5, 5, 5]} intensity={2.5} color="#ffffff" />
@@ -38,7 +65,6 @@ export default function Scene3D() {
           <directionalLight position={[0, -5, 3]} color="#ddeeff" intensity={1.5} />
           <Logo3D rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
         </Suspense>
-        {/* <ParticleField /> */}
       </Canvas>
       <OrbitWidget rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
     </div>

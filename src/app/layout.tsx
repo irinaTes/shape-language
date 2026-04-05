@@ -7,6 +7,8 @@ import localFont from "next/font/local";
 import { cn } from "./utils/utils";
 import Footer from "./components/Footer";
 import ParticleBackground from "@/components/ParticleBackground";
+import TextBackground from "@/components/TextBackground";
+import PageWithLoading from "@/components/PageWithLoading";
 
 const DarkerGrotesque = localFont({
   src: './assets/font/DarkerGrotesque.ttf',
@@ -30,19 +32,20 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(DarkerGrotesque.className, "bg-primary text-white text-2xl tracking-wide")}>
+      <body className={cn(DarkerGrotesque.className, "relative bg-primary text-white text-2xl tracking-wide")}>
         {/* <GenerativeTypographyBackground wordCount={65} /> */}
         <ParticleBackground />
+        <TextBackground />
 
-        {/* <PageWithLoading> */}
-        <Header data={header as HeaderDocument} />
+        <PageWithLoading>
+          <Header data={header as HeaderDocument} />
 
-        <div className="flex flex-1 flex-col relative z-10">
-          {children}
-          <PrismicPreview repositoryName={repositoryName} />
-        </div>
-        {/* </PageWithLoading> */}
-        <Footer data={footer as FooterDocument} headerData={header as HeaderDocument}/>
+          <div className="flex flex-1 flex-col relative z-10">
+            {children}
+            <PrismicPreview repositoryName={repositoryName} />
+          </div>
+          <Footer data={footer as FooterDocument} headerData={header as HeaderDocument}/>
+        </PageWithLoading>
 
       </body>
     </html>
