@@ -50,7 +50,7 @@ const Galery: FC<GaleryProps> = ({ slice }) => {
               }}
             >
               <motion.div
-                className="relative w-full h-full overflow-hidden rounded-lg"
+                className="relative w-full h-full overflow-hidden rounded-lg glow-card"
                 initial={{ scale: 1 }}
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}

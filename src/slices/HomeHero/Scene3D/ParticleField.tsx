@@ -29,7 +29,8 @@ const fragmentShader = /* glsl */ `
     if (d > 0.5) discard;
     float alpha = 1.0 - smoothstep(0.3, 0.5, d);
     float pulse = 1.0 + sin(uTime * 1.5) * 0.3;
-    gl_FragColor = vec4(1.0, 1.0, 1.0, alpha * vOpacity * pulse);
+    // Neon cyan: rgb(0, 245, 255) = (0.0, 0.96, 1.0)
+    gl_FragColor = vec4(0.0, 0.96, 1.0, alpha * vOpacity * pulse);
   }
 `;
 

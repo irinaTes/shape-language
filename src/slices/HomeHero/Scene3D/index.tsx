@@ -5,6 +5,7 @@ import { Environment, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 import Logo3D from './Logo3D';
 import OrbitWidget from './OrbitWidget';
+import MovingLights from './MovingLights';
 import { useLoadingContext } from '@/components/PageWithLoading';
 
 function SceneReadyReporter({ onReady }: { onReady: () => void }) {
@@ -57,12 +58,21 @@ export default function Scene3D() {
       >
         <Suspense fallback={null}>
           <SceneReadyReporter onReady={handleReady} />
-          <Environment preset="city" />
-          <ambientLight intensity={0.8} />
-          <directionalLight position={[5, 5, 5]} intensity={2.5} color="#ffffff" />
-          <directionalLight position={[-3, 2, -5]} color="#a8d8ff" intensity={3.0} />
-          <directionalLight position={[-5, 3, 2]} color="#c8e8ff" intensity={2.0} />
-          <directionalLight position={[0, -5, 3]} color="#ddeeff" intensity={1.5} />
+          <Environment preset="city" background={false} />
+          <ambientLight intensity={0.4} color="#1a0040" />
+          {/* Directional — cyan key */}
+          <directionalLight position={[-5, 7, 3]} intensity={10} color="#00f5ff" />
+          {/* Directional — magenta fill */}
+          <directionalLight position={[6, 2, -2]} intensity={8} color="#ff00cc" />
+          {/* Directional — purple rim */}
+          <directionalLight position={[-1, -2, -7]} intensity={6} color="#9b30ff" />
+          {/* Directional — teal ground bounce */}
+          <directionalLight position={[0, -7, 4]} intensity={4} color="#00ffaa" />
+          {/* Directional — orange warm accent */}
+          <directionalLight position={[4, -4, 5]} intensity={3} color="#ff6600" />
+          {/* Directional — electric blue top */}
+          <directionalLight position={[5, 8, 2]} intensity={5} color="#3366ff" />
+          <MovingLights />
           <Logo3D rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
         </Suspense>
       </Canvas>

@@ -9,17 +9,12 @@ import Footer from "./components/Footer";
 import ParticleBackground from "@/components/ParticleBackground";
 import TextBackground from "@/components/TextBackground";
 import PageWithLoading from "@/components/PageWithLoading";
+import CursorTrail from "@/components/CursorTrail";
 
 const DarkerGrotesque = localFont({
   src: [
-    {
-      path: './assets/font/DarkerGrotesque.woff2',
-      format: 'woff2',
-    },
-    {
-      path: './assets/font/DarkerGrotesque.ttf',
-      format: 'truetype',
-    },
+    { path: './assets/font/DarkerGrotesque.woff2' },
+    { path: './assets/font/DarkerGrotesque.ttf' },
   ],
   variable: '--font-grotesque',
   display: "swap",
@@ -42,9 +37,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(DarkerGrotesque.className, "relative bg-primary text-white text-2xl tracking-wide overflow-x-hidden")}>
+      <body className={cn(DarkerGrotesque.className, "relative bg-primary text-white text-2xl tracking-wide overflow-x-hidden scanlines")}>
         {/* <GenerativeTypographyBackground wordCount={65} /> */}
         <ParticleBackground />
+        <CursorTrail />
         <div className="relative">
           <TextBackground />
           <PageWithLoading>

@@ -12,8 +12,8 @@ const LogoSVG = () => (
   </svg>
 );
 
-const glow = 'drop-shadow(0 0 10px rgba(255,255,255,0.6)) drop-shadow(0 0 30px rgba(255,255,255,0.2))';
-const boxGlow = '0 0 10px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.2)';
+const glow = 'drop-shadow(0 0 10px rgba(0,245,255,0.8)) drop-shadow(0 0 30px rgba(0,245,255,0.4))';
+const boxGlow = '0 0 10px rgba(0,245,255,0.8), 0 0 40px rgba(0,245,255,0.3)';
 
 const ShapeDisplay: FC<{ shape: Shape }> = ({ shape }) => {
   if (shape === 'square') {
@@ -63,7 +63,9 @@ const LoadingScreen: FC<LoadingScreenProps> = ({ isLoading }) => {
             justifyContent: 'center',
           }}
         >
-          <ShapeDisplay shape={currentShape} />
+          <div className="flicker">
+            <ShapeDisplay shape={currentShape} />
+          </div>
         </div>
       )}
     </>

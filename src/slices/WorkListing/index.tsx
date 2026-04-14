@@ -3,7 +3,8 @@ import { Content } from "@prismicio/client";
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { createClient } from "@/prismicio";
-import { AnimatedText, AnimatedImage } from "./AnimatedCard";
+import { AnimatedText, AnimatedImage, AnimatedCard } from "./AnimatedCard";
+import GlowCard from "./GlowCard";
 
 /**
  * Props for `WorkListing`.
@@ -53,22 +54,18 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full flex flex-col gap-6 md:gap-8 py-16 md:py-24 px-6 md:px-20"
+      className="w-full flex flex-col gap-6 md:gap-30 py-16 md:py-24 px-6 md:px-20"
     >
       {workItems.map((item, index) => {
         const config = cardConfigs[getConfigIndex(item.id)];
         return (
-          <div
-            key={index}
-            className="w-full"
-          >
-            <div className={`${config.width} ${config.marginLeft} md:min-w-[300px] max-w-[1200px]`}>
+          <AnimatedCard key={item.id} index={index} className={`${config.width} ${config.marginLeft} md:min-w-[300px] max-w-[1200px]`}>
               <PrismicNextLink
                 document={item}
                 className="block group"
               >
-                <div className="flex flex-col p-4 mb-10 overflow-hidden border border-white/10 rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.6)] hover:shadow-[0_12px_60px_rgba(0,0,0,0.8)] hover:border-white/20 transition-all duration-500 bg-white/[0.03]">
-                  <AnimatedImage index={index}>
+                <GlowCard className="flex flex-col p-2 md:p-10 mb-10 overflow-hidden border border-white/10 rounded-xl glow-card transition-all duration-500 bg-white/[0.03]">
+                  <AnimatedImage>
                     <PrismicNextImage
                       field={item.data.main_image}
                       className="w-full h-auto object-cover"
@@ -95,10 +92,9 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
                       <PrismicRichText field={item.data.main_description} />
                     </AnimatedText>
                   </div>
-                </div>
+                </GlowCard>
               </PrismicNextLink>
-            </div>
-          </div>
+            </AnimatedCard>
         );
       })}
     </section>

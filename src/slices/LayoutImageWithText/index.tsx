@@ -38,7 +38,7 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
           >
 
             <motion.div
-              className="w-full md:w-11/12 h-auto cursor-pointer"
+              className="w-full md:w-11/12 h-auto cursor-pointer glow-card"
               style={{ willChange: 'opacity' }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -55,7 +55,7 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="md:w-2/4"
+                className="md:w-2/4 glow-card "
               >
                 <PrismicNextImage field={small_image} sizes="(max-width: 768px) 50vw, 30vw" />
               </motion.div>

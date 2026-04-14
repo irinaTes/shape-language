@@ -45,10 +45,10 @@ const config = {
 };
 
 const colorConfig = {
-  particleOpacity: 0.2,
-  baseHue: 350,
-  hueRange: 9,
-  hueSpeed: 0.04,
+  particleOpacity: 0.35,
+  baseHue: 185,   // cyan ~185°
+  hueRange: 12,
+  hueSpeed: 0.03,
   colorSaturation: 100,
 };
 
@@ -226,7 +226,7 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
     ctx.textAlign = "left";
     ctx.textBaseline = "middle"
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "#00f5ff";
 
     // Calculate layout with default font size
     const lineHeight = defaultFontSize * lineHeightMultiplier;

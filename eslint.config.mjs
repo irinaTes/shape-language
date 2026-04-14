@@ -20,6 +20,7 @@ const eslintConfig = [
       "no-unused-vars": "off",
       "unused-imports/no-unused-imports": "warn",
       "unused-imports/no-unused-vars": ["off"],
+      "react-hooks/exhaustive-deps": "off",
     },
   },
 ];

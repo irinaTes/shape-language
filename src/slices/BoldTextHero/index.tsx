@@ -22,8 +22,9 @@ const BoldTextHero: FC<BoldTextHeroProps> = ({ slice }) => {
     >
       <h1 className="flex flex-col gap-0">
         <motion.span
-          className="text-[80px] lg:text-[150px] xl:text-[350px] font-black leading-64 text-transparent"
-          style={{ WebkitTextStroke: "2px white", willChange: 'transform, opacity' }}
+          className="glitch text-[80px] lg:text-[150px] xl:text-[350px] font-black leading-64 text-transparent"
+          style={{ WebkitTextStroke: "2px #00f5ff", willChange: 'transform, opacity' }}
+          data-text={slice.primary.text}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -32,8 +33,9 @@ const BoldTextHero: FC<BoldTextHeroProps> = ({ slice }) => {
           {slice.primary.text}
         </motion.span>
         <motion.span
-          className="text-[80px] lg:text-[150px] xl:text-[350px] text-right leading-64 font-black text-white"
+          className="glitch text-[80px] lg:text-[150px] xl:text-[350px] text-right leading-64 font-black text-white"
           style={{ willChange: 'transform, opacity' }}
+          data-text={slice.primary.secondary_text}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}

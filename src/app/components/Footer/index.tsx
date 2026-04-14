@@ -143,7 +143,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
                     <PrismicLink
                         key={index}
                         field={item.item_link}
-                        className="hover:opacity-45 px-3 py-2 text-lg font-medium transition-all duration-300 uppercase text-white"
+                        className="nav-link px-3 py-2 text-lg font-medium transition-all duration-300 uppercase text-white"
                     >
                         {item.item_text}
                     </PrismicLink>
@@ -152,7 +152,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
 
             {/* Copyright */}
             {isFilled.keyText(copyright_text) && (
-                <div className="border-t border-white/20 pt-8">
+                <div className="border-t glow-divider pt-8">
                     <p className="text-sm opacity-75 text-center">
                         {copyright_text}
                     </p>

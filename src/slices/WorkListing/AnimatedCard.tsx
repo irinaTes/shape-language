@@ -6,21 +6,55 @@ import { ReactNode } from "react";
 interface AnimatedCardProps {
   children: ReactNode;
   className?: string;
-  index: number
+  index: number;
 }
 
-export function AnimatedImage({ children, index, className }: AnimatedCardProps) {
+interface AnimatedChildProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}
+
+// Shared variants used by all children inside the card
+const childVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
+// Card wrapper — animates in first, children stagger after
+export function AnimatedCard({ children, className, index }: AnimatedCardProps) {
   return (
     <motion.div
-      key={index}
-      className={`relative ${className}`}
-      style={{ willChange: 'transform, opacity' }}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
       transition={{
-        duration: 0.4,
-        delay: index * 0.05,
+        duration: 1.0,
+        delay: index * 0.08,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
+      variants={{
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0 },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+export function AnimatedImage({ children, className }: Omit<AnimatedCardProps, 'index'>) {
+  return (
+    <motion.div
+      className={`relative ${className ?? ''}`}
+      variants={childVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.8,
+        delay: 0.2,
         ease: [0.25, 0.1, 0.25, 1],
       }}
     >
@@ -29,32 +63,18 @@ export function AnimatedImage({ children, index, className }: AnimatedCardProps)
   );
 }
 
-interface AnimatedTextProps {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-}
-
-const textVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-  },
-};
-
-export function AnimatedText({ children, className, delay = 0 }: AnimatedTextProps) {
+export function AnimatedText({ children, className, delay = 0 }: AnimatedChildProps) {
   return (
     <motion.div
       className={className}
+      variants={childVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      variants={textVariants}
+      viewport={{ once: true, margin: "-80px" }}
       transition={{
-        duration: 0.5,
+        duration: 0.8,
+        delay: 0.35 + delay,
         ease: [0.25, 0.1, 0.25, 1],
-        delay,
       }}
     >
       {children}

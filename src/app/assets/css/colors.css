@@ -1,4 +1,77 @@
+:root {
+  --cyber-cyan: #00f5ff;
+  --cyber-cyan-dim: #00c8d4;
+  --cyber-cyan-glow: rgba(0, 245, 255, 0.35);
+  --cyber-cyan-glow-strong: rgba(0, 245, 255, 0.7);
+}
 
 .bg-primary {
-    background-color: #000000 /* oklch(21% 0.034 264.665) = #101828 */;
+    background-color: #000000;
+}
+
+/* Neon glow utilities */
+.neon-text {
+  color: var(--cyber-cyan);
+  text-shadow:
+    0 0 6px var(--cyber-cyan-glow-strong),
+    0 0 20px var(--cyber-cyan-glow),
+    0 0 60px rgba(0, 245, 255, 0.15);
+}
+
+.neon-border {
+  border-color: var(--cyber-cyan) !important;
+  box-shadow:
+    0 0 8px var(--cyber-cyan-glow),
+    inset 0 0 8px rgba(0, 245, 255, 0.05);
+}
+
+.neon-border:hover {
+  box-shadow:
+    0 0 16px var(--cyber-cyan-glow-strong),
+    0 0 40px var(--cyber-cyan-glow),
+    inset 0 0 12px rgba(0, 245, 255, 0.08);
+}
+
+/* Card glow — subtle ambient cyan shadow */
+.glow-card {
+  box-shadow:
+    0 0 0 1px rgba(0, 245, 255, 0.08),
+    0 8px 40px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(0, 245, 255, 0.06);
+  transition: box-shadow 0.4s ease;
+}
+
+.glow-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(0, 245, 255, 0.2),
+    0 8px 60px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(0, 245, 255, 0.12),
+    0 0 120px rgba(0, 245, 255, 0.05);
+}
+
+/* Header bottom glow when scrolled */
+.header-scrolled {
+  border-bottom: 1px solid rgba(0, 245, 255, 0.15);
+  box-shadow:
+    0 1px 0 rgba(0, 245, 255, 0.08),
+    0 4px 30px rgba(0, 245, 255, 0.06),
+    0 8px 60px rgba(0, 0, 0, 0.8);
+}
+
+/* Divider glow */
+.glow-divider {
+  border-color: rgba(0, 245, 255, 0.15) !important;
+  box-shadow: 0 1px 8px rgba(0, 245, 255, 0.1);
+}
+
+/* Nav link hover glow */
+.nav-link {
+  transition: color 0.2s, text-shadow 0.2s;
+}
+.nav-link:hover {
+  color: var(--cyber-cyan) !important;
+  text-shadow:
+    0 0 8px var(--cyber-cyan-glow-strong),
+    0 0 20px var(--cyber-cyan-glow);
+  opacity: 1 !important;
 }

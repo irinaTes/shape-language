@@ -31,6 +31,11 @@ const WorkHero: FC<WorkHeroProps> = ({ slice }) => {
         transition={{ duration: 1.2, ease: "easeOut" }}
       />
 
+      {/* Bottom glow fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-48 z-10 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.04) 60%, rgba(0,0,0,0.6))' }}
+      />
+
       {/* Matte glass effect overlay */}
       <motion.div
         className="absolute inset-0 backdrop-blur-md bg-black/20"
