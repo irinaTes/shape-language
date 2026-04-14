@@ -23,22 +23,21 @@ const BoldTextHero: FC<BoldTextHeroProps> = ({ slice }) => {
       <h1 className="flex flex-col gap-0">
         <motion.span
           className="text-[80px] lg:text-[150px] xl:text-[350px] font-black leading-64 text-transparent"
-          style={{
-            WebkitTextStroke: "2px white",
-          }}
-          initial={{ opacity: 0, y: 50 }}
+          style={{ WebkitTextStroke: "2px white", willChange: 'transform, opacity' }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           {slice.primary.text}
         </motion.span>
         <motion.span
           className="text-[80px] lg:text-[150px] xl:text-[350px] text-right leading-64 font-black text-white"
-          initial={{ opacity: 0, y: 50 }}
+          style={{ willChange: 'transform, opacity' }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
         >
           {slice.primary.secondary_text}
         </motion.span>

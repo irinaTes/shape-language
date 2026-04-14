@@ -138,6 +138,7 @@ interface VectoryAnimationProps {
 
 const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const animationIdRef = useRef<number>(null);
   const particlesRef = useRef<Particle[]>([]);
   const planetsRef = useRef<Planet[]>([]);
@@ -145,10 +146,12 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
   const tickRef = useRef(0);
   const spikeLengthRef = useRef(0);
   const dimensionsRef = useRef({ w: 0, h: 0, A: 0, B: 0, a: 0, b: 0 });
+  const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const setup = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    ctxRef.current = canvas.getContext("2d");
 
     tickRef.current = 0;
     planetsRef.current = [];
@@ -193,7 +196,7 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = ctxRef.current;
     if (!ctx) return;
 
     const { w, h } = dimensionsRef.current;
@@ -290,12 +293,8 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
   };
 
   const clear = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
+    const ctx = ctxRef.current;
     if (!ctx) return;
-
     const { w, h } = dimensionsRef.current;
     ctx.clearRect(0, 0, w, h);
   };
@@ -332,10 +331,7 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
   };
 
   const draw = (now: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
+    const ctx = ctxRef.current;
     if (!ctx) return;
 
     clear();
@@ -360,7 +356,10 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
   };
 
   const handleResize = () => {
-    reset();
+    if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
+    resizeTimerRef.current = setTimeout(() => {
+      reset();
+    }, 150);
   };
 
   useEffect(() => {
@@ -369,17 +368,16 @@ const VectoryAnimation: FC<VectoryAnimationProps> = ({ className }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    window.addEventListener("resize", handleResize);
-    canvas.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("resize", handleResize, { passive: true });
+    canvas.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     animationIdRef.current = requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener("resize", handleResize);
       canvas?.removeEventListener("mousemove", handleMouseMove);
-      if (animationIdRef.current) {
-        cancelAnimationFrame(animationIdRef.current);
-      }
+      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
     };
   }, []);
 

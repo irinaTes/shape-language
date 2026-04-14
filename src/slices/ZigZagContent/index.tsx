@@ -96,13 +96,13 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
           <motion.div
             key={index}
             className={`relative mb-32 md:mb-48 lg:mb-64 ${isEven ? "ml-auto" : ""}`}
-            initial={{ opacity: 0, x: isEven ? 50 : -50 }}
+            style={{ willChange: 'transform, opacity' }}
+            initial={{ opacity: 0, x: isEven ? 24 : -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{
-              duration: 0.8,
-              delay: 0.15,
-              ease: [0.6, 0.05, 0.01, 0.9],
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
             }}
           >
             <div
@@ -113,20 +113,15 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
               }}
             >
               <div className="w-full">
-                <div className={`flex flex-col w-full items-center gap-16 md:gap-10 lg:gap-20 xl:gap-40 ${isEven ? "lg:flex-row-reverse  justify-between" : "lg:flex-row  justify-between"
-                  }`}>
-                  {/* Before/After Image Slider */}
+                <div className={`flex flex-col w-full items-center gap-16 md:gap-10 lg:gap-20 xl:gap-40 ${isEven ? "lg:flex-row-reverse justify-between" : "lg:flex-row justify-between"}`}>
                   {item.before_image?.url && item.after_image?.url && (
                     <motion.div
                       className="relative flex-shrink-0 w-full lg:w-[55%]"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
+                      style={{ willChange: 'opacity' }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
                       viewport={{ once: true, margin: "-100px" }}
-                      transition={{
-                        duration: 0.8,
-                        delay: 0.3,
-                        ease: [0.6, 0.05, 0.01, 0.9],
-                      }}
+                      transition={{ duration: 0.6, delay: 0.15 }}
                     >
                       <BeforeAfterSlider
                         beforeImage={item.before_image}
@@ -135,18 +130,14 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
                     </motion.div>
                   )}
 
-                  {/* Text content */}
                   {item.text && (
                     <motion.div
-                      className="flex-1 max-w-4xl text-xl  lg:text-xl xl:text-2xl leading-relaxed"
-                      initial={{ opacity: 0, y: 30 }}
+                      className="flex-1 max-w-4xl text-xl lg:text-xl xl:text-2xl leading-relaxed"
+                      style={{ willChange: 'transform, opacity' }}
+                      initial={{ opacity: 0, y: 16 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-100px" }}
-                      transition={{
-                        duration: 0.8,
-                        delay: 0.5,
-                        ease: [0.6, 0.05, 0.01, 0.9],
-                      }}
+                      transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                     >
                       <PrismicRichText field={item.text} />
                     </motion.div>

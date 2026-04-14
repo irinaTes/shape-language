@@ -44,12 +44,19 @@ const PageWithLoading: FC<PageWithLoadingProps> = ({ children }) => {
     setLoaded3DScenes((prev) => prev + 1);
   }, []);
 
-  // Give components time to register themselves
+  // Give components one frame to register themselves, then check
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = requestAnimationFrame(() => {
       setIsInitialized(true);
-    }, 1000);
-    return () => clearTimeout(timer);
+    });
+    // Safety timeout: never block the page for more than 4 seconds
+    const safetyTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 4000);
+    return () => {
+      cancelAnimationFrame(timer);
+      clearTimeout(safetyTimer);
+    };
   }, []);
 
   // Check if everything is loaded

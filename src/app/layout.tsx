@@ -11,10 +11,20 @@ import TextBackground from "@/components/TextBackground";
 import PageWithLoading from "@/components/PageWithLoading";
 
 const DarkerGrotesque = localFont({
-  src: './assets/font/DarkerGrotesque.ttf',
+  src: [
+    {
+      path: './assets/font/DarkerGrotesque.woff2',
+      format: 'woff2',
+    },
+    {
+      path: './assets/font/DarkerGrotesque.ttf',
+      format: 'truetype',
+    },
+  ],
   variable: '--font-grotesque',
   display: "swap",
   fallback: ["system-ui", "-apple-system", "sans-serif"],
+  preload: true,
 });
 
 export default async function RootLayout({

@@ -68,46 +68,48 @@ export default function Header({ data }: { data: HeaderDocument }) {
     }, []);
 
     useEffect(() => {
+        // Cache sections once — only re-query if DOM changes
+        let sections: NodeListOf<Element> | null = null;
+        let rafId: number | null = null;
+
         const detectBackgroundColor = () => {
-            // Get all section elements
-            const sections = document.querySelectorAll('section');
-            const headerRect = document.querySelector('header')?.getBoundingClientRect();
+            if (rafId !== null) return; // already scheduled, skip
+            rafId = requestAnimationFrame(() => {
+                rafId = null;
+                if (!sections) sections = document.querySelectorAll('section');
+                const headerEl = document.querySelector('header');
+                if (!headerEl) return;
+                const headerRect = headerEl.getBoundingClientRect();
 
-            if (!headerRect) return;
+                let currentSection: Element | null = null;
+                sections.forEach((section) => {
+                    const sectionRect = section.getBoundingClientRect();
+                    if (sectionRect.top <= headerRect.bottom && sectionRect.bottom >= headerRect.top) {
+                        currentSection = section;
+                    }
+                });
 
-            // Find which section is currently behind the header
-            let currentSection: Element | null = null;
-            sections.forEach((section) => {
-                const sectionRect = section.getBoundingClientRect();
-                // Check if section overlaps with header
-                if (sectionRect.top <= headerRect.bottom && sectionRect.bottom >= headerRect.top) {
-                    currentSection = section;
+                if (currentSection) {
+                    const bgColor = window.getComputedStyle(currentSection).backgroundColor;
+                    const rgb = bgColor.match(/\d+/g);
+                    if (rgb) {
+                        const hex = '#' + rgb.map(x => {
+                            const hexValue = parseInt(x).toString(16);
+                            return hexValue.length === 1 ? '0' + hexValue : hexValue;
+                        }).join('');
+                        setTextColor(getContrastColor(hex));
+                    }
                 }
             });
-
-            if (currentSection) {
-                // Get computed background color
-                const bgColor = window.getComputedStyle(currentSection).backgroundColor;
-
-                // Convert rgb to hex
-                const rgb = bgColor.match(/\d+/g);
-                if (rgb) {
-                    const hex = '#' + rgb.map(x => {
-                        const hexValue = parseInt(x).toString(16);
-                        return hexValue.length === 1 ? '0' + hexValue : hexValue;
-                    }).join('');
-
-                    setTextColor(getContrastColor(hex));
-                }
-            }
         };
 
-        // Detect on scroll
-        window.addEventListener('scroll', detectBackgroundColor);
-        // Detect initially
+        window.addEventListener('scroll', detectBackgroundColor, { passive: true });
         detectBackgroundColor();
 
-        return () => window.removeEventListener('scroll', detectBackgroundColor);
+        return () => {
+            window.removeEventListener('scroll', detectBackgroundColor);
+            if (rafId !== null) cancelAnimationFrame(rafId);
+        };
     }, []);
 
     const handleVideoHover = () => {

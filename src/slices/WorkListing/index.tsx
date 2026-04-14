@@ -72,6 +72,8 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
                     <PrismicNextImage
                       field={item.data.main_image}
                       className="w-full h-auto object-cover"
+                      sizes="(max-width: 768px) 100vw, 85vw"
+                      priority={index === 0}
                     />
                   </AnimatedImage>
                   <div className="border-t border-white/10 px-6 py-4 mt-4">

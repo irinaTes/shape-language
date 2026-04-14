@@ -160,7 +160,7 @@ function ParticleBackgroundInner() {
     <div className="fixed inset-0 z-0 pointer-events-none">
       <Canvas
         camera={{ position: [0, 0, 12], fov: 50 }}
-        dpr={[1, 1.5]}
+        dpr={[1, 1]}
         gl={{ antialias: false }}
         style={{ background: '#080808' }}
       >

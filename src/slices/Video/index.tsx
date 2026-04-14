@@ -22,30 +22,24 @@ const Video: FC<VideoProps> = ({ slice }) => {
       data-slice-variation={slice.variation}
       className="w-full px-4 lg:px-20 py-20 lg:py-48 relative overflow-hidden"
     >
-      {/* Animated background with scale effect */}
+      {/* Background */}
       <motion.div
         className="absolute inset-0 -z-10"
-        style={{ backgroundColor: background_color || "transparent" }}
-        initial={{ scale: 0.8, opacity: 0 }}
-        whileInView={{ scale: 1, opacity: 1 }}
+        style={{ backgroundColor: background_color || "transparent", willChange: 'opacity' }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{
-          duration: 1,
-          ease: [0.6, 0.05, 0.01, 0.9]
-        }}
+        transition={{ duration: 0.6 }}
       />
 
       {/* Animated video player */}
       <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        style={{ willChange: 'transform, opacity' }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{
-          duration: 0.8,
-          delay: 0.2,
-          ease: [0.6, 0.05, 0.01, 0.9]
-        }}
-        className="border border-gray-500  rounded-2xl p-4 md:p-10 "
+        transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+        className="border border-gray-500 rounded-2xl p-4 md:p-10"
       >
         <VideoPlayer
           vimeoUrl={video_url as VimeoUrl}

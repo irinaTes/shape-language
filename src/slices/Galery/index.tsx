@@ -40,33 +40,27 @@ const Galery: FC<GaleryProps> = ({ slice }) => {
             <motion.div
               key={index}
               className={`relative ${item.className}`}
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{
-                duration: 0.6,
-                delay: index * 0.1,
+                duration: 0.5,
+                delay: index * 0.05,
                 ease: [0.6, 0.05, 0.01, 0.9]
               }}
             >
               <motion.div
                 className="relative w-full h-full overflow-hidden rounded-lg"
                 initial={{ scale: 1 }}
-                whileHover={{ scale: 1.15 }}
-                transition={{
-                  duration: 1,
-                  ease: "easeOut",
-                  scale: {
-                    type: "tween",
-                    duration: 4,
-                    ease: "linear"
-                  }
-                }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 <PrismicNextImage
                   field={item.field}
                   className="w-full h-full object-cover"
                   fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  priority={index === 0}
                 />
               </motion.div>
             </motion.div>

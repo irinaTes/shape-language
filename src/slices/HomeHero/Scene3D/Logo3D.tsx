@@ -129,7 +129,7 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
             attenuationColor="#7ec8e3"
             attenuationDistance={3}
             envMapIntensity={2.5}
-            samples={16}
+            samples={4}
             anisotropy={0.2}
             distortion={0.1}
             distortionScale={0.3}

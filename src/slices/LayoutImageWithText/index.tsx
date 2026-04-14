@@ -30,43 +30,42 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
         <div className={cn("w-full flex justify-end px-4 md:px-10", reverse_layout && "justify-start")}>
           <motion.div
             className={cn("w-full flex gap-10 lg:gap-16", reverse_layout ? "flex-col lg:flex-row" : "flex-col-reverse lg:flex-row-reverse items-end")}
-            initial={{ opacity: 0, x: reverse_layout ? -60 : 60 }}
+            style={{ willChange: 'transform, opacity' }}
+            initial={{ opacity: 0, x: reverse_layout ? -30 : 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
 
             <motion.div
               className="w-full md:w-11/12 h-auto cursor-pointer"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              style={{ willChange: 'opacity' }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
             >
-
-
-              <PrismicNextImage field={big_image} />
-
+              <PrismicNextImage field={big_image} sizes="(max-width: 768px) 100vw, 90vw" />
             </motion.div>
-            <div className="w-full flex flex-col gap-20 cursor-pointer" >
+
+            <div className="w-full flex flex-col gap-20 cursor-pointer">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                style={{ willChange: 'transform, opacity' }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="md:w-2/4 "
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="md:w-2/4"
               >
-
-                <PrismicNextImage field={small_image} />
-
+                <PrismicNextImage field={small_image} sizes="(max-width: 768px) 50vw, 30vw" />
               </motion.div>
 
-
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                style={{ willChange: 'transform, opacity' }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
                 className="w-full md:max-w-4xl"
               >
                 <PrismicRichText field={description} />

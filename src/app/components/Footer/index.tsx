@@ -51,22 +51,24 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
     // When footer is visible (scrollYProgress = 1, y = 0): shadow is still visible but less intense
     const shadowHeight = useTransform(scrollYProgress, [0, 1], [800, 50]);
     const shadowOpacity = useTransform(scrollYProgress, [0, 1], [0.95, 0.3]);
+    const shadowBackground = useTransform(
+        shadowOpacity,
+        (opacity) => `linear-gradient(to bottom, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`
+    );
 
     return (
         <motion.footer
             ref={footerRef}
-            style={{ y }}
+            style={{ y, willChange: 'transform' }}
             className="relative text-white py-12 md:py-24 px-4 sm:px-6 lg:px-8 w-full"
         >
             {/* Shadow overlay above content */}
             <motion.div
-                className="absolute inset-x-0  top-0 pointer-events-none z-20"
+                className="absolute inset-x-0 top-0 pointer-events-none z-20"
                 style={{
                     height: shadowHeight,
-                    background: useTransform(
-                        shadowOpacity,
-                        (opacity) => `linear-gradient(to bottom, rgba(0, 0, 0, ${opacity}) 0%, transparent 100%)`
-                    )
+                    background: shadowBackground,
+                    willChange: 'height',
                 }}
             />
 
