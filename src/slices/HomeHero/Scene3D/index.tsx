@@ -7,7 +7,7 @@ import Logo3D from './Logo3D';
 import OrbitWidget from './OrbitWidget';
 import MovingLights from './MovingLights';
 import { useLoadingContext } from '@/components/PageWithLoading';
-import GlowCard from '@/slices/WorkListing/GlowCard';
+// import GlowCard from '@/slices/WorkListing/GlowCard';
 
 function SceneReadyReporter({ onReady }: { onReady: () => void }) {
   const { progress } = useProgress();

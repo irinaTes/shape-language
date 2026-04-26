@@ -1,5 +1,5 @@
 'use client';
-import GlowCard from '@/slices/WorkListing/GlowCard';
+// import GlowCard from '@/slices/WorkListing/GlowCard';
 
 export default function MobileHero() {
   return (
