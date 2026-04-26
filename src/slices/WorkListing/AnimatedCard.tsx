@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 interface AnimatedCardProps {
   children: ReactNode;
@@ -13,6 +13,7 @@ interface AnimatedChildProps {
   children: ReactNode;
   className?: string;
   delay?: number;
+  style?: React.CSSProperties;
 }
 
 // Shared variants used by all children inside the card

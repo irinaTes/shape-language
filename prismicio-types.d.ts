@@ -410,6 +410,7 @@ export type HeaderDocument<Lang extends string = string> =
   >;
 
 type PageDocumentDataSlicesSlice =
+  | AboutSlice
   | ContactFormSlice
   | BoldTextHeroSlice
   | ZigZagContentSlice
@@ -685,6 +686,56 @@ export type AllDocumentTypes =
   | PageDocument
   | WorkDocument
   | WorkContentDocument;
+
+/**
+ * Default variation for About Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export interface AboutSliceDefaultPrimary {
+  heading_line1: prismic.KeyTextField;
+  heading_line2: prismic.KeyTextField;
+  heading_line3: prismic.KeyTextField;
+  role_meta: prismic.KeyTextField;
+  portrait: prismic.ImageField;
+  name_text: prismic.KeyTextField;
+  discipline: prismic.KeyTextField;
+  in_the_field: prismic.KeyTextField;
+  availability: prismic.KeyTextField;
+  lede: prismic.RichTextField;
+  quote: prismic.KeyTextField;
+  quote_cite: prismic.KeyTextField;
+  cta_heading: prismic.KeyTextField;
+  cta_link: prismic.LinkField;
+}
+
+export interface AboutSliceDefaultItem {
+  section_number: prismic.KeyTextField;
+  section_title: prismic.KeyTextField;
+  section_content: prismic.RichTextField;
+}
+
+export type AboutSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  AboutSliceDefaultPrimary,
+  AboutSliceDefaultItem
+>;
+
+/**
+ * Slice variation for *About*
+ */
+type AboutSliceVariation = AboutSliceDefault;
+
+/**
+ * About Shared Slice
+ *
+ * - **API ID**: `about`
+ * - **Description**: About
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type AboutSlice = prismic.SharedSlice<"about", AboutSliceVariation>;
 
 /**
  * Primary content in *BoldTextHero → Default → Primary*
@@ -1648,6 +1699,9 @@ declare module "@prismicio/client" {
       WorkContentDocumentData,
       WorkContentDocumentDataSlicesSlice,
       AllDocumentTypes,
+      AboutSlice,
+      AboutSliceVariation,
+      AboutSliceDefault,
       BoldTextHeroSlice,
       BoldTextHeroSliceDefaultPrimary,
       BoldTextHeroSliceVariation,

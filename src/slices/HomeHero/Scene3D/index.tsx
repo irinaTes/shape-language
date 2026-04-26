@@ -7,6 +7,7 @@ import Logo3D from './Logo3D';
 import OrbitWidget from './OrbitWidget';
 import MovingLights from './MovingLights';
 import { useLoadingContext } from '@/components/PageWithLoading';
+import GlowCard from '@/slices/WorkListing/GlowCard';
 
 function SceneReadyReporter({ onReady }: { onReady: () => void }) {
   const { progress } = useProgress();
@@ -33,14 +34,6 @@ export default function Scene3D({ viewportMode }: Scene3DProps) {
   const displayRotationRef = useRef<[number, number, number]>([0, 0, 0]);
   const isDraggingRef = useRef(false);
   const loadingContext = useLoadingContext();
-  const hasRegistered = useRef(false);
-
-  useEffect(() => {
-    if (!hasRegistered.current && loadingContext) {
-      loadingContext.register3DScene();
-      hasRegistered.current = true;
-    }
-  }, [loadingContext]);
 
   const handleReady = () => {
     loadingContext?.scene3DReady();
@@ -85,6 +78,24 @@ export default function Scene3D({ viewportMode }: Scene3DProps) {
         displayRotationRef={displayRotationRef}
         isDraggingRef={isDraggingRef}
       />
+
+      {/* View Reel CTA — centred below the 3D logo */}
+      {/* <div className="hidden md:block absolute bottom-[8%] left-1/2 -translate-x-1/2 pointer-events-auto">
+        <GlowCard className="rounded-full">
+          <a
+            href="#reel"
+            className="flex items-center justify-between gap-34 px-8 py-3 border border-[#1C2029] rounded-full text-[#E6EAF2] no-underline text-[11px] uppercase tracking-[0.18em] transition-all duration-300 min-w-[220px] hover:border-[#00f5ff]/40 hover:shadow-[0_0_18px_2px_rgba(0,245,255,0.15)]"
+            style={{ fontFamily: 'var(--font-space-mono)', boxShadow: '0 0 12px 1px rgba(0,245,255,0.08)' }}
+          >
+            <span>View Reel</span>
+            <span className="w-5 h-5 rounded-full border border-[#1C2029] grid place-items-center">
+              <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
+                <path d="M2 8L8 2M8 2H3.5M8 2V6.5" stroke="currentColor" strokeWidth="1" />
+              </svg>
+            </span>
+          </a>
+        </GlowCard>
+      </div> */}
     </div>
   );
 }

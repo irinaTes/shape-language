@@ -34,9 +34,14 @@ const BeforeAfterSlider: FC<BeforeAfterSliderProps> = ({
     setIsDragging(true);
   }, []);
 
-  const handleTouchStart = useCallback(() => {
-    setIsDragging(true);
-  }, []);
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      e.preventDefault();
+      setIsDragging(true);
+      updateSliderPosition(e.touches[0].clientX);
+    },
+    [updateSliderPosition]
+  );
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
@@ -49,6 +54,7 @@ const BeforeAfterSlider: FC<BeforeAfterSliderProps> = ({
   const handleTouchMove = useCallback(
     (e: TouchEvent) => {
       if (!isDragging) return;
+      e.preventDefault();
       updateSliderPosition(e.touches[0].clientX);
     },
     [isDragging, updateSliderPosition]
@@ -70,7 +76,7 @@ const BeforeAfterSlider: FC<BeforeAfterSliderProps> = ({
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleEnd);
-      window.addEventListener("touchmove", handleTouchMove);
+      window.addEventListener("touchmove", handleTouchMove, { passive: false });
       window.addEventListener("touchend", handleEnd);
     }
 
@@ -91,6 +97,7 @@ const BeforeAfterSlider: FC<BeforeAfterSliderProps> = ({
       ref={containerRef}
       className={`relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl select-none ${className}`}
       onClick={handleContainerClick}
+      onTouchStart={handleTouchStart}
     >
       {/* After Image (Bottom layer - fully visible) */}
       <div className="absolute inset-0">
@@ -127,7 +134,6 @@ const BeforeAfterSlider: FC<BeforeAfterSliderProps> = ({
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center cursor-ew-resize hover:scale-110 transition-transform"
           onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
         >
           <GripVertical className="w-5 h-5 md:w-6 md:h-6 text-gray-600" />
         </div>

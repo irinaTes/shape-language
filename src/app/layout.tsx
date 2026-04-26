@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { PrismicPreview } from "@prismicio/next";
 import { createClient, repositoryName } from "@/prismicio";
 import "./globals.css";
@@ -7,7 +8,7 @@ import localFont from "next/font/local";
 import { cn } from "./utils/utils";
 import Footer from "./components/Footer";
 import ParticleBackground from "@/components/ParticleBackground";
-import TextBackground from "@/components/TextBackground";
+import GridBackground from "@/components/GridBackground";
 import PageWithLoading from "@/components/PageWithLoading";
 import CursorTrail from "@/components/CursorTrail";
 
@@ -39,6 +40,12 @@ const SpaceGrotesk = localFont({
   preload: true,
 });
 
+export const metadata: Metadata = {
+  icons: {
+    icon: "/assets/favicon.ico",
+  },
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -59,11 +66,11 @@ export default async function RootLayout({
         <ParticleBackground />
         <CursorTrail />
         <div className="relative">
-          <TextBackground />
+          <GridBackground />
           <PageWithLoading>
             <Header data={header as HeaderDocument} />
 
-            <div className="flex flex-1 flex-col relative z-10">
+            <div className="flex flex-1 flex-col relative z-10 mb-24">
               {children}
               <PrismicPreview repositoryName={repositoryName} />
             </div>

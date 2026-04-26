@@ -30,8 +30,11 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
   const startTimeRef = useRef<number | null>(null);
 
   const scale = useMemo(() => {
-    if (size.width < 640) return 22;
-    if (size.width < 1024) return 35;
+    if (size.width < 640)  return 22;
+    if (size.width < 1024) return 30;
+    if (size.width < 1280) return 34;
+    if (size.width < 1600) return 38;
+    if (size.width < 2048) return 44;
     return 50;
   }, [size.width]);
 

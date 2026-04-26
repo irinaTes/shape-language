@@ -1,5 +1,6 @@
 'use client'
 import { FC, useState, useEffect, createContext, useContext, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import LoadingScreen from "./LoadingScreen";
 
 interface LoadingContextType {
@@ -21,6 +22,7 @@ interface PageWithLoadingProps {
 }
 
 const PageWithLoading: FC<PageWithLoadingProps> = ({ children }) => {
+  const pathname = usePathname();
   const [totalVideos, setTotalVideos] = useState(0);
   const [loadedVideos, setLoadedVideos] = useState(0);
   const [total3DScenes, setTotal3DScenes] = useState(0);
@@ -44,6 +46,16 @@ const PageWithLoading: FC<PageWithLoadingProps> = ({ children }) => {
     setLoaded3DScenes((prev) => prev + 1);
   }, []);
 
+  // Reset on every navigation
+  useEffect(() => {
+    setIsLoading(true);
+    setIsInitialized(false);
+    setTotalVideos(0);
+    setLoadedVideos(0);
+    setTotal3DScenes(0);
+    setLoaded3DScenes(0);
+  }, [pathname]);
+
   // Give components one frame to register themselves, then check
   useEffect(() => {
     const timer = requestAnimationFrame(() => {
@@ -57,7 +69,7 @@ const PageWithLoading: FC<PageWithLoadingProps> = ({ children }) => {
       cancelAnimationFrame(timer);
       clearTimeout(safetyTimer);
     };
-  }, []);
+  }, [pathname]);
 
   // Check if everything is loaded
   useEffect(() => {

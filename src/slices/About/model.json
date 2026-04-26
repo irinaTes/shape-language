@@ -1,0 +1,102 @@
+{
+  "id": "about",
+  "type": "SharedSlice",
+  "name": "About",
+  "description": "About",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading_line1": {
+          "type": "Text",
+          "config": { "label": "Heading line 1 (outline)", "placeholder": "Every shape" }
+        },
+        "heading_line2": {
+          "type": "Text",
+          "config": { "label": "Heading line 2 (solid)", "placeholder": "has a language" }
+        },
+        "heading_line3": {
+          "type": "Text",
+          "config": { "label": "Heading line 3 (outline)", "placeholder": "mine speaks." }
+        },
+        "role_meta": {
+          "type": "Text",
+          "config": { "label": "Role meta tag", "placeholder": "CGI Generalist · Motion" }
+        },
+        "portrait": {
+          "type": "Image",
+          "config": {
+            "label": "Portrait photo",
+            "constraint": { "width": 800, "height": 1000 },
+            "thumbnails": []
+          }
+        },
+        "name_text": {
+          "type": "Text",
+          "config": { "label": "Name", "placeholder": "Your Name" }
+        },
+        "discipline": {
+          "type": "Text",
+          "config": { "label": "Discipline", "placeholder": "CGI · Motion · VFX" }
+        },
+        "in_the_field": {
+          "type": "Text",
+          "config": { "label": "In the field since", "placeholder": "Since 2014 · 12 yrs" }
+        },
+        "availability": {
+          "type": "Text",
+          "config": { "label": "Availability status", "placeholder": "Open for Q3 / Q4 2026" }
+        },
+        "lede": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Lede paragraph",
+            "placeholder": "Shape Language is how I think…",
+            "allowTargetBlank": false,
+            "multi": "paragraph,strong,em"
+          }
+        },
+        "quote": {
+          "type": "Text",
+          "config": { "label": "Pull quote", "placeholder": "I believe the right image…" }
+        },
+        "quote_cite": {
+          "type": "Text",
+          "config": { "label": "Pull quote citation", "placeholder": "— Working principle · 01" }
+        },
+        "cta_heading": {
+          "type": "Text",
+          "config": { "label": "CTA heading", "placeholder": "Have a frame in your head you can't quite reach?" }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": { "label": "CTA link", "allowTargetBlank": false }
+        }
+      },
+      "items": {
+        "section_number": {
+          "type": "Text",
+          "config": { "label": "Section number", "placeholder": "01" }
+        },
+        "section_title": {
+          "type": "Text",
+          "config": { "label": "Section title", "placeholder": "Premise" }
+        },
+        "section_content": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Section content",
+            "placeholder": "Section body text…",
+            "allowTargetBlank": true,
+            "multi": "paragraph,strong,em,hyperlink"
+          }
+        }
+      }
+    }
+  ]
+}

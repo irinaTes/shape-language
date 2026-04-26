@@ -68,48 +68,45 @@ export default function Header({ data }: { data: HeaderDocument }) {
     }, []);
 
     useEffect(() => {
-        // Cache sections once — only re-query if DOM changes
-        let sections: NodeListOf<Element> | null = null;
-        let rafId: number | null = null;
+        const sections = Array.from(document.querySelectorAll<HTMLElement>('section'));
+        if (sections.length === 0) return;
 
-        const detectBackgroundColor = () => {
-            if (rafId !== null) return; // already scheduled, skip
-            rafId = requestAnimationFrame(() => {
-                rafId = null;
-                if (!sections) sections = document.querySelectorAll('section');
-                const headerEl = document.querySelector('header');
-                if (!headerEl) return;
-                const headerRect = headerEl.getBoundingClientRect();
+        // Pre-compute colors once at mount — zero layout reads during scroll
+        const colorMap = new Map<Element, 'light' | 'dark'>();
+        sections.forEach(section => {
+            const bg = window.getComputedStyle(section).backgroundColor;
+            const rgb = bg.match(/\d+/g);
+            if (rgb && rgb.length >= 3) {
+                const hex = '#' + rgb.slice(0, 3).map(x => parseInt(x).toString(16).padStart(2, '0')).join('');
+                colorMap.set(section, getContrastColor(hex));
+            }
+        });
 
-                let currentSection: Element | null = null;
-                sections.forEach((section) => {
-                    const sectionRect = section.getBoundingClientRect();
-                    if (sectionRect.top <= headerRect.bottom && sectionRect.bottom >= headerRect.top) {
-                        currentSection = section;
-                    }
+        const headerEl = document.querySelector('header');
+        const headerH = headerEl?.getBoundingClientRect().height ?? 80;
+        const bottomMargin = Math.max(0, window.innerHeight - headerH - 1);
+
+        const active = new Set<Element>();
+        const observer = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) active.add(entry.target);
+                    else active.delete(entry.target);
                 });
-
-                if (currentSection) {
-                    const bgColor = window.getComputedStyle(currentSection).backgroundColor;
-                    const rgb = bgColor.match(/\d+/g);
-                    if (rgb) {
-                        const hex = '#' + rgb.map(x => {
-                            const hexValue = parseInt(x).toString(16);
-                            return hexValue.length === 1 ? '0' + hexValue : hexValue;
-                        }).join('');
-                        setTextColor(getContrastColor(hex));
+                // Pick the last DOM-order section overlapping the header stripe
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    if (active.has(sections[i])) {
+                        const color = colorMap.get(sections[i]);
+                        if (color) setTextColor(color);
+                        break;
                     }
                 }
-            });
-        };
+            },
+            { rootMargin: `-${headerH}px 0px -${bottomMargin}px 0px`, threshold: 0 }
+        );
 
-        window.addEventListener('scroll', detectBackgroundColor, { passive: true });
-        detectBackgroundColor();
-
-        return () => {
-            window.removeEventListener('scroll', detectBackgroundColor);
-            if (rafId !== null) cancelAnimationFrame(rafId);
-        };
+        sections.forEach(s => observer.observe(s));
+        return () => observer.disconnect();
     }, []);
 
     const handleVideoHover = () => {
@@ -169,7 +166,7 @@ export default function Header({ data }: { data: HeaderDocument }) {
 
                     <Link href="/" className="relative inline-block z-[60]">
                         {/* match the logo height (was h-8) */}
-                        <div className="relative block h-20 w-36">
+                        <div className="relative block h-10 w-16 md:w-36 ">
                             {/* Mobile logo */}
                             <div
                                 className={cn(

@@ -4,15 +4,9 @@ import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { createClient } from "@/prismicio";
 import { AnimatedText, AnimatedImage, AnimatedCard } from "./AnimatedCard";
-import GlowCard from "./GlowCard";
 
-/**
- * Props for `WorkListing`.
- */
 export type WorkListingProps = SliceComponentProps<Content.WorkListingSlice>;
 
-// Predefined card configurations for scattered positioning
-// Mobile: full width, centered | Desktop: varied widths and positions
 const cardConfigs = [
   { width: "w-full md:w-[85%]", marginLeft: "ml-0 md:ml-[0%]" },
   { width: "w-full md:w-[80%]", marginLeft: "ml-0 md:ml-[20%]" },
@@ -24,7 +18,6 @@ const cardConfigs = [
   { width: "w-full md:w-[83%]", marginLeft: "ml-0 md:ml-[17%]" },
 ];
 
-// Simple hash function to get consistent "random" index based on item id
 function getConfigIndex(id: string): number {
   let hash = 0;
   for (let i = 0; i < id.length; i++) {
@@ -34,9 +27,6 @@ function getConfigIndex(id: string): number {
   return Math.abs(hash) % cardConfigs.length;
 }
 
-/**
- * Component for "WorkListing" Slices.
- */
 const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
   const client = createClient();
 
@@ -58,43 +48,101 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
     >
       {workItems.map((item, index) => {
         const config = cardConfigs[getConfigIndex(item.id)];
+        const ix = `§ ${String(index + 1).padStart(2, "0")}`;
+
         return (
-          <AnimatedCard key={item.id} index={index} className={`${config.width} ${config.marginLeft} md:min-w-[300px] max-w-[1200px]`}>
-              <PrismicNextLink
-                document={item}
-                className="block group"
-              >
-                <GlowCard className="flex flex-col p-2 md:p-10 mb-10 overflow-hidden border border-white/10 rounded-xl glow-card transition-all duration-500 bg-white/[0.03]">
-                  <AnimatedImage>
-                    <PrismicNextImage
-                      field={item.data.main_image}
-                      className="w-full h-auto object-cover"
-                      sizes="(max-width: 768px) 100vw, 85vw"
-                      priority={index === 0}
-                    />
-                  </AnimatedImage>
-                  <div className="border-t border-white/10 px-6 py-4 mt-4">
-                    <div className="flex justify-between items-start font-medium">
-                      <AnimatedText delay={0.2}>
-                        <h2 className="text-lg md:text-xl">
-                          {item.data.main_title}
-                        </h2>
-                      </AnimatedText>
-                      {item.data.year && (
-                        <AnimatedText delay={0.3}>
-                          <span className="text-lg md:text-xl text-white/50">
-                            {item.data.year}
-                          </span>
-                        </AnimatedText>
-                      )}
-                    </div>
-                    <AnimatedText className="font-normal text-[14px] mt-2 text-white/60" delay={0.4}>
-                      <PrismicRichText field={item.data.main_description} />
-                    </AnimatedText>
-                  </div>
-                </GlowCard>
-              </PrismicNextLink>
-            </AnimatedCard>
+          <AnimatedCard
+            key={item.id}
+            index={index}
+            className={`${config.width} ${config.marginLeft} md:min-w-[18.75rem] max-w-[75rem]`}
+          >
+            <PrismicNextLink document={item} className="block group" style={{ textDecoration: "none", color: "inherit" }}>
+
+              {/* ── Image frame ───────────────────────────────────────── */}
+              <div className="relative aspect-video overflow-hidden border border-white/[0.08] transition-colors duration-300 group-hover:border-[var(--cyber-cyan)]">
+
+                {/* bottom gradient */}
+                <div
+                  className="absolute inset-0 pointer-events-none z-10"
+                  style={{ background: "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.65))" }}
+                />
+
+                {/* index — top left */}
+                <span
+                  className="absolute top-4 left-4 z-20 text-white/70"
+                  style={{ fontFamily: "var(--font-space-mono)", fontSize: 10, letterSpacing: "0.24em", textTransform: "uppercase" }}
+                >
+                  {ix} · {item.data.main_title}
+                </span>
+
+                {/* year — top right */}
+                {item.data.year && (
+                  <span
+                    className="absolute top-4 right-4 z-20 text-white/70"
+                    style={{ fontFamily: "var(--font-space-mono)", fontSize: 10, letterSpacing: "0.24em" }}
+                  >
+                    {item.data.year}
+                  </span>
+                )}
+
+                {/* image */}
+                <AnimatedImage>
+                  <PrismicNextImage
+                    field={item.data.main_image}
+                    className="w-full h-auto object-cover"
+                    sizes="(max-width: 768px) 100vw, 85vw"
+                    priority={index === 0}
+                  />
+                </AnimatedImage>
+
+                {/* title + arrow — bottom overlay */}
+                <div className="absolute bottom-0 left-0 right-0 z-20 flex items-end justify-between gap-6 px-6 pb-5">
+                  <AnimatedText delay={0.2}>
+                    <h2
+                      className="m-0 font-bold text-white transition-colors duration-300 group-hover:text-[var(--cyber-cyan)]"
+                      style={{ fontSize: "clamp(32px, 5vw, 56px)", lineHeight: 0.9, letterSpacing: "-0.04em" }}
+                    >
+                      {item.data.main_title}
+                    </h2>
+                  </AnimatedText>
+
+                  {/* arrow box */}
+                  <span
+                    className="shrink-0 grid place-items-center border border-white/60 transition-all duration-300 group-hover:border-[var(--cyber-cyan)] group-hover:bg-[var(--cyber-cyan)]"
+                    style={{ width: 56, height: 56 }}
+                    aria-hidden="true"
+                  >
+                    <span
+                      className="relative inline-block transition-transform duration-300 group-hover:translate-x-1 bg-white group-hover:bg-[#0a0d0e]"
+                      style={{ width: 22, height: 1 }}
+                    >
+                      <span
+                        className="absolute right-0 -top-[3px] w-[7px] h-[7px] border-t border-r border-white group-hover:border-[#0a0d0e] rotate-45 block"
+                      />
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              {/* ── Footer ────────────────────────────────────────────── */}
+              <div className="mt-3 flex justify-between items-start gap-8">
+                <AnimatedText
+                  className="text-white/60 leading-relaxed max-w-[70%] [&_p]:m-0"
+                  delay={0.4}
+                  style={{ fontFamily: "var(--font-space-grotesk)", fontSize: 14 } as React.CSSProperties}
+                >
+                  <PrismicRichText field={item.data.main_description} />
+                </AnimatedText>
+                <span
+                  className="text-white/40 shrink-0"
+                  style={{ fontFamily: "var(--font-space-mono)", fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase" }}
+                >
+                  {ix}
+                </span>
+              </div>
+
+            </PrismicNextLink>
+          </AnimatedCard>
         );
       })}
     </section>

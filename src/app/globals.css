@@ -3,3 +3,81 @@
 @import "./assets/css/colors.css";
 @import "./assets/css/video-controls.css";
 
+/*
+  Fluid root font-size — scales all rem-based values (text, spacing, radii)
+  on large monitors without touching any component code.
+  clamp(16px, 0.42vw + 8.1px, 24px):
+    ≤ 1920px  → 16px (default)
+    2560px    → ~19px
+    3840px+   → 24px (4K cap)
+*/
+:root {
+  font-size: clamp(16px, 0.42vw + 8.1px, 24px);
+}
+
+/* ── Contact form ─────────────────────────────────────────────────────────── */
+.cf-field {
+  position: relative;
+  padding: 24px 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.25s ease;
+}
+.cf-field:focus-within {
+  border-bottom-color: var(--cyber-cyan);
+}
+.cf-caret {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 0;
+  background: var(--cyber-cyan);
+  box-shadow: 0 0 8px var(--cyber-cyan-glow);
+  transition: width 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cf-field:focus-within .cf-caret {
+  width: 100%;
+}
+.cf-input {
+  font-family: var(--font-space-grotesk, system-ui);
+}
+.cf-submit {
+  isolation: isolate;
+  overflow: hidden;
+}
+.cf-submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--cyber-cyan);
+  transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  z-index: -1;
+}
+.cf-submit:hover:not(:disabled)::before {
+  transform: translateX(0);
+}
+.cf-submit:hover:not(:disabled) {
+  color: #000 !important;
+  border-color: var(--cyber-cyan) !important;
+}
+@keyframes cf-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--cyber-cyan-glow-strong); }
+  100% { box-shadow: 0 0 0 10px rgba(0, 245, 255, 0); }
+}
+.cf-pulse {
+  animation: cf-pulse 1.8s ease-out infinite;
+}
+@keyframes cf-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.15; }
+}
+.cf-blink {
+  animation: cf-blink 2.4s ease-in-out infinite;
+}
+@media (max-width: 960px) {
+  .cf-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+

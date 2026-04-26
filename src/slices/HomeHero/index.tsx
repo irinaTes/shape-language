@@ -1,9 +1,10 @@
 'use client';
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import dynamic from "next/dynamic";
 import MobileHero from "./MobileHero";
+import { useLoadingContext } from "@/components/PageWithLoading";
 
 const Scene3D = dynamic(() => import("./Scene3D"), { ssr: false });
 
@@ -19,6 +20,8 @@ function getViewportMode(w: number): ViewportMode {
 
 const HomeHero: FC<HomeHeroProps> = ({ slice }) => {
   const [viewportMode, setViewportMode] = useState<ViewportMode | null>(null);
+  const loadingContext = useLoadingContext();
+  const hasRegistered = useRef(false);
 
   useEffect(() => {
     const update = () => setViewportMode(getViewportMode(window.innerWidth));
@@ -26,6 +29,16 @@ const HomeHero: FC<HomeHeroProps> = ({ slice }) => {
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
+
+  // Pre-register the 3D scene from the parent (non-dynamic) component so the
+  // registration happens before PageWithLoading's isInitialized fires.
+  useEffect(() => {
+    if (hasRegistered.current || !loadingContext) return;
+    if (window.innerWidth >= 768) {
+      loadingContext.register3DScene();
+      hasRegistered.current = true;
+    }
+  }, [loadingContext]);
 
   if (viewportMode === 'mobile') {
     return (

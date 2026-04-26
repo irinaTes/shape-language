@@ -50,6 +50,15 @@
   animation: glitch-clip-2 0.4s steps(1) infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .flicker,
+  .glitch:hover::before,
+  .glitch:hover::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 /* ── Scanlines ── */
 .scanlines {
   position: relative;

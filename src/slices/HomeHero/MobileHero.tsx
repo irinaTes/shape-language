@@ -1,4 +1,5 @@
 'use client';
+import GlowCard from '@/slices/WorkListing/GlowCard';
 
 export default function MobileHero() {
   return (
@@ -9,7 +10,7 @@ export default function MobileHero() {
       {/* Main content */}
       <main className="flex flex-col justify-center flex-1 py-6">
         {/* Eyebrow */}
-        <div className="flex items-center gap-[10px] mb-7">
+        <div className="flex items-center gap-[10px] mb-7 ml-4 mt-3.5">
           <span className="w-7 h-px bg-[#1C2029]" />
           <span
             className="text-[10px] uppercase tracking-[0.18em] text-[#6E7785]"
@@ -68,18 +69,20 @@ export default function MobileHero() {
         </div>
 
         {/* CTA */}
-        <a
-          href="#reel"
-          className="mt-7 flex items-center justify-between w-full px-[18px] py-4 border border-[#1C2029] rounded-full text-[#E6EAF2] no-underline text-[11px] uppercase tracking-[0.18em]"
-          style={{ fontFamily: 'var(--font-space-mono)' }}
-        >
-          <span>View Reel</span>
-          <span className="w-[22px] h-[22px] rounded-full border border-[#1C2029] grid place-items-center">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M2 8L8 2M8 2H3.5M8 2V6.5" stroke="currentColor" strokeWidth="1" />
-            </svg>
-          </span>
-        </a>
+        {/* <GlowCard className="mt-7 rounded-full">
+          <a
+            href="#reel"
+            className="flex items-center justify-between w-full px-[18px] py-4 border border-[#1C2029] rounded-full text-[#E6EAF2] no-underline text-[11px] uppercase tracking-[0.18em]"
+            style={{ fontFamily: 'var(--font-space-mono)' }}
+          >
+            <span>View Reel</span>
+            <span className="w-[22px] h-[22px] rounded-full border border-[#1C2029] grid place-items-center">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 8L8 2M8 2H3.5M8 2V6.5" stroke="currentColor" strokeWidth="1" />
+              </svg>
+            </span>
+          </a>
+        </GlowCard> */}
       </main>
 
       {/* Footer bar */}
