@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 
 export const components = {
   bold_text_hero: dynamic(() => import("./BoldTextHero")),
+  contact_form: dynamic(() => import("./ContactForm")),
   galery: dynamic(() => import("./Galery")),
   home_hero: dynamic(() => import("./HomeHero")),
   layout_image_with_text: dynamic(() => import("./LayoutImageWithText")),

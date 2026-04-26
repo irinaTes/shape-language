@@ -22,6 +22,23 @@ const DarkerGrotesque = localFont({
   preload: true,
 });
 
+const SpaceMono = localFont({
+  src: '../../public/assets/fonts/SpaceMono-Regular.ttf',
+  variable: '--font-space-mono',
+  display: 'swap',
+  preload: true,
+});
+
+const SpaceGrotesk = localFont({
+  src: [
+    { path: '../../public/assets/fonts/SpaceGrotesk-Light.ttf', weight: '300' },
+    { path: '../../public/assets/fonts/SpaceGrotesk-Regular.ttf', weight: '400' },
+  ],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+  preload: true,
+});
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +54,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(DarkerGrotesque.className, "relative bg-primary text-white text-2xl tracking-wide overflow-x-hidden scanlines")}>
+      <body className={cn(DarkerGrotesque.className, SpaceMono.variable, SpaceGrotesk.variable, "relative bg-primary text-white text-2xl tracking-wide overflow-x-hidden scanlines")}>
         {/* <GenerativeTypographyBackground wordCount={65} /> */}
         <ParticleBackground />
         <CursorTrail />

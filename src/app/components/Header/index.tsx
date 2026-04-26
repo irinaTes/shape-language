@@ -131,7 +131,7 @@ export default function Header({ data }: { data: HeaderDocument }) {
     const logoElement = isFilled.linkToMedia(logo_animation) ? (
         <video
             ref={videoRef}
-            className="h-16 w-auto cursor-pointer"
+            className="h-10 w-auto cursor-pointer"
             muted
             playsInline
             onMouseEnter={handleVideoHover}
@@ -139,18 +139,18 @@ export default function Header({ data }: { data: HeaderDocument }) {
             src={logo_animation.url}
         />
     ) : (
-        <PrismicNextImage field={logoToUse} className="h-16 w-auto" />
+        <PrismicNextImage field={logoToUse} className="h-10 w-auto" />
     )
 
     const mobileLogo = isFilled.linkToMedia(logo_animation) ? (
         <video
-            className="h-16 w-auto"
+            className="h-10 w-auto"
             muted
             playsInline
             src={logo_animation.url}
         />
     ) : (
-        <PrismicNextImage field={logo_filled} className="h-16 w-auto" />
+        <PrismicNextImage field={logo_filled} className="h-10 w-auto" />
     )
 
     return (
@@ -199,7 +199,7 @@ export default function Header({ data }: { data: HeaderDocument }) {
                                 key={index}
                                 field={item.item_link}
                                 className={cn(
-                                    "hover:opacity-45 px-3 py-2 text-lg font-medium transition-all duration-300 uppercase",
+                                    "hover:opacity-45 px-3 py-2 text-sm font-medium transition-all duration-300 uppercase [font-family:var(--font-space-mono)]",
                                     textColor === 'dark' ? 'text-black' : 'text-white'
                                 )}
                             >
@@ -217,17 +217,17 @@ export default function Header({ data }: { data: HeaderDocument }) {
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         >
                             <span className="sr-only">Open main menu</span>
-                            <div className="flex flex-col gap-3">
-                                <div className={`flex transition-all duration-200  row gap-1 origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-2' : 'transform-none'}`}>
-                                    <div className={`w-3 h-1 rounded-lg transition-all duration-200 ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
-                                    <div className={`w-8 h-1 rounded-lg transition-all duration-200 ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
+                            <div className="flex flex-col gap-2">
+                                <div className={`flex transition-all duration-200 row gap-1 origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-2' : 'transform-none'}`}>
+                                    <div className={`w-2 h-px rounded-lg transition-all duration-200 ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
+                                    <div className={`w-5 h-px rounded-lg transition-all duration-200 ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
                                 </div>
 
-                                <div className={`w-12 h-1 rounded-lg origin-center transition-all duration-200  ${mobileMenuOpen ? '-rotate-45 -translate-y-2 bg-primary' : textColor === 'dark' ? 'transform-none bg-black' : 'transform-none bg-white'}`}></div>
+                                <div className={`w-8 h-px rounded-lg origin-center transition-all duration-200 ${mobileMenuOpen ? '-rotate-45 -translate-y-0.5 bg-primary' : textColor === 'dark' ? 'transform-none bg-black' : 'transform-none bg-white'}`}></div>
 
-                                <div className={`flex  row gap-1 transition-all duration-200  ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}>
-                                    <div className={`w-8 h-1 rounded-lg transition-all ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
-                                    <div className={`w-3 h-1 rounded-lg transition-all ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
+                                <div className={`flex row gap-1 transition-all duration-200 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}>
+                                    <div className={`w-5 h-px rounded-lg transition-all ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
+                                    <div className={`w-2 h-px rounded-lg transition-all ${mobileMenuOpen ? 'bg-primary' : textColor === 'dark' ? 'bg-black' : 'bg-white'}`}></div>
                                 </div>
                             </div>
                         </button>

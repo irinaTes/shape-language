@@ -1,21 +1,43 @@
 'use client';
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import dynamic from "next/dynamic";
+import MobileHero from "./MobileHero";
 
 const Scene3D = dynamic(() => import("./Scene3D"), { ssr: false });
 
-/**
- * Props for `HomeHero`.
- */
 export type HomeHeroProps = SliceComponentProps<Content.HomeHeroSlice>;
 
-/**
- * Component for "HomeHero" Slices.
- */
+type ViewportMode = 'mobile' | 'tablet' | 'desktop';
+
+function getViewportMode(w: number): ViewportMode {
+  if (w >= 1024) return 'desktop';
+  if (w >= 768) return 'tablet';
+  return 'mobile';
+}
 
 const HomeHero: FC<HomeHeroProps> = ({ slice }) => {
+  const [viewportMode, setViewportMode] = useState<ViewportMode | null>(null);
+
+  useEffect(() => {
+    const update = () => setViewportMode(getViewportMode(window.innerWidth));
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  if (viewportMode === 'mobile') {
+    return (
+      <section
+        data-slice-type={slice.slice_type}
+        data-slice-variation={slice.variation}
+        className="relative w-full -mt-32"
+      >
+        <MobileHero />
+      </section>
+    );
+  }
 
   return (
     <section
@@ -24,14 +46,8 @@ const HomeHero: FC<HomeHeroProps> = ({ slice }) => {
       className="relative w-full -mt-32"
     >
       <div className="h-screen w-full">
-        <Scene3D />
+        {viewportMode !== null && <Scene3D viewportMode={viewportMode} />}
       </div>
-      {/* <p>
-        Fiecare proiect va avea Denumire, fotografie, descriere, video, aestetic section cu galerie de fotografii, process cu imagini si video din proces.
-      </p>
-      <p>
-        proiectele le aranjam - vezi project-example.jpg
-      </p> */}
     </section>
   );
 };

@@ -29,7 +29,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
     const logoElement = isFilled.linkToMedia(logo_animation) ? (
         <video
             ref={videoRef}
-            className="h-16 w-auto cursor-pointer"
+            className="h-10 w-auto cursor-pointer"
             muted
             playsInline
             onMouseEnter={handleVideoHover}
@@ -37,7 +37,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
             src={logo_animation.url}
         />
     ) : (
-        <PrismicNextImage field={logo_white} className="h-16 w-auto" />
+        <PrismicNextImage field={logo_white} className="h-10 w-auto" />
     )
 
 
@@ -74,7 +74,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
 
             <div className="relative z-10 flex flex-col md:flex-row gap-4 md:justify-between w-full">
 
-                {logoElement}
+                <div></div>
 
                 <div className="flex flex-col gap-8 mb-8 items-end text-end">
                     {/* Contact Information */}
@@ -138,16 +138,19 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
                     )}
                 </div>
             </div>
-            <div className="w-full flex flex-col gap-4 md:flex-row justify-center">
-                {navigation_items.map((item, index) => (
-                    <PrismicLink
-                        key={index}
-                        field={item.item_link}
-                        className="nav-link px-3 py-2 text-lg font-medium transition-all duration-300 uppercase text-white"
-                    >
-                        {item.item_text}
-                    </PrismicLink>
-                ))}
+            <div className="flex flex-col w-full items-center justify-center gap-6">
+                    {logoElement}
+                <div className="w-full flex flex-col gap-4 md:flex-row justify-center">
+                    {navigation_items.map((item, index) => (
+                        <PrismicLink
+                            key={index}
+                            field={item.item_link}
+                            className="nav-link px-3 py-2 text-lg font-medium transition-all duration-300 uppercase text-white [font-family:var(--font-space-mono)]"
+                        >
+                            {item.item_text}
+                        </PrismicLink>
+                    ))}
+                </div>
             </div>
 
             {/* Copyright */}

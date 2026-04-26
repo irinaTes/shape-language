@@ -3,6 +3,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, useTexture, MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import WordmarkText from './WordmarkText';
 
 // Delay before the intro starts (seconds)
 const INTRO_DELAY = 0.6;
@@ -18,9 +19,10 @@ interface Logo3DProps {
   rotationRef: React.MutableRefObject<[number, number, number]>;
   displayRotationRef: React.MutableRefObject<[number, number, number]>;
   isDraggingRef: React.MutableRefObject<boolean>;
+  textMode?: 'inside-logo' | 'tablet';
 }
 
-export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef }: Logo3DProps) {
+export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef, textMode = 'inside-logo' }: Logo3DProps) {
   const groupRef = useRef<THREE.Group>(null);
   const isHoveringRef = useRef(false);
   const { scene } = useGLTF('/assets/shape_language.glb');
@@ -34,13 +36,14 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
   }, [size.width]);
 
   const materialProps = {
-    thickness: 0,
-    roughness: 0.45,
+    thickness: 0.05,
+    roughness: 0.2,
     transmission: 1,
-    ior: 1.33,
-    chromaticAberration: 0.05,
+    ior: 1.2,
+    chromaticAberration: 0.07,
     backside: true,
   };
+
   useFrame(({ pointer, clock }) => {
     if (!groupRef.current) return;
 
@@ -102,27 +105,29 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
     tex.repeat.set(2, 2);
   });
 
-  const meshes = useMemo(() => {
-    const result: { geometry: THREE.BufferGeometry; uuid: string }[] = [];
+  const geometry = useMemo(() => {
+    let found: THREE.BufferGeometry | null = null;
     scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        result.push({ geometry: (child as THREE.Mesh).geometry, uuid: child.uuid });
+      if (!found && (child as THREE.Mesh).isMesh) {
+        found = (child as THREE.Mesh).geometry;
       }
     });
-    return result;
+    return found;
   }, [scene]);
 
+  if (!geometry) return null;
+
   return (
-    <group
-      ref={groupRef}
-      onPointerEnter={() => { isHoveringRef.current = true; }}
-      onPointerLeave={() => { isHoveringRef.current = false; }}
-    >
-      {meshes.map(({ geometry, uuid }) => (
-        <mesh key={uuid} geometry={geometry}>
+    <group>
+      <group
+        ref={groupRef}
+        onPointerEnter={() => { isHoveringRef.current = true; }}
+        onPointerLeave={() => { isHoveringRef.current = false; }}
+      >
+        <mesh geometry={geometry}>
           <MeshTransmissionMaterial
             background={new THREE.Color('#0a1628')}
-            color="#c8e8ff"
+            // color="#c8e8ff"
             normalMap={textures.normalMap}
             normalScale={[1.2, 1.2]}
             roughnessMap={textures.roughnessMap}
@@ -136,7 +141,8 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef 
             {...materialProps}
           />
         </mesh>
-      ))}
+      </group>
+      <WordmarkText mode={textMode} />
     </group>
   );
 }

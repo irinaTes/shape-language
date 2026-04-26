@@ -410,6 +410,7 @@ export type HeaderDocument<Lang extends string = string> =
   >;
 
 type PageDocumentDataSlicesSlice =
+  | ContactFormSlice
   | BoldTextHeroSlice
   | ZigZagContentSlice
   | LayoutImageWithTextSlice
@@ -738,6 +739,131 @@ type BoldTextHeroSliceVariation = BoldTextHeroSliceDefault;
 export type BoldTextHeroSlice = prismic.SharedSlice<
   "bold_text_hero",
   BoldTextHeroSliceVariation
+>;
+
+/**
+ * Primary content in *ContactForm → Default → Primary*
+ */
+export interface ContactFormSliceDefaultPrimary {
+  /**
+   * Title field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Description field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact_form.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Name field label field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Name
+   * - **API ID Path**: contact_form.default.primary.name_label
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  name_label: prismic.KeyTextField;
+
+  /**
+   * Email field label field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Email
+   * - **API ID Path**: contact_form.default.primary.email_label
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  email_label: prismic.KeyTextField;
+
+  /**
+   * Message field label field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Message
+   * - **API ID Path**: contact_form.default.primary.message_label
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  message_label: prismic.KeyTextField;
+
+  /**
+   * Submit button label field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Send
+   * - **API ID Path**: contact_form.default.primary.submit_label
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  submit_label: prismic.KeyTextField;
+
+  /**
+   * Success title field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Thanks — your message is on its way.
+   * - **API ID Path**: contact_form.default.primary.success_title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  success_title: prismic.KeyTextField;
+
+  /**
+   * Success message field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: We'll get back to you shortly.
+   * - **API ID Path**: contact_form.default.primary.success_message
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  success_message: prismic.KeyTextField;
+
+  /**
+   * Send another button label field in *ContactForm → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Send another message
+   * - **API ID Path**: contact_form.default.primary.send_another_label
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  send_another_label: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for ContactForm Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ContactFormSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ContactFormSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ContactForm*
+ */
+type ContactFormSliceVariation = ContactFormSliceDefault;
+
+/**
+ * ContactForm Shared Slice
+ *
+ * - **API ID**: `contact_form`
+ * - **Description**: ContactForm
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ContactFormSlice = prismic.SharedSlice<
+  "contact_form",
+  ContactFormSliceVariation
 >;
 
 /**
@@ -1526,6 +1652,10 @@ declare module "@prismicio/client" {
       BoldTextHeroSliceDefaultPrimary,
       BoldTextHeroSliceVariation,
       BoldTextHeroSliceDefault,
+      ContactFormSlice,
+      ContactFormSliceDefaultPrimary,
+      ContactFormSliceVariation,
+      ContactFormSliceDefault,
       GalerySlice,
       GalerySliceDefaultPrimary,
       GalerySliceVariation,

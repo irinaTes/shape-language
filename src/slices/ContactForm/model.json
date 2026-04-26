@@ -1,0 +1,84 @@
+{
+  "id": "contact_form",
+  "type": "SharedSlice",
+  "name": "ContactForm",
+  "description": "ContactForm",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "name_label": {
+          "type": "Text",
+          "config": {
+            "label": "Name field label",
+            "placeholder": "Name"
+          }
+        },
+        "email_label": {
+          "type": "Text",
+          "config": {
+            "label": "Email field label",
+            "placeholder": "Email"
+          }
+        },
+        "message_label": {
+          "type": "Text",
+          "config": {
+            "label": "Message field label",
+            "placeholder": "Message"
+          }
+        },
+        "submit_label": {
+          "type": "Text",
+          "config": {
+            "label": "Submit button label",
+            "placeholder": "Send"
+          }
+        },
+        "success_title": {
+          "type": "Text",
+          "config": {
+            "label": "Success title",
+            "placeholder": "Thanks — your message is on its way."
+          }
+        },
+        "success_message": {
+          "type": "Text",
+          "config": {
+            "label": "Success message",
+            "placeholder": "We'll get back to you shortly."
+          }
+        },
+        "send_another_label": {
+          "type": "Text",
+          "config": {
+            "label": "Send another button label",
+            "placeholder": "Send another message"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

@@ -22,7 +22,13 @@ function SceneReadyReporter({ onReady }: { onReady: () => void }) {
   return null;
 }
 
-export default function Scene3D() {
+type ViewportMode = 'tablet' | 'desktop';
+
+interface Scene3DProps {
+  viewportMode: ViewportMode;
+}
+
+export default function Scene3D({ viewportMode }: Scene3DProps) {
   const rotationRef = useRef<[number, number, number]>([0, 0, 0]);
   const displayRotationRef = useRef<[number, number, number]>([0, 0, 0]);
   const isDraggingRef = useRef(false);
@@ -51,7 +57,6 @@ export default function Scene3D() {
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.2,
           outputColorSpace: THREE.SRGBColorSpace,
-          alpha: true,
           powerPreference: 'high-performance',
         }}
         style={{ background: 'transparent' }}
@@ -60,23 +65,26 @@ export default function Scene3D() {
           <SceneReadyReporter onReady={handleReady} />
           <Environment preset="city" background={false} />
           <ambientLight intensity={0.4} color="#1a0040" />
-          {/* Directional — cyan key */}
           <directionalLight position={[-5, 7, 3]} intensity={10} color="#00f5ff" />
-          {/* Directional — magenta fill */}
           <directionalLight position={[6, 2, -2]} intensity={8} color="#ff00cc" />
-          {/* Directional — purple rim */}
           <directionalLight position={[-1, -2, -7]} intensity={6} color="#9b30ff" />
-          {/* Directional — teal ground bounce */}
           <directionalLight position={[0, -7, 4]} intensity={4} color="#00ffaa" />
-          {/* Directional — orange warm accent */}
           <directionalLight position={[4, -4, 5]} intensity={3} color="#ff6600" />
-          {/* Directional — electric blue top */}
           <directionalLight position={[5, 8, 2]} intensity={5} color="#3366ff" />
           <MovingLights />
-          <Logo3D rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
+          <Logo3D
+            rotationRef={rotationRef}
+            displayRotationRef={displayRotationRef}
+            isDraggingRef={isDraggingRef}
+            textMode={viewportMode === 'desktop' ? 'inside-logo' : 'tablet'}
+          />
         </Suspense>
       </Canvas>
-      <OrbitWidget rotationRef={rotationRef} displayRotationRef={displayRotationRef} isDraggingRef={isDraggingRef} />
+      <OrbitWidget
+        rotationRef={rotationRef}
+        displayRotationRef={displayRotationRef}
+        isDraggingRef={isDraggingRef}
+      />
     </div>
   );
 }

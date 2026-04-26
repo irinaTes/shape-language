@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Shape Language — Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400&family=Orbitron:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0C10;
+    --ink: #E6EAF2;
+    --ink-dim: #6E7785;
+    --rule: #1C2029;
+    --accent: oklch(0.82 0.12 200);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bot: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Space Grotesk", system-ui, sans-serif;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  .mono{
+    font-family:"Space Mono", ui-monospace, monospace;
+    font-size:10px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    font-weight:400;
+  }
+  .orb{
+    font-family:"Orbitron", sans-serif;
+    letter-spacing:0.32em;
+    font-weight:400;
+  }
+
+  .page{
+    min-height:100vh;
+    min-height:100dvh;
+    padding: calc(20px + var(--safe-top)) 22px calc(18px + var(--safe-bot));
+    display:grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 24px;
+  }
+
+  /* Top bar */
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .mark{display:flex;align-items:center;gap:8px}
+  .mark-dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+
+  .menu{
+    width:34px;height:34px;
+    border:1px solid var(--rule);
+    border-radius:50%;
+    display:grid;place-items:center;
+    background:transparent;
+    cursor:pointer;
+  }
+  .menu span{
+    display:block;width:12px;height:1px;background:var(--ink);
+    position:relative;
+  }
+  .menu span::before,.menu span::after{
+    content:"";position:absolute;left:0;width:12px;height:1px;background:var(--ink);
+  }
+  .menu span::before{top:-4px}
+  .menu span::after{top:4px}
+
+  /* Hero */
+  main{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding: 24px 0;
+    position:relative;
+  }
+
+  .eyebrow{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom: 28px;
+  }
+  .eyebrow .line{width:28px;height:1px;background:var(--rule)}
+
+  h1.headline{
+    font-family:"Space Grotesk", sans-serif;
+    font-weight:400;
+    font-size: clamp(56px, 17vw, 84px);
+    line-height: 0.95;
+    letter-spacing:-0.035em;
+    color:var(--ink);
+  }
+  h1.headline .it{
+    font-weight:300;
+    color:var(--ink-dim);
+    letter-spacing:-0.03em;
+  }
+
+  .lede{
+    margin-top: 32px;
+    font-size: 16px;
+    line-height:1.55;
+    color:var(--ink);
+    font-weight:300;
+    letter-spacing:-0.005em;
+    max-width: 32ch;
+  }
+  .lede em{color:var(--ink-dim);font-style:normal;font-weight:400}
+
+  /* Meta — stacked, left aligned for mobile */
+  .meta-stack{
+    margin-top: 40px;
+    display:grid;
+    gap:10px;
+    border-top:1px solid var(--rule);
+    padding-top:16px;
+  }
+  .meta-stack .row{
+    display:flex;justify-content:space-between;gap:12px;
+    color:var(--ink-dim);
+  }
+  .meta-stack .row .v{color:var(--ink)}
+
+  /* CTA */
+  .cta{
+    margin-top: 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    width:100%;
+    padding: 16px 18px;
+    border:1px solid var(--rule);
+    border-radius: 999px;
+    color:var(--ink);
+    text-decoration:none;
+    font-family:"Space Mono", ui-monospace, monospace;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+  }
+  .cta .arrow{
+    width:22px;height:22px;border-radius:50%;
+    border:1px solid var(--rule);
+    display:grid;place-items:center;
+    color:var(--ink);
+  }
+  .cta .arrow svg{display:block}
+
+  /* Footer */
+  footer{
+    border-top:1px solid var(--rule);
+    padding-top:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  footer .group{display:flex;gap:14px;align-items:center}
+
+  .crosshair{
+    width:14px;height:14px;position:relative;
+  }
+  .crosshair::before,.crosshair::after{
+    content:"";position:absolute;background:var(--ink-dim);
+  }
+  .crosshair::before{left:50%;top:0;bottom:0;width:1px;transform:translateX(-50%)}
+  .crosshair::after{top:50%;left:0;right:0;height:1px;transform:translateY(-50%)}
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="mark">
+        <span class="mark-dot" aria-hidden="true"></span>
+        <span class="mono orb">STUDIO / 04</span>
+      </div>
+      <button class="menu" aria-label="Menu"><span></span></button>
+    </header>
+
+    <main>
+      <div class="eyebrow">
+        <span class="line"></span>
+        <span class="mono">Film &amp; design</span>
+      </div>
+
+      <h1 class="headline">
+        Shape<br />
+        <span class="it">language,</span><br />
+        shape reality.
+      </h1>
+
+      <p class="lede">
+        We make work that is <em>built like film</em> &mdash;
+        deliberate, unhurried, composed frame by frame.
+      </p>
+
+      <div class="meta-stack mono">
+        <div class="row"><span class="k">Est.</span><span class="v">MMXXI</span></div>
+        <div class="row"><span class="k">Discipline</span><span class="v">Film · Identity</span></div>
+        <div class="row"><span class="k">Status</span><span class="v">Open · 2026</span></div>
+      </div>
+
+      <a class="cta" href="#reel">
+        <span>View Reel</span>
+        <span class="arrow" aria-hidden="true">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M2 8L8 2M8 2H3.5M8 2V6.5" stroke="currentColor" stroke-width="1"/>
+          </svg>
+        </span>
+      </a>
+    </main>
+
+    <footer>
+      <div class="group mono">
+        <span>© Studio</span>
+        <span>Vol. 01</span>
+      </div>
+      <div class="group">
+        <span class="mono">N 40.71</span>
+        <span class="crosshair" aria-hidden="true"></span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
