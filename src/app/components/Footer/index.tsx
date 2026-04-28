@@ -106,6 +106,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
                             className="cf-submit relative flex-shrink-0 flex items-center gap-4 border border-white/30 px-6 py-4 text-white/80 text-sm font-medium tracking-wide transition-colors duration-300 disabled:opacity-50"
                             style={{ fontFamily: "var(--font-space-grotesk)" }}
                             href="/contact-us"
+                            target="_blank"
                         >
                             <span>Leave us a message</span>
                             <span aria-hidden="true" className="relative inline-block" style={{ width: 24, height: 1, background: "currentColor" }}>
