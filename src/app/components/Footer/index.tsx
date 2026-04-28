@@ -6,6 +6,7 @@ import { PrismicNextImage } from "@prismicio/next";
 import { isFilled } from "@prismicio/client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
 
 export default function Footer({ data, headerData }: { data: FooterDocument, headerData: HeaderDocument }) {
     const { social_links, phone_number, email, address, copyright_text } = data.data;
@@ -100,7 +101,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
                             </p>
                         )}
 
-                        <a
+                        <Link
                             type="button"
                             className="cf-submit relative flex-shrink-0 flex items-center gap-4 border border-white/30 px-6 py-4 text-white/80 text-sm font-medium tracking-wide transition-colors duration-300 disabled:opacity-50"
                             style={{ fontFamily: "var(--font-space-grotesk)" }}
@@ -110,7 +111,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
                             <span aria-hidden="true" className="relative inline-block" style={{ width: 24, height: 1, background: "currentColor" }}>
                                 <span style={{ position: "absolute", right: 0, top: -3, width: 7, height: 7, borderTop: "1px solid currentColor", borderRight: "1px solid currentColor", transform: "rotate(45deg)", display: "block" }} />
                             </span>
-                        </a>
+                        </Link>
 
                         {isFilled.keyText(address) && (
                             <p className="mb-3">
