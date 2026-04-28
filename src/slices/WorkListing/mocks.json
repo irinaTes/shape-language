@@ -94,8 +94,8 @@
 				"type": "Text"
 			},
 			"link_to_project_page": {
-				"__TYPE__": "LinkContent",
 				"key": "0d5d78b8-dddc-43f6-a963-e7286867d068",
+				"__TYPE__": "LinkContent",
 				"value": {
 					"__TYPE__": "ExternalLink",
 					"url": "http://google.com",

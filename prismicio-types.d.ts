@@ -688,39 +688,202 @@ export type AllDocumentTypes =
   | WorkContentDocument;
 
 /**
+ * Primary content in *About → Default → Primary*
+ */
+export interface AboutSliceDefaultPrimary {
+  /**
+   * Heading line 1 (outline) field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Every shape
+   * - **API ID Path**: about.default.primary.heading_line1
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading_line1: prismic.KeyTextField;
+
+  /**
+   * Heading line 2 (solid) field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: has a language
+   * - **API ID Path**: about.default.primary.heading_line2
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading_line2: prismic.KeyTextField;
+
+  /**
+   * Heading line 3 (outline) field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: mine speaks.
+   * - **API ID Path**: about.default.primary.heading_line3
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading_line3: prismic.KeyTextField;
+
+  /**
+   * Role meta tag field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: CGI Generalist · Motion
+   * - **API ID Path**: about.default.primary.role_meta
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  role_meta: prismic.KeyTextField;
+
+  /**
+   * Portrait photo field in *About → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about.default.primary.portrait
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  portrait: prismic.ImageField<never>;
+
+  /**
+   * Name field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Your Name
+   * - **API ID Path**: about.default.primary.name_text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  name_text: prismic.KeyTextField;
+
+  /**
+   * Discipline field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: CGI · Motion · VFX
+   * - **API ID Path**: about.default.primary.discipline
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  discipline: prismic.KeyTextField;
+
+  /**
+   * In the field since field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Since 2014 · 12 yrs
+   * - **API ID Path**: about.default.primary.in_the_field
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  in_the_field: prismic.KeyTextField;
+
+  /**
+   * Availability status field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Open for Q3 / Q4 2026
+   * - **API ID Path**: about.default.primary.availability
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  availability: prismic.KeyTextField;
+
+  /**
+   * Lede paragraph field in *About → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Shape Language is how I think…
+   * - **API ID Path**: about.default.primary.lede
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  lede: prismic.RichTextField;
+
+  /**
+   * Pull quote field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: I believe the right image…
+   * - **API ID Path**: about.default.primary.quote
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  quote: prismic.KeyTextField;
+
+  /**
+   * Pull quote citation field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: — Working principle · 01
+   * - **API ID Path**: about.default.primary.quote_cite
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  quote_cite: prismic.KeyTextField;
+
+  /**
+   * CTA heading field in *About → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Have a frame in your head you can't quite reach?
+   * - **API ID Path**: about.default.primary.cta_heading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  cta_heading: prismic.KeyTextField;
+
+  /**
+   * CTA link field in *About → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: about.default.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/fields/link
+   */
+  cta_link: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+}
+
+/**
+ * Primary content in *About → Items*
+ */
+export interface AboutSliceDefaultItem {
+  /**
+   * Section number field in *About → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: 01
+   * - **API ID Path**: about.items[].section_number
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  section_number: prismic.KeyTextField;
+
+  /**
+   * Section title field in *About → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Premise
+   * - **API ID Path**: about.items[].section_title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  section_title: prismic.KeyTextField;
+
+  /**
+   * Section content field in *About → Items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Section body text…
+   * - **API ID Path**: about.items[].section_content
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  section_content: prismic.RichTextField;
+}
+
+/**
  * Default variation for About Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export interface AboutSliceDefaultPrimary {
-  heading_line1: prismic.KeyTextField;
-  heading_line2: prismic.KeyTextField;
-  heading_line3: prismic.KeyTextField;
-  role_meta: prismic.KeyTextField;
-  portrait: prismic.ImageField;
-  name_text: prismic.KeyTextField;
-  discipline: prismic.KeyTextField;
-  in_the_field: prismic.KeyTextField;
-  availability: prismic.KeyTextField;
-  lede: prismic.RichTextField;
-  quote: prismic.KeyTextField;
-  quote_cite: prismic.KeyTextField;
-  cta_heading: prismic.KeyTextField;
-  cta_link: prismic.LinkField;
-}
-
-export interface AboutSliceDefaultItem {
-  section_number: prismic.KeyTextField;
-  section_title: prismic.KeyTextField;
-  section_content: prismic.RichTextField;
-}
-
 export type AboutSliceDefault = prismic.SharedSliceVariation<
   "default",
-  AboutSliceDefaultPrimary,
-  AboutSliceDefaultItem
+  Simplify<AboutSliceDefaultPrimary>,
+  Simplify<AboutSliceDefaultItem>
 >;
 
 /**
@@ -1700,6 +1863,8 @@ declare module "@prismicio/client" {
       WorkContentDocumentDataSlicesSlice,
       AllDocumentTypes,
       AboutSlice,
+      AboutSliceDefaultPrimary,
+      AboutSliceDefaultItem,
       AboutSliceVariation,
       AboutSliceDefault,
       BoldTextHeroSlice,

@@ -78,7 +78,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
 
                 <div className="flex flex-col gap-8 mb-8 items-end text-end">
                     {/* Contact Information */}
-                    <div>
+                    <div className="">
                         <h3 className="text-xl font-semibold mb-4">Contact</h3>
 
                         {isFilled.keyText(phone_number) && (
@@ -99,6 +99,18 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
                                 </PrismicLink>
                             </p>
                         )}
+
+                        <a
+                            type="button"
+                            className="cf-submit relative flex-shrink-0 flex items-center gap-4 border border-white/30 px-6 py-4 text-white/80 text-sm font-medium tracking-wide transition-colors duration-300 disabled:opacity-50"
+                            style={{ fontFamily: "var(--font-space-grotesk)" }}
+                            href="/contact-us"
+                        >
+                            <span>Leave us a message</span>
+                            <span aria-hidden="true" className="relative inline-block" style={{ width: 24, height: 1, background: "currentColor" }}>
+                                <span style={{ position: "absolute", right: 0, top: -3, width: 7, height: 7, borderTop: "1px solid currentColor", borderRight: "1px solid currentColor", transform: "rotate(45deg)", display: "block" }} />
+                            </span>
+                        </a>
 
                         {isFilled.keyText(address) && (
                             <p className="mb-3">
@@ -139,7 +151,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
                 </div>
             </div>
             <div className="flex flex-col w-full items-center justify-center gap-6">
-                    {logoElement}
+                {logoElement}
                 <div className="w-full flex flex-col gap-4 md:flex-row justify-center">
                     {navigation_items.map((item, index) => (
                         <PrismicLink
@@ -155,7 +167,7 @@ export default function Footer({ data, headerData }: { data: FooterDocument, hea
 
             {/* Copyright */}
             {isFilled.keyText(copyright_text) && (
-                <div className="border-t glow-divider pt-8">
+                <div className="pt-8">
                     <p className="text-sm opacity-75 text-center">
                         {copyright_text}
                     </p>
