@@ -13,10 +13,7 @@ import PageWithLoading from "@/components/PageWithLoading";
 import CursorTrail from "@/components/CursorTrail";
 
 const DarkerGrotesque = localFont({
-  src: [
-    { path: './assets/font/DarkerGrotesque.woff2' },
-    { path: './assets/font/DarkerGrotesque.ttf' },
-  ],
+  src: './assets/font/DarkerGrotesque.woff2',
   variable: '--font-grotesque',
   display: "swap",
   fallback: ["system-ui", "-apple-system", "sans-serif"],
@@ -62,7 +59,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cn(DarkerGrotesque.className, SpaceMono.variable, SpaceGrotesk.variable, "relative bg-primary text-white text-2xl tracking-wide overflow-x-hidden scanlines")}>
-        {/* <GenerativeTypographyBackground wordCount={65} /> */}
         <ParticleBackground />
         <CursorTrail />
         <div className="relative">

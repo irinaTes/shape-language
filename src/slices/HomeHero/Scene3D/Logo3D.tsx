@@ -10,6 +10,10 @@ const INTRO_DELAY = 0.6;
 // Duration of the intro animation (seconds)
 const INTRO_DURATION = 2.0;
 
+// Module-scoped: survives Logo3D remounts (e.g. hero scrolling back into view
+// after frameloop pause). Reset only on full page reload.
+let introHasPlayed = false;
+
 // Ease out cubic
 function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -50,26 +54,34 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
   useFrame(({ pointer, clock }) => {
     if (!groupRef.current) return;
 
-    const elapsed = clock.getElapsedTime();
+    let eased: number;
+    let introRotX: number;
+    let introRotZ: number;
 
-    // Record when animation starts (after delay)
-    if (startTimeRef.current === null && elapsed >= INTRO_DELAY) {
-      startTimeRef.current = elapsed;
+    if (introHasPlayed) {
+      eased = 1;
+      introRotX = 0;
+      introRotZ = 0;
+    } else {
+      const elapsed = clock.getElapsedTime();
+
+      if (startTimeRef.current === null && elapsed >= INTRO_DELAY) {
+        startTimeRef.current = elapsed;
+      }
+
+      const introProgress = startTimeRef.current === null
+        ? 0
+        : Math.min((elapsed - startTimeRef.current) / INTRO_DURATION, 1);
+      eased = easeOutCubic(introProgress);
+      introRotX = (1 - eased) * Math.PI * 1.5;
+      introRotZ = (1 - eased) * Math.PI * 0.8;
+
+      if (introProgress >= 1) introHasPlayed = true;
     }
-
-    // Intro animation
-    const introProgress = startTimeRef.current === null
-      ? 0
-      : Math.min((elapsed - startTimeRef.current) / INTRO_DURATION, 1);
-    const eased = easeOutCubic(introProgress);
 
     // Scale from 0.01 to target
     const currentScale = scale * (0.01 + eased * 0.99);
     groupRef.current.scale.setScalar(currentScale);
-
-    // Spin on X and Z during intro, settling to 0
-    const introRotX = (1 - eased) * Math.PI * 1.5;
-    const introRotZ = (1 - eased) * Math.PI * 0.8;
 
     // Normal pointer/drag rotation after intro
     let targetX: number;
@@ -102,11 +114,13 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
     roughnessMap: '/assets/Ice003_1K-PNG/Ice003_1K-PNG_Roughness.png',
   });
 
-  Object.values(textures).forEach((tex) => {
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(2, 2);
-  });
+  useMemo(() => {
+    Object.values(textures).forEach((tex) => {
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(2, 2);
+    });
+  }, [textures]);
 
   const geometry = useMemo(() => {
     let found: THREE.BufferGeometry | null = null;
@@ -137,7 +151,7 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
             attenuationColor="#7ec8e3"
             attenuationDistance={3}
             envMapIntensity={2.5}
-            samples={4}
+            samples={2}
             anisotropy={0.2}
             distortion={0.1}
             distortionScale={0.3}

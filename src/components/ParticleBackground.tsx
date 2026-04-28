@@ -1,10 +1,11 @@
 'use client';
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 
-const PARTICLE_COUNT = 8000;
+const PARTICLE_COUNT = 4000;
 
 const vertexShader = /* glsl */ `
   attribute float aSize;
@@ -146,16 +147,25 @@ function Particles({ pointerNDC }: ParticlesProps) {
 }
 
 function ParticleBackgroundInner() {
+  const pathname = usePathname();
   const pointerNDC = useRef({ x: 0, y: 0 });
+  const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       pointerNDC.current.x =  (e.clientX / window.innerWidth)  * 2 - 1;
       pointerNDC.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
+    const onVis = () => setIsActive(document.visibilityState === 'visible');
     window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
+    document.addEventListener('visibilitychange', onVis);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('visibilitychange', onVis);
+    };
   }, []);
+
+  if (pathname?.startsWith('/work')) return null;
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
@@ -163,6 +173,7 @@ function ParticleBackgroundInner() {
         camera={{ position: [0, 0, 12], fov: 50 }}
         dpr={[1, 1]}
         gl={{ antialias: false }}
+        frameloop={isActive ? 'always' : 'never'}
         style={{ background: '#080808' }}
       >
           <color attach="background" args={['#080808']} />

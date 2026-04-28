@@ -1,7 +1,7 @@
 'use client';
 import { Text } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type Mode = 'inside-logo' | 'tablet';
 
@@ -24,12 +24,18 @@ const noTone = { 'material-toneMapped': false } as const;
 
 export default function WordmarkText({ mode, opacity = 0.88 }: WordmarkTextProps) {
   const { size } = useThree();
+  const [debouncedSize, setDebouncedSize] = useState(size);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSize(size), 150);
+    return () => clearTimeout(t);
+  }, [size]);
 
   const { halfH, halfW } = useMemo(() => {
     const halfH = Math.tan(HALF_ANGLE_RAD) * DIST;
-    const halfW = halfH * (size.width / Math.max(size.height, 1));
+    const halfW = halfH * (debouncedSize.width / Math.max(debouncedSize.height, 1));
     return { halfH, halfW };
-  }, [size]);
+  }, [debouncedSize]);
 
   const mX = halfW * 0.06;
   const mY = halfH * 0.06;
