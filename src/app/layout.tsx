@@ -11,6 +11,7 @@ import ParticleBackground from "@/components/ParticleBackground";
 import GridBackground from "@/components/GridBackground";
 import PageWithLoading from "@/components/PageWithLoading";
 import CursorTrail from "@/components/CursorTrail";
+import ScrollToTop from "./components/ScrollToTop";
 
 const DarkerGrotesque = localFont({
   src: './assets/font/DarkerGrotesque.woff2',
@@ -71,6 +72,7 @@ export default async function RootLayout({
               <PrismicPreview repositoryName={repositoryName} />
             </div>
             <Footer data={footer as FooterDocument} headerData={header as HeaderDocument}/>
+            <ScrollToTop />
           </PageWithLoading>
         </div>
 

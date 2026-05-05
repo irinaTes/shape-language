@@ -18,7 +18,7 @@ const WorkHero: FC<WorkHeroProps> = ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full -mt-[128px] relative h-[100vh] lg:h-[80vh] overflow-hidden flex flex-col justify-center items-center text-white px-4 md:px-10"
+      className="w-full -mt-[128px] relative min-h-[100vh] lg:min-h-[80vh] overflow-hidden flex flex-col justify-center items-center text-white px-4 md:px-10 py-32 lg:py-40"
     >
       {/* Animated background image */}
       <motion.div
@@ -46,7 +46,7 @@ const WorkHero: FC<WorkHeroProps> = ({ slice }) => {
 
       {/* Animated text content */}
       <motion.div
-        className="relative z-10 flex flex-col items-center"
+        className="relative z-10 flex flex-col items-center w-full"
         initial="hidden"
         animate="visible"
         variants={{
@@ -62,7 +62,7 @@ const WorkHero: FC<WorkHeroProps> = ({ slice }) => {
       >
         {title && (
           <motion.div
-            className="text-center max-w-4xl"
+            className="text-center w-full max-w-4xl"
             variants={{
               hidden: { opacity: 0, y: 30 },
               visible: {
@@ -77,7 +77,7 @@ const WorkHero: FC<WorkHeroProps> = ({ slice }) => {
         )}
         {description && (
           <motion.div
-            className="text-lg md:text-xl text-center max-w-7xl"
+            className="text-lg md:text-xl text-center w-full max-w-full lg:max-w-7xl "
             variants={{
               hidden: { opacity: 0, y: 30 },
               visible: {

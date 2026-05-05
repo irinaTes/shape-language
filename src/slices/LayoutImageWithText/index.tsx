@@ -23,7 +23,7 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
       <section
         data-slice-type={slice.slice_type}
         data-slice-variation={slice.variation}
-        className="w-full flex flex-col gap-10 lg:gap-16 py-24 lg:py-64"
+        className="w-full flex flex-col gap-10 lg:gap-16 py-24 lg:py-64 overflow-hidden"
         style={{ backgroundColor: background_color || "transparent", color: text_color || "white" }}
       >
 

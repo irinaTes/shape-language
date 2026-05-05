@@ -27,7 +27,7 @@ const ZigZagContent: FC<ZigZagContentProps> = ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full py-20 md:py-32 "
+      className="w-full py-20 md:py-32 overflow-hidden"
       style={{ backgroundColor: background_color_primary || undefined }}
     >
       {/* First item: Title and Description with primary colors */}

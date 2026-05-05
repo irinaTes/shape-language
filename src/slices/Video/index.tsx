@@ -20,7 +20,7 @@ const Video: FC<VideoProps> = ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full px-4 lg:px-20 py-20 lg:py-48 relative overflow-hidden"
+      className="w-full px-0 lg:px-20 py-20 lg:py-48 relative overflow-hidden"
     >
       {/* Background */}
       <motion.div
@@ -39,7 +39,7 @@ const Video: FC<VideoProps> = ({ slice }) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-        className="rounded-2xl p-4 md:p-10 neon-border border glow-card"
+        className="lg:rounded-2xl p-0 md:p-10 lg:neon-border lg:border lg:glow-card"
       >
         <VideoPlayer
           vimeoUrl={video_url as VimeoUrl}
