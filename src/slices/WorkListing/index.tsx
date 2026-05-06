@@ -44,9 +44,9 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full flex flex-col gap-6 md:gap-30 py-16 md:py-24 px-6 md:px-20"
+      className="w-full flex flex-col gap-14 md:gap-30 py-16 md:py-24 px-6 md:px-20"
     >
-      {workItems.map((item, index) => {
+      {workItems.reverse().map((item, index) => {
         const config = cardConfigs[getConfigIndex(item.id)];
         const ix = `§ ${String(index + 1).padStart(2, "0")}`;
 
@@ -69,7 +69,7 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
 
                 {/* index — top left */}
                 <span
-                  className="absolute top-4 left-4 z-20 text-white/70"
+                  className="absolute top-4 left-4 z-20 text-white/70 hidden lg:block"
                   style={{ fontFamily: "var(--font-space-mono)", fontSize: 10, letterSpacing: "0.24em", textTransform: "uppercase" }}
                 >
                   {ix} · {item.data.main_title}
