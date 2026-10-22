@@ -348,7 +348,8 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
       aria-label="Video player"
       onKeyDown={controls ? onKeyDown : undefined}
       onPointerMove={controls ? pokeControls : undefined}
-      onPointerLeave={() => isPlaying && setShowControls(false)}
+      // Mouse only: a touch "leaves" on every finger lift, which would hide the controls mid-tap
+      onPointerLeave={(e) => e.pointerType === 'mouse' && isPlaying && setShowControls(false)}
       className={cn(
         "group/player relative w-full overflow-hidden bg-black outline-none select-none",
         "focus-visible:ring-1 focus-visible:ring-[var(--cyber-cyan)]",
