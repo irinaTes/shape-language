@@ -620,6 +620,17 @@ interface WorkContentDocumentData {
   year: prismic.KeyTextField;
 
   /**
+   * Order field in *work content*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: Lower numbers show first (1, 2, 3…)
+   * - **API ID Path**: work_content.order
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/number
+   */
+  order: prismic.NumberField;
+
+  /**
    * Slice Zone field in *work content*
    *
    * - **Field Type**: Slice Zone

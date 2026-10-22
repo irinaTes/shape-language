@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 import { createClient } from "@/prismicio";
+import { getOrderedWorkItems } from "@/app/utils/work";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 
 export const metadata: Metadata = {
@@ -11,14 +12,12 @@ export const metadata: Metadata = {
 export default async function WorkPage() {
   const client = createClient();
 
-  const workItems = await client.getAllByType("work_content", {
-    fetch: [
-      "work_content.main_title",
-      "work_content.main_image",
-      "work_content.main_description",
-      "work_content.main_video_url",
-    ],
-  });
+  const workItems = await getOrderedWorkItems(client, [
+    "work_content.main_title",
+    "work_content.main_image",
+    "work_content.main_description",
+    "work_content.main_video_url",
+  ]);
 
   return (
     <main className="w-full py-24 md:py-56">

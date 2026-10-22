@@ -3,6 +3,7 @@ import { Content } from "@prismicio/client";
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { createClient } from "@/prismicio";
+import { getOrderedWorkItems } from "@/app/utils/work";
 import { AnimatedText, AnimatedImage, AnimatedCard } from "./AnimatedCard";
 
 export type WorkListingProps = SliceComponentProps<Content.WorkListingSlice>;
@@ -30,15 +31,13 @@ function getConfigIndex(id: string): number {
 const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
   const client = createClient();
 
-  const workItems = await client.getAllByType("work_content", {
-    fetch: [
-      "work_content.main_title",
-      "work_content.main_image",
-      "work_content.main_description",
-      "work_content.main_video_url",
-      "work_content.year",
-    ],
-  });
+  const workItems = await getOrderedWorkItems(client, [
+    "work_content.main_title",
+    "work_content.main_image",
+    "work_content.main_description",
+    "work_content.main_video_url",
+    "work_content.year",
+  ]);
 
   return (
     <section
@@ -47,7 +46,7 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
       id="work"
       className="scroll-mt-24 w-full flex flex-col gap-14 md:gap-30 py-16 md:py-24 px-6 md:px-20"
     >
-      {workItems.reverse().map((item, index) => {
+      {workItems.map((item, index) => {
         const config = cardConfigs[getConfigIndex(item.id)];
         const ix = `§ ${String(index + 1).padStart(2, "0")}`;
 

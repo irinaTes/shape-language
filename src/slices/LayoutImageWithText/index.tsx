@@ -29,7 +29,8 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
 
         <div className={cn("w-full flex justify-end px-4 md:px-10", reverse_layout && "justify-start")}>
           <motion.div
-            className={cn("w-full flex gap-10 lg:gap-16", reverse_layout ? "flex-col lg:flex-row" : "flex-col-reverse lg:flex-row-reverse items-end")}
+            // Never stretch the columns: a stretched image wrapper shows its glow frame below the image
+            className={cn("w-full flex gap-10 lg:gap-16", reverse_layout ? "flex-col lg:flex-row items-start" : "flex-col-reverse lg:flex-row-reverse items-end")}
             style={{ willChange: 'transform, opacity' }}
             initial={{ opacity: 0, x: reverse_layout ? -30 : 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -45,7 +46,7 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: 0.15 }}
             >
-              <PrismicNextImage field={big_image} sizes="(max-width: 768px) 100vw, 90vw" />
+              <PrismicNextImage field={big_image} sizes="(max-width: 768px) 100vw, 90vw" className="block w-full h-auto" />
             </motion.div>
 
             <div className="w-full flex flex-col gap-20 cursor-pointer">
@@ -57,7 +58,7 @@ const LayoutImageWithText: FC<LayoutImageWithTextProps> = ({ slice }) => {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="md:w-2/4 glow-card "
               >
-                <PrismicNextImage field={small_image} sizes="(max-width: 768px) 50vw, 30vw" />
+                <PrismicNextImage field={small_image} sizes="(max-width: 768px) 50vw, 30vw" className="block w-full h-auto" />
               </motion.div>
 
               <motion.div
