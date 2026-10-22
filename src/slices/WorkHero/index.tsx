@@ -1,18 +1,24 @@
 "use client";
 import { FC } from "react";
-import { Content } from "@prismicio/client";
+import { Content, ImageField } from "@prismicio/client";
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { PrismicNextImage } from "@prismicio/next";
+import { cn } from "@/app/utils/utils";
+
+export type WorkNavItem = { url: string; title: string; image?: ImageField };
+export type WorkHeroContext = { prev?: WorkNavItem; next?: WorkNavItem };
 
 /**
  * Props for `WorkHero`.
  */
-export type WorkHeroProps = SliceComponentProps<Content.WorkHeroSlice>;
+export type WorkHeroProps = SliceComponentProps<Content.WorkHeroSlice, WorkHeroContext | undefined>;
 
 /**
  * Component for "WorkHero" Slices.
  */
-const WorkHero: FC<WorkHeroProps> = ({ slice }) => {
+const WorkHero: FC<WorkHeroProps> = ({ slice, context }) => {
   const { background_image, title, description } = slice.primary
   return (
     <section
@@ -91,7 +97,97 @@ const WorkHero: FC<WorkHeroProps> = ({ slice }) => {
           </motion.div>
         )}
       </motion.div>
+
+      {/* Previous / next project */}
+      {context?.prev && <WorkNavArrow item={context.prev} direction="prev" />}
+      {context?.next && <WorkNavArrow item={context.next} direction="next" />}
     </section>
+  );
+};
+
+// Same round glass button as ScrollToTop, pinned to the hero's side edges
+const WorkNavArrow: FC<{ item: WorkNavItem; direction: "prev" | "next" }> = ({ item, direction }) => {
+  const isPrev = direction === "prev";
+  return (
+    <motion.div
+      className={cn(
+        // Bottom corners on mobile (clear of the full-width title), vertically centered on desktop
+        "group/nav absolute z-20 bottom-8 md:top-0 md:bottom-0 flex items-center",
+        isPrev ? "left-4 md:left-10" : "right-4 md:right-10"
+      )}
+      initial={{ opacity: 0, x: isPrev ? -16 : 16 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}
+    >
+      <Link
+        href={item.url}
+        aria-label={`${isPrev ? "Previous" : "Next"} project${item.title ? `: ${item.title}` : ""}`}
+        className={cn(
+          "h-12 w-12 rounded-full",
+          "bg-white/10 backdrop-blur-md border",
+          "hover:bg-white/20 cursor-pointer",
+          "flex items-center justify-center shadow-lg",
+          "transition-all duration-300"
+        )}
+        style={{ borderColor: "var(--cyber-cyan)", color: "var(--cyber-cyan)" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-5 w-5"
+        >
+          {isPrev ? (
+            <>
+              <path d="M19 12H5" />
+              <path d="m12 19-7-7 7-7" />
+            </>
+          ) : (
+            <>
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </>
+          )}
+        </svg>
+      </Link>
+
+      {/* Preview card, shown on hover / keyboard focus (desktop only) */}
+      <div
+        aria-hidden
+        className={cn(
+          "hidden md:block absolute top-1/2 w-64 pointer-events-none",
+          isPrev ? "left-full ml-4" : "right-full mr-4",
+          "opacity-0 -translate-y-1/2 scale-95 transition-all duration-300 ease-out",
+          isPrev ? "-translate-x-2" : "translate-x-2",
+          "group-hover/nav:opacity-100 group-hover/nav:scale-100 group-hover/nav:translate-x-0",
+          "group-focus-within/nav:opacity-100 group-focus-within/nav:scale-100 group-focus-within/nav:translate-x-0"
+        )}
+      >
+        <div
+          className="overflow-hidden rounded-xl border bg-neutral-950 shadow-lg"
+          style={{ borderColor: "var(--cyber-cyan)" }}
+        >
+          {item.image?.url && (
+            <div className="relative aspect-video overflow-hidden">
+              <PrismicNextImage field={item.image} fill sizes="256px" className="object-cover" alt="" />
+            </div>
+          )}
+          <div className={cn("px-4 py-3", isPrev ? "text-left" : "text-right")}>
+            <p
+              className="[font-family:var(--font-space-mono)] text-[10px] uppercase tracking-[0.2em]"
+              style={{ color: "var(--cyber-cyan)" }}
+            >
+              {isPrev ? "Previous project" : "Next project"}
+            </p>
+            {item.title && <p className="mt-1 text-base font-medium text-white leading-snug">{item.title}</p>}
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

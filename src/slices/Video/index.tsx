@@ -2,7 +2,6 @@
 import { FC } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { VimeoUrl } from "@vimeo/player";
 import VideoPlayer from "@/components/VideoPlayer";
 import { motion } from "framer-motion";
 
@@ -41,10 +40,12 @@ const Video: FC<VideoProps> = ({ slice }) => {
         transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
         className="lg:rounded-2xl p-0 md:p-10 lg:neon-border lg:border lg:glow-card"
       >
-        <VideoPlayer
-          vimeoUrl={video_url as VimeoUrl}
-          className="w-full h-full rounded-2xl"
-        />
+        {video_url && (
+          <VideoPlayer
+            src={video_url}
+            className="w-full h-full lg:rounded-2xl"
+          />
+        )}
       </motion.div>
     </section>
   );

@@ -5,15 +5,35 @@ import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
+import type { WorkHeroContext, WorkNavItem } from "@/slices/WorkHero";
+import WorkPagination from "@/app/components/WorkPagination";
 
 type Params = { uid: string };
 
 export default async function Page({ params }: { params: Promise<Params> }) {
   const { uid } = await params;
   const client = createClient();
-  const page = await client.getByUID("work_content", uid).catch(() => notFound());
+  const [page, workItems] = await Promise.all([
+    client.getByUID("work_content", uid).catch(() => notFound()),
+    client.getAllByType("work_content", { fetch: ["work_content.main_title", "work_content.main_image"] }),
+  ]);
 
-  return <SliceZone slices={page.data.slices} components={components} />;
+  // Same order as the WorkListing slice, wrapping around at both ends
+  const ordered = workItems.reverse();
+  const index = ordered.findIndex((item) => item.uid === page.uid);
+  const neighbor = (offset: number): WorkNavItem | undefined => {
+    if (index === -1 || ordered.length < 2) return undefined;
+    const item = ordered[(index + offset + ordered.length) % ordered.length];
+    return { url: `/work/${item.uid}`, title: item.data.main_title ?? "", image: item.data.main_image };
+  };
+  const context: WorkHeroContext = { prev: neighbor(-1), next: neighbor(1) };
+
+  return (
+    <>
+      <SliceZone slices={page.data.slices} components={components} context={context} />
+      <WorkPagination prev={context.prev} next={context.next} />
+    </>
+  );
 }
 
 export async function generateMetadata({

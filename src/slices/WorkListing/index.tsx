@@ -44,7 +44,8 @@ const WorkListing: FC<WorkListingProps> = async ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full flex flex-col gap-14 md:gap-30 py-16 md:py-24 px-6 md:px-20"
+      id="work"
+      className="scroll-mt-24 w-full flex flex-col gap-14 md:gap-30 py-16 md:py-24 px-6 md:px-20"
     >
       {workItems.reverse().map((item, index) => {
         const config = cardConfigs[getConfigIndex(item.id)];

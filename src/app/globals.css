@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "./assets/css/animations.css";
 @import "./assets/css/colors.css";
-@import "./assets/css/video-controls.css";
 
 /*
   Fluid root font-size — scales all rem-based values (text, spacing, radii)

@@ -5,8 +5,16 @@ import { PrismicLink } from "@prismicio/react";
 import { CustomSidebar } from "../ui/custom-sidebar";
 import { isFilled } from "@prismicio/client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useLoadingContext } from "@/components/PageWithLoading";
 import { PrismicNextImage } from "@prismicio/next";
 import { cn } from "@/app/utils/utils";
+
+const WORK_SECTION_ID = "work";
+
+const scrollToWork = () => {
+    document.getElementById(WORK_SECTION_ID)?.scrollIntoView({ behavior: "smooth", block: "start" });
+};
 
 // Helper function to calculate luminance and determine if we need dark or light text
 const getContrastColor = (bgColor: string): 'light' | 'dark' => {
@@ -36,6 +44,26 @@ export default function Header({ data }: { data: HeaderDocument }) {
     const { navigation_items, logo_animation, logo_white, logo_filled } = data.data;
     const videoRef = useRef<HTMLVideoElement>(null);
     const lastScrollY = useRef(0);
+    const pathname = usePathname();
+    const isLoading = useLoadingContext()?.isLoading ?? false;
+
+    // Arriving on the homepage via /#work: scroll once the loading screen is gone,
+    // so the hero's final height is known and the scroll is actually visible.
+    useEffect(() => {
+        if (pathname !== "/" || isLoading) return;
+        if (window.location.hash !== `#${WORK_SECTION_ID}`) return;
+        const t = setTimeout(scrollToWork, 100);
+        return () => clearTimeout(t);
+    }, [pathname, isLoading]);
+
+    const handleWorkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        setMobileMenuOpen(false);
+        if (pathname !== "/") return; // let <Link> navigate to /#work
+        e.preventDefault();
+        history.replaceState(null, "", `#${WORK_SECTION_ID}`);
+        // Wait a tick so the mobile sidebar releases body scroll lock first
+        setTimeout(scrollToWork, 50);
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -191,6 +219,16 @@ export default function Header({ data }: { data: HeaderDocument }) {
                     </Link>
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex space-x-8">
+                        <Link
+                            href={`/#${WORK_SECTION_ID}`}
+                            onClick={handleWorkClick}
+                            className={cn(
+                                "hover:opacity-45 px-3 py-2 text-sm font-medium transition-all duration-300 uppercase [font-family:var(--font-space-mono)]",
+                                textColor === 'dark' ? 'text-black' : 'text-white'
+                            )}
+                        >
+                            Work
+                        </Link>
                         {navigation_items.map((item, index) => (
                             <PrismicLink
                                 key={index}
@@ -233,6 +271,13 @@ export default function Header({ data }: { data: HeaderDocument }) {
                             isOpen={mobileMenuOpen}
                             onOpenChange={setMobileMenuOpen}
                         >
+                            <Link
+                                href={`/#${WORK_SECTION_ID}`}
+                                onClick={handleWorkClick}
+                                className="block text-gray-900 hover:text-gray-600 px-3 py-2 text-base font-medium border-l-4 border-transparent hover:border-indigo-500 transition-colors"
+                            >
+                                Work
+                            </Link>
                             {navigation_items.map((item, index) => (
                                 <PrismicLink
                                     key={index}

@@ -8,6 +8,7 @@ interface LoadingContextType {
   videoReady: () => void;
   register3DScene: () => void;
   scene3DReady: () => void;
+  isLoading: boolean;
 }
 
 const LoadingContext = createContext<LoadingContextType | null>(null);
@@ -88,7 +89,7 @@ const PageWithLoading: FC<PageWithLoadingProps> = ({ children }) => {
   }, [isInitialized, totalVideos, loadedVideos, total3DScenes, loaded3DScenes]);
 
   return (
-    <LoadingContext.Provider value={{ registerVideo, videoReady, register3DScene, scene3DReady }}>
+    <LoadingContext.Provider value={{ registerVideo, videoReady, register3DScene, scene3DReady, isLoading }}>
       <LoadingScreen isLoading={isLoading} />
       {/* <LoadingScreen isLoading={true} /> */}
       <div style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.5s' }}>
