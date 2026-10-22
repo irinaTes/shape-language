@@ -5,6 +5,17 @@ import { useGLTF, useTexture, MeshTransmissionMaterial } from '@react-three/drei
 import * as THREE from 'three';
 import WordmarkText from './WordmarkText';
 
+const GLB_PATH = '/assets/shape_language.glb';
+const TEXTURE_PATHS = {
+  normalMap: '/assets/Ice003_1K-PNG/Ice003_1K-PNG_NormalGL.png',
+  roughnessMap: '/assets/Ice003_1K-PNG/Ice003_1K-PNG_Roughness.png',
+};
+
+// Start every download at module load so they run in parallel instead of
+// waiting on each other (useGLTF suspends before useTexture is reached).
+useGLTF.preload(GLB_PATH);
+useTexture.preload(Object.values(TEXTURE_PATHS));
+
 // Delay before the intro starts (seconds)
 const INTRO_DELAY = 0.6;
 // Duration of the intro animation (seconds)
@@ -13,6 +24,10 @@ const INTRO_DURATION = 2.0;
 // Module-scoped: survives Logo3D remounts (e.g. hero scrolling back into view
 // after frameloop pause). Reset only on full page reload.
 let introHasPlayed = false;
+
+// Cap per-frame time so a long first frame (shader compile, tab switch)
+// can't skip most of the intro in a single step.
+const MAX_DELTA = 1 / 30;
 
 // Ease out cubic
 function easeOutCubic(t: number) {
@@ -29,9 +44,10 @@ interface Logo3DProps {
 export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef, textMode = 'inside-logo' }: Logo3DProps) {
   const groupRef = useRef<THREE.Group>(null);
   const isHoveringRef = useRef(false);
-  const { scene } = useGLTF('/assets/shape_language.glb');
+  const { scene } = useGLTF(GLB_PATH);
   const { size } = useThree();
-  const startTimeRef = useRef<number | null>(null);
+  // Intro time, counted from the first frame the logo actually renders
+  const introTimeRef = useRef(0);
 
   const scale = useMemo(() => {
     if (size.width < 640)  return 22;
@@ -51,8 +67,9 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
     backside: true,
   };
 
-  useFrame(({ pointer, clock }) => {
+  useFrame(({ pointer }, rawDelta) => {
     if (!groupRef.current) return;
+    const delta = Math.min(rawDelta, MAX_DELTA);
 
     let eased: number;
     let introRotX: number;
@@ -63,15 +80,11 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
       introRotX = 0;
       introRotZ = 0;
     } else {
-      const elapsed = clock.getElapsedTime();
-
-      if (startTimeRef.current === null && elapsed >= INTRO_DELAY) {
-        startTimeRef.current = elapsed;
-      }
-
-      const introProgress = startTimeRef.current === null
-        ? 0
-        : Math.min((elapsed - startTimeRef.current) / INTRO_DURATION, 1);
+      introTimeRef.current += delta;
+      const introProgress = Math.min(
+        Math.max(introTimeRef.current - INTRO_DELAY, 0) / INTRO_DURATION,
+        1,
+      );
       eased = easeOutCubic(introProgress);
       introRotX = (1 - eased) * Math.PI * 1.5;
       introRotZ = (1 - eased) * Math.PI * 0.8;
@@ -98,9 +111,11 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
       targetY = rotationRef.current[1];
     }
 
-    groupRef.current.rotation.x += (targetX + introRotX - groupRef.current.rotation.x) * 0.05;
-    groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.05;
-    groupRef.current.rotation.z += (introRotZ - groupRef.current.rotation.z) * 0.05;
+    // Frame-rate independent equivalent of lerping 5% per frame at 60fps
+    const k = 1 - Math.pow(1 - 0.05, delta * 60);
+    groupRef.current.rotation.x += (targetX + introRotX - groupRef.current.rotation.x) * k;
+    groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * k;
+    groupRef.current.rotation.z += (introRotZ - groupRef.current.rotation.z) * k;
 
     displayRotationRef.current = [
       groupRef.current.rotation.x,
@@ -109,10 +124,7 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
     ];
   });
 
-  const textures = useTexture({
-    normalMap: '/assets/Ice003_1K-PNG/Ice003_1K-PNG_NormalGL.png',
-    roughnessMap: '/assets/Ice003_1K-PNG/Ice003_1K-PNG_Roughness.png',
-  });
+  const textures = useTexture(TEXTURE_PATHS);
 
   useMemo(() => {
     Object.values(textures).forEach((tex) => {
@@ -122,17 +134,19 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
     });
   }, [textures]);
 
-  const geometry = useMemo(() => {
-    let found: THREE.BufferGeometry | null = null;
+  // The GLB is meshopt-compressed with quantized positions, so the node carries
+  // a scale/offset that must be kept alongside the geometry.
+  const sourceMesh = useMemo(() => {
+    let found: THREE.Mesh | null = null;
     scene.traverse((child) => {
       if (!found && (child as THREE.Mesh).isMesh) {
-        found = (child as THREE.Mesh).geometry;
+        found = child as THREE.Mesh;
       }
     });
-    return found;
+    return found as THREE.Mesh | null;
   }, [scene]);
 
-  if (!geometry) return null;
+  if (!sourceMesh) return null;
 
   return (
     <group>
@@ -141,7 +155,12 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
         onPointerEnter={() => { isHoveringRef.current = true; }}
         onPointerLeave={() => { isHoveringRef.current = false; }}
       >
-        <mesh geometry={geometry}>
+        <mesh
+          geometry={sourceMesh.geometry}
+          position={sourceMesh.position}
+          quaternion={sourceMesh.quaternion}
+          scale={sourceMesh.scale}
+        >
           <MeshTransmissionMaterial
             background={new THREE.Color('#0a1628')}
             // color="#c8e8ff"
@@ -163,5 +182,3 @@ export default function Logo3D({ rotationRef, displayRotationRef, isDraggingRef,
     </group>
   );
 }
-
-useGLTF.preload('/assets/shape_language.glb');

@@ -46,25 +46,29 @@ const PageWithLoading: FC<PageWithLoadingProps> = ({ children }) => {
     setLoaded3DScenes((prev) => prev + 1);
   }, []);
 
-  // Reset on every navigation
-  useEffect(() => {
+  // Reset on every navigation. Done during render (not in an effect) because
+  // child effects run before parent effects: a reset effect here would wipe
+  // out registrations the new page's components just made in the same commit.
+  const [trackedPathname, setTrackedPathname] = useState(pathname);
+  if (trackedPathname !== pathname) {
+    setTrackedPathname(pathname);
     setIsLoading(true);
     setIsInitialized(false);
     setTotalVideos(0);
     setLoadedVideos(0);
     setTotal3DScenes(0);
     setLoaded3DScenes(0);
-  }, [pathname]);
+  }
 
   // Give components one frame to register themselves, then check
   useEffect(() => {
     const timer = requestAnimationFrame(() => {
       setIsInitialized(true);
     });
-    // Safety timeout: never block the page for more than 4 seconds
+    // Safety timeout: never block the page forever on a slow connection
     const safetyTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 4000);
+    }, 12000);
     return () => {
       cancelAnimationFrame(timer);
       clearTimeout(safetyTimer);

@@ -1,23 +1,46 @@
 'use client';
 import { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Environment, useProgress } from '@react-three/drei';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Environment, useEnvironment } from '@react-three/drei';
 import * as THREE from 'three';
 import Logo3D from './Logo3D';
 import OrbitWidget from './OrbitWidget';
 import MovingLights from './MovingLights';
 import { useLoadingContext } from '@/components/PageWithLoading';
 
+// Self-hosted copy of drei's "city" preset (was fetched from raw.githack.com)
+const ENV_MAP = '/assets/hdri/potsdamer_platz_1k.hdr';
+useEnvironment.preload({ files: ENV_MAP });
+
+// Mounted inside the same Suspense boundary as the scene, so it only runs once
+// every asset has resolved. Compiles shaders up front, then reports ready after
+// a couple of rendered frames, so the loader hides on a scene that is drawn.
 function SceneReadyReporter({ onReady }: { onReady: () => void }) {
-  const { progress } = useProgress();
-  const reported = useRef(false);
+  const { gl, scene, camera } = useThree();
+  const compiledRef = useRef(false);
+  const framesRef = useRef(0);
+  const reportedRef = useRef(false);
 
   useEffect(() => {
-    if (progress === 100 && !reported.current) {
-      reported.current = true;
+    let cancelled = false;
+    gl.compileAsync(scene, camera)
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) compiledRef.current = true;
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [gl, scene, camera]);
+
+  useFrame(() => {
+    if (reportedRef.current || !compiledRef.current) return;
+    framesRef.current += 1;
+    if (framesRef.current >= 2) {
+      reportedRef.current = true;
       onReady();
     }
-  }, [progress, onReady]);
+  });
 
   return null;
 }
@@ -79,7 +102,7 @@ export default function Scene3D({ viewportMode }: Scene3DProps) {
       >
         <Suspense fallback={null}>
           <SceneReadyReporter onReady={handleReady} />
-          <Environment preset="city" background={false} />
+          <Environment files={ENV_MAP} background={false} />
           <ambientLight intensity={0.4} color="#1a0040" />
           <directionalLight position={[-5, 7, 3]} intensity={10} color="#00f5ff" />
           <directionalLight position={[6, 2, -2]} intensity={8} color="#ff00cc" />

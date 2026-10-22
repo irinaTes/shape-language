@@ -2,6 +2,7 @@
 import { Text } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useState } from 'react';
+import { preloadFont } from 'troika-three-text';
 
 type Mode = 'inside-logo' | 'tablet';
 
@@ -15,6 +16,14 @@ const INK_DIM = '#6E7785';
 const FONT_GROTESK       = '/assets/fonts/SpaceGrotesk-Regular.ttf';
 const FONT_GROTESK_LIGHT = '/assets/fonts/SpaceGrotesk-Light.ttf';
 const FONT_MONO          = '/assets/fonts/SpaceMono-Regular.ttf';
+
+// Warm troika's font cache at module load so <Text> doesn't start fetching
+// fonts only after the logo's GLB and textures have resolved.
+if (typeof window !== 'undefined') {
+  [FONT_GROTESK, FONT_GROTESK_LIGHT, FONT_MONO].forEach((font) =>
+    preloadFont({ font }, () => {}),
+  );
+}
 
 const Z_TEXT = -22;
 const DIST = 12 - Z_TEXT; // camera at z=12
