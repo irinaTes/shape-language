@@ -30,6 +30,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
   const wrapperRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrubberRef = useRef<HTMLDivElement>(null);
+  const volumeRef = useRef<HTMLDivElement>(null);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const loadingContext = useVideoLoading();
   const hasRegistered = useRef(false);
@@ -41,6 +42,8 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [volume, setVolume] = useState(1);
+  const [isVolumeDragging, setIsVolumeDragging] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
@@ -88,7 +91,10 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
     const onPause = () => setIsPlaying(false);
     const onWaiting = () => setIsBuffering(true);
     const onPlaying = () => setIsBuffering(false);
-    const onVolumeChange = () => setIsMuted(video.muted);
+    const onVolumeChange = () => {
+      setIsMuted(video.muted);
+      setVolume(video.volume);
+    };
     const onError = () => {
       setHasError(true);
       // Never block the page loader on a broken video
@@ -198,6 +204,16 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
     pokeControls();
   }, [pokeControls]);
 
+  // Setting a level also unmutes; dragging to 0 mutes
+  const setVolumeLevel = useCallback((level: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    const clamped = Math.min(Math.max(level, 0), 1);
+    video.volume = clamped;
+    video.muted = clamped === 0;
+    pokeControls();
+  }, [pokeControls]);
+
   const toggleFullscreen = useCallback(() => {
     const wrapper = wrapperRef.current;
     const video = videoRef.current as (HTMLVideoElement & { webkitEnterFullscreen?: () => void }) | null;
@@ -254,6 +270,30 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
     setIsScrubbing(false);
   };
 
+  // ── Volume slider ───────────────────────────────────────────────────────
+  const volumeFromPointer = (clientX: number) => {
+    const rect = volumeRef.current?.getBoundingClientRect();
+    if (!rect || rect.width === 0) return 0;
+    return Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+  };
+
+  const onVolumeStart = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsVolumeDragging(true);
+    setVolumeLevel(volumeFromPointer(e.clientX));
+  };
+
+  const onVolumeMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (isVolumeDragging) setVolumeLevel(volumeFromPointer(e.clientX));
+  };
+
+  const onVolumeEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+    setIsVolumeDragging(false);
+  };
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     switch (e.key) {
       case ' ':
@@ -275,10 +315,18 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
         e.preventDefault();
         seekBy(-5);
         break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setVolumeLevel((isMuted ? 0 : volume) + 0.1);
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        setVolumeLevel((isMuted ? 0 : volume) - 0.1);
+        break;
     }
   };
 
-  const controlsVisible = controls && (showControls || !isPlaying || isScrubbing);
+  const controlsVisible = controls && (showControls || !isPlaying || isScrubbing || isVolumeDragging);
 
   // On touch, the first tap only reveals the controls instead of pausing
   const onVideoClick = () => {
@@ -290,6 +338,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
   };
 
   const progress = duration ? currentTime / duration : 0;
+  const volumeLevel = isMuted ? 0 : volume;
 
   return (
     <div
@@ -475,18 +524,58 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ src, poster, className, onReady, co
               )}
             </button>
 
-            <button
-              type="button"
-              onClick={toggleMute}
-              aria-label={isMuted ? "Unmute" : "Mute"}
-              className="hover:text-[var(--cyber-cyan)] transition-colors cursor-pointer"
-            >
-              {isMuted ? (
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" /><path d="M16 9.5l5 5M21 9.5l-5 5" /></svg>
-              ) : (
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" /><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" /></svg>
-              )}
-            </button>
+            {/* Mute + volume slider (slider expands on hover / focus; hidden on touch, where volume is hardware-only) */}
+            <div className="group/volume flex items-center gap-3">
+              <button
+                type="button"
+                onClick={toggleMute}
+                aria-label={isMuted ? "Unmute" : "Mute"}
+                className="hover:text-[var(--cyber-cyan)] transition-colors cursor-pointer"
+              >
+                {isMuted ? (
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" /><path d="M16 9.5l5 5M21 9.5l-5 5" /></svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" /><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" /></svg>
+                )}
+              </button>
+              <div
+                ref={volumeRef}
+                role="slider"
+                tabIndex={0}
+                aria-label="Volume"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(volumeLevel * 100)}
+                onPointerDown={onVolumeStart}
+                onPointerMove={onVolumeMove}
+                onPointerUp={onVolumeEnd}
+                onPointerCancel={onVolumeEnd}
+                onKeyDown={(e) => {
+                  // Left/right adjust volume here instead of seeking the video
+                  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setVolumeLevel(volumeLevel + (e.key === 'ArrowRight' ? 0.1 : -0.1));
+                }}
+                className={cn(
+                  "relative h-5 hidden md:flex items-center cursor-pointer touch-none overflow-hidden",
+                  "w-0 opacity-0 transition-all duration-300",
+                  "group-hover/volume:w-20 group-hover/volume:opacity-100 group-focus-within/volume:w-20 group-focus-within/volume:opacity-100",
+                  isVolumeDragging && "w-20 opacity-100"
+                )}
+              >
+                <div className="relative w-full h-[3px] bg-white/15">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-[var(--cyber-cyan)] shadow-[0_0_10px_var(--cyber-cyan-glow-strong)]"
+                    style={{ width: `${volumeLevel * 100}%` }}
+                  />
+                </div>
+                <span
+                  className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-3 bg-[var(--cyber-cyan)] shadow-[0_0_8px_var(--cyber-cyan-glow-strong)]"
+                  style={{ left: `${Math.min(Math.max(volumeLevel, 0.01), 0.99) * 100}%` }}
+                />
+              </div>
+            </div>
 
             <span className={cn("tabular-nums text-white/70", monoLabel)}>
               <span className="text-[var(--cyber-cyan)]">{formatTime(currentTime)}</span>
