@@ -52,7 +52,11 @@ const WorkHero: FC<WorkHeroProps> = ({ slice, context }) => {
 
       {/* Animated text content */}
       <motion.div
-        className="relative z-10 flex flex-col items-center w-full"
+        className={cn(
+          "relative z-10 flex flex-col items-center w-full",
+          // Keep the text clear of the side arrows (arrow: 40px inset + 48px wide)
+          (context?.prev || context?.next) && "md:px-16"
+        )}
         initial="hidden"
         animate="visible"
         variants={{
